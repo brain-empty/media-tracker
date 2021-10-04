@@ -1,3 +1,13 @@
+body {
+    padding:0;
+    margin:0;
+    background-color:darkseagreen
+}
+
+.search{
+    
+}
+
 .media-box {
     height:150px;
     width:90px;
@@ -8,5 +18,25 @@
 }
 
 li {
-    display : inline;
+    display: inline-block;
+}
+
+footer li{
+    display:block;
+}
+
+.media-box img {
+    height:140px;
+    width:80px;
+    padding:5px;
+}
+
+header {
+    background-color:darkslategrey;
+    background-color:darkslategrey;
+}
+
+footer {
+    background-color:darkslategrey;
+    background-color:darkslategrey;
 }
