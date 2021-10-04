@@ -1,0 +1,12 @@
+.media-box {
+    height:150px;
+    width:90px;
+    padding:10px;
+    margin:10px;
+    border: 1px solid black;
+    background-color: silver;
+}
+
+li {
+    display : inline;
+}
