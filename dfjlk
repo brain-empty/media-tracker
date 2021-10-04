@@ -1,0 +1,33 @@
+[1mdiff --git a/index.html b/index.html[m
+[1mindex 74b8e81..585558d 100644[m
+[1m--- a/index.html[m
+[1m+++ b/index.html[m
+[36m@@ -1,13 +1,17 @@[m
+ <html>[m
+[32m+[m[32m    <head>[m
+ [m
+[31m-<head>[m
+[31m-[m
+[31m-    [m
+[31m-</head>[m
+[31m-[m
+[31m-<body>[m
+[31m-[m
+[31m-[m
+[31m-</body>[m
+[31m-[m
+[32m+[m[32m    </head>[m
+[32m+[m[32m    <body>[m
+[32m+[m[32m        <header>[m
+[32m+[m[32m            <nav>[m
+[32m+[m[32m                <img src="*" alt="btl home button"></img>[m
+[32m+[m[32m                <form>[m
+[32m+[m[32m                    <label for="search"></label>[m
+[32m+[m[32m                    <input type="text" id="search" name="search" placeholder="Search..."></input>[m
+[32m+[m[32m                </form>[m
+[32m+[m[32m            </nav>[m
+[32m+[m[32m            <hr>[m
+[32m+[m[32m        </header>[m
+[32m+[m[32m    </body>[m
+ </html>[m
+\ No newline at end of file[m
