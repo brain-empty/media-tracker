@@ -1,0 +1,68 @@
+body {
+    padding:0;
+    margin:0;
+    background-color:darkseagreen;
+    font-family:'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+}
+
+header{
+
+    width:100%;
+    background-color:darkslategrey;
+}
+
+header nav{
+    display:flex;
+    justify-content: space-between;
+    align-items: center;
+    padding:20px;
+}
+
+.home {
+    margin-left:30px;
+    height:60px;
+}
+
+.search {
+    height:20px;
+    width:500px;
+}
+header button{
+    margin-left:5px;
+    margin-right:5px;
+    height:35px;
+    width:100px;
+}
+
+.topmedia {
+    margin-left:40px;
+}
+
+.media-box {
+    padding:5px;
+    padding-bottom:5px;
+    margin: 10px;
+    background-color: darkslategrey;
+}
+
+.media-box img {
+    height:180px;
+    width:120px;
+}
+
+li {
+    display: inline-block;
+}
+
+footer li{
+    display:block;
+}
+
+footer {
+    background-color:darkslategrey;
+    margin-bottom:-20px;
+}
+
+.signup {
+    padding: 15px;
+}
