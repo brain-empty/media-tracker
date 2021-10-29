@@ -1,0 +1,37 @@
+<p>all things list here</p>
+<br>
+
+<div> <!--search-->
+    <form action="/search" method="GET" >
+    <label>search for eVERyTHING</label>
+    <input type="text" name="name" value="<%= searchOptions.name %>">
+    <button type="submit">search</button>
+    </form>
+</div>
+<br>
+
+<% if (movies != null) {%>
+    <div> <!--list movies-->
+    <h6>MOVIES</h6>
+    <% movies.forEach ( movie => { %>
+    <div><%= movie.name%></div>
+    <br>
+    ~
+    <% }) %>
+    </div>
+<% } %>
+
+<% if (staff != null) {%>
+    <div> <!--list staff-->
+    <hr>
+    <h6>STAFF</h6>
+    <% staff.forEach ( staff => { %>
+    <div><%= staff.name%></div>
+    <br>
+    ~
+    <% }) %>
+    </div>
+<% } %>
+
+<a href="movies/new">add new movie</a>
+<hr>

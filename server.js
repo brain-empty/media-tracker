@@ -26,9 +26,13 @@ db.once('open', () => console.log ("db connected."))
 //routes definition
 const indexRouter = require ('./routes/index');
 const moviesRouter = require ('./routes/movies');
+const staffRouter = require ('./routes/staff');
+const searchRouter = require ('./routes/search');
 //routes setting
 app.use('/', indexRouter);
 app.use('/movies', moviesRouter);
+app.use('/staff', staffRouter);
+app.use('/search', searchRouter);
 
 app.listen(process.env.PORT || 3000, () => console.log ("started app on port 3000"));
 

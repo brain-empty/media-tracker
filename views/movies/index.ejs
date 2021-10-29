@@ -12,6 +12,10 @@
 <div> <!--list movies-->
     <% movies.forEach ( movie => { %>
         <div><%= movie.name%></div>
+        <div><p>Director: <%= movie.director ||  "Unknown"%></p></div>
+        <br>
+        ~
+        <br>
     <% }) %>
 </div>
 

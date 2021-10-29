@@ -1,8 +1,9 @@
 const express = require('express');
 const router = express.Router();
-const Movie = require ('../models/movie');
+const Staff = require ('../models/staff');
+const StaffRole = require ('../models/staff_roles');
 
-//all movies route
+
 router.get('/', async (req, res) => {
     let searchOptions = {}
 
@@ -13,9 +14,9 @@ router.get('/', async (req, res) => {
     }
 
     try {
-        const movies = await Movie.find(searchOptions)
-        res.render('movies/index', {
-            movies: movies, 
+        const staff = await Staff.find(searchOptions)
+        res.render('staff/index', {
+            staff: staff, 
             searchOptions: req.query })
 
     } catch {
@@ -24,26 +25,26 @@ router.get('/', async (req, res) => {
     }
 });
 
-//new movies (visual form) route
+//new staff (visual form) route
 router.get("/new", (req,res) => {
-    res.render('movies/new', { movie : new Movie () })
+    res.render('staff/new', { staff : new Staff () })
 });
 
-// create movie (process of creating after input is given) route
+// create staff (process of creating after input is given) route
 router.post ('/', async (req, res) => {
-    const movie = new Movie ({
+    const staff = new Staff ({
         name: req.body.name,
-        director: req.body.director
+        role: req.body.role
     })
     try {
-        const newMovie = await movie.save()
-        //res.redirect (`movies/${newMovies.id}`)
-        res.redirect ('movies')
-        console.log("movie entry sucess")
+        const newMovie = await staff.save()
+        //res.redirect (`movies/${newStaff.id}`)
+        res.redirect ('Staff')
+        console.log("staff entry sucess")
     } catch {
-        res.render ('movies/new', {
-        movie: movie,
-        errorMessage: 'error creating movie'
+        res.render ('/', {
+        staff: staff,
+        errorMessage: 'error creating staff'
         })
     }
 });

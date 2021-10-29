@@ -5,10 +5,10 @@ const movieSchema = new mongoose.Schema({
         type: String,
         required: true,
     },
-    staff: {
-        type: Array,
+    director: {
+        type: String,
         required: false,
     }
-});
+}); 
 
 module.exports = mongoose.model ('Movie', movieSchema)
