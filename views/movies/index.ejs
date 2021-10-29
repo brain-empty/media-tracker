@@ -1,0 +1,19 @@
+<p>all movies list here</p>
+<br>
+
+<div> <!--search-->
+    <form action="/movies" method="GET">
+    <label>Name</label>
+    <input type="text" name="name" value="<%= searchOptions.name %>">
+    <button type="submit">search</button>
+    </form>
+</div>
+<br>
+<div> <!--list movies-->
+    <% movies.forEach ( movie => { %>
+        <div><%= movie.name%></div>
+    <% }) %>
+</div>
+
+<a href="movies/new">add new movie</a>
+<hr>
