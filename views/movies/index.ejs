@@ -11,13 +11,14 @@
 <br>
 <div> <!--list movies-->
     <% movies.forEach ( movie => { %>
-        <div><%= movie.name%></div>
-        <div><p>Director: <%= movie.director ||  "Unknown"%></p></div>
+        <div><%= movie.name %></div> 
+        <!-- TODO : make the above statement or and give it media block make it look
+        like the homepage yknow -->
         <br>
         ~
         <br>
     <% }) %>
 </div>
 
-<a href="movies/new">add new movie</a>
+<p>can't find what you're looking for? <a href="movies/new">add a new movie</a></p>
 <hr>

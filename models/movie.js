@@ -7,8 +7,10 @@ const movieSchema = new mongoose.Schema({
     },
     staff: {
         type: Array,
-        required: false,
-    }
+    },
+    director: {
+        type: mongoose.Schema.Types.ObjectId
+    } 
 });
 
 module.exports = mongoose.model ('Movie', movieSchema)

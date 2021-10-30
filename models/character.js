@@ -5,9 +5,10 @@ const movieSchema = new mongoose.Schema({
         type: String,
         required: true,
     },
-    director: {
+    coverImageName: {
         type: String,
         required: false,
+        default:images/missing_movie.png
     }
 }); 
 

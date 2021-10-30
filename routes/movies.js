@@ -6,8 +6,8 @@ const Movie = require ('../models/movie');
 router.get('/', async (req, res) => {
     let searchOptions = {}
 
-    if (req.query.name != null && req.query.name !== ''){
-        searchOptions.name = new RegExp (req.query.name, 'i')
+    if (req.query.search != null && req.query.search !== ''){
+        searchOptions.search = new RegExp (req.query.search, 'i')
         // regexp makes hte program search for the string even if it's not a full match (ke search would match kevin)
         // 'i' states that it's not case sensitive
     }
@@ -28,6 +28,7 @@ router.get('/', async (req, res) => {
 router.get("/new", (req,res) => {
     res.render('movies/new', { movie : new Movie () })
 });
+
 
 // create movie (process of creating after input is given) route
 router.post ('/', async (req, res) => {
