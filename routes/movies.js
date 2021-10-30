@@ -33,9 +33,10 @@ router.get("/new", (req,res) => {
 // create movie (process of creating after input is given) route
 router.post ('/', async (req, res) => {
     const movie = new Movie ({
-        name: req.body.name,
-        director: req.body.director
+        name : req.body.name,
+        $push : { tags : [req.body.tags] },
     })
+    console.log(movie)
     try {
         const newMovie = await movie.save()
         //res.redirect (`movies/${newMovies.id}`)

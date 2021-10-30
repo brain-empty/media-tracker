@@ -5,12 +5,13 @@ const movieSchema = new mongoose.Schema({
         type: String,
         required: true,
     },
-    staff: {
-        type: Array,
-    },
-    director: {
-        type: mongoose.Schema.Types.ObjectId
-    } 
+    staff: [{
+        type : String
+        // type: mongoose.Schema.Types.ObjectId
+    }],
+    tags:[{
+        type: String
+    }]
 });
 
 module.exports = mongoose.model ('Movie', movieSchema)

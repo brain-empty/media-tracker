@@ -1,7 +1,6 @@
 const express = require('express');
 const router = express.Router();
 const Staff = require ('../models/staff');
-const StaffRole = require ('../models/staff_roles');
 
 
 router.get('/', async (req, res) => {

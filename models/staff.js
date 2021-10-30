@@ -1,14 +1,22 @@
 const mongoose = require ('mongoose');
 
+const roleSchema = mongoose.Schema({
+    name: {
+        type: String,
+        required: true,
+    },
+    character: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref:"character"
+    }
+});
+
 const staffSchema = new mongoose.Schema({
     name: {
         type: String,
         required: true,
     },
-    role: {
-        type: String,
-        required: true,
-    },
+    role: [roleSchema],
     summary: {
         type: String
     },
