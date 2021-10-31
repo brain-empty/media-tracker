@@ -6,8 +6,10 @@ const Movie = require ('../models/movie');
 const multer = require ('multer')
 const uploadPath = path.join('public', movie.coverImageBasePath)
 const upload = multer ({
-    dest: uploadPath
-    FileFilter: (req, file, callback)
+    dest: uploadPath,
+    FileFilter: (req, file, callback) => {
+        callback (null, boolean)
+    }
 })
 
 //all movies route

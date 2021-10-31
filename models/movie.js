@@ -1,5 +1,7 @@
 const mongoose = require ('mongoose');
 
+const coverImageBasePath = 'uploads/covers/movies'
+
 const movieSchema = new mongoose.Schema({
     name: {
         type: String,
@@ -18,3 +20,4 @@ const movieSchema = new mongoose.Schema({
 });
 
 module.exports = mongoose.model ('Movie', movieSchema)
+module.exports.coverImageBasePath = coverImageBasePath
