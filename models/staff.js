@@ -8,7 +8,11 @@ const roleSchema = mongoose.Schema({
     character: {
         type: mongoose.Schema.Types.ObjectId,
         ref:"character"
-    }
+    },
+    movie: [{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Movie'
+    }],
 });
 
 const staffSchema = new mongoose.Schema({

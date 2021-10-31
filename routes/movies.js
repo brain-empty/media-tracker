@@ -1,11 +1,13 @@
 const express = require('express');
 const router = express.Router();
 const Movie = require ('../models/movie');
+const Staff = require ('../models/staff')
 
 //cover file upload setup
 const multer = require ('multer')
 const path = require ('path')
 const uploadPath = path.join('public', Movie.coverImageBasePath)
+const imageMimeTypes = ['image/jpeg', 'image/png', 'image/gif']
 const upload = multer ({
     dest: uploadPath,
     FileFilter: (req, file, callback) => {
@@ -15,6 +17,7 @@ const upload = multer ({
 
 //all movies route
 router.get('/', async (req, res) => {
+
     let searchOptions = {}
 
     if (req.query.search != null && req.query.search !== ''){
@@ -36,23 +39,40 @@ router.get('/', async (req, res) => {
 });
 
 //new movies (visual form) route
-router.get("/new", (req,res) => {
-    res.render('movies/new', { movie : new Movie () })
+router.get("/new", async (req,res) => {
+    try {
+        const staff = await Staff.find ({})
+        const movie = new Movie ()
+        res.render ('movies/new', {
+            staff:staff,
+            movie:movie
+        }) 
+    } catch (err){
+        res.redirect ('/movies')
+        console.log ("ERROR: movies router get /new request is broken. err : " + err)
+
+
+    }
+    
+    
+    // res.render('movies/new', { movie : new Movie () })
 });
 
 
 // create movie (process of creating after input is given) route
-router.post ('/', async (req, res) => {
+router.post ('/', upload.single('cover'), async (req, res) => {
+    const fileName = req.file != null ? req.file.filename : null
+
     const movie = new Movie ({
         name : req.body.name,
         summary : req.body.summary,
-        tags: req.body.tags
-    }) 
-    console.log(movie)
+        tags: req.body.tags,  
+        coverImageName: fileName
+     }) 
+
     try {
         const newMovie = await movie.save()
         //res.redirect (`movies/${newMovies.id}`)
-        //TODO : figure out how to accept array inputs
         res.redirect ('movies')
         console.log("movie entry sucess")
     } catch {
