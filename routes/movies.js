@@ -4,7 +4,8 @@ const Movie = require ('../models/movie');
 
 //cover file upload setup
 const multer = require ('multer')
-const uploadPath = path.join('public', movie.coverImageBasePath)
+const path = require ('path')
+const uploadPath = path.join('public', Movie.coverImageBasePath)
 const upload = multer ({
     dest: uploadPath,
     FileFilter: (req, file, callback) => {
