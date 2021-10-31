@@ -1,24 +1,14 @@
-<p>all movies list here</p>
-<br>
-
-<div> <!--search-->
-    <form action="/movies" method="GET">
-    <label>Name</label>
-    <input type="text" name="name" value="<%= searchOptions.name %>">
-    <button type="submit">search</button>
-    </form>
-</div>
+<section class="topmedia">
+    <br>
 <br>
 <div> <!--list movies-->
+    <ul>
     <% movies.forEach ( movie => { %>
-        <div><%= movie.name %></div> 
-        <!-- TODO : make the above statement or and give it media block make it look
-        like the homepage yknow -->
-        <br>
-        ~
-        <br>
+        <a href=><li class='media-box'><img src="/images/missing_movie.png"><br><%= movie.name %></li></a>
     <% }) %>
+    </ul>
 </div>
 
 <p>can't find what you're looking for? <a href="movies/new">add a new movie</a></p>
 <hr>
+</section>

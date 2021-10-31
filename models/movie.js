@@ -5,6 +5,9 @@ const movieSchema = new mongoose.Schema({
         type: String,
         required: true,
     },
+    summary: {
+        type:String
+    },
     staff: [{
         type : String
         // type: mongoose.Schema.Types.ObjectId

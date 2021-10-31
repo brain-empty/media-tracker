@@ -2,6 +2,14 @@ const express = require('express');
 const router = express.Router();
 const Movie = require ('../models/movie');
 
+//cover file upload setup
+const multer = require ('multer')
+const uploadPath = path.join('public', movie.coverImageBasePath)
+const upload = multer ({
+    dest: uploadPath
+    FileFilter: (req, file, callback)
+})
+
 //all movies route
 router.get('/', async (req, res) => {
     let searchOptions = {}
@@ -34,12 +42,14 @@ router.get("/new", (req,res) => {
 router.post ('/', async (req, res) => {
     const movie = new Movie ({
         name : req.body.name,
-        $push : { tags : [req.body.tags] },
-    })
+        summary : req.body.summary,
+        tags: req.body.tags
+    }) 
     console.log(movie)
     try {
         const newMovie = await movie.save()
         //res.redirect (`movies/${newMovies.id}`)
+        //TODO : figure out how to accept array inputs
         res.redirect ('movies')
         console.log("movie entry sucess")
     } catch {
