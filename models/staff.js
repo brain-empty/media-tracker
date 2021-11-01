@@ -1,26 +1,14 @@
 const mongoose = require ('mongoose');
 
-const roleSchema = mongoose.Schema({
-    name: {
-        type: String,
-        required: true,
-    },
-    character: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref:"character"
-    },
-    movie: [{
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'Movie'
-    }],
-});
-
 const staffSchema = new mongoose.Schema({
     name: {
         type: String,
         required: true,
     },
-    role: [roleSchema],
+    role: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Staff_roles'
+    },
     summary: {
         type: String
     },
@@ -29,7 +17,15 @@ const staffSchema = new mongoose.Schema({
     },
     coverImageName: {
         type: String
-    }
+    },
+    character: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref:"character"
+    },
+    movie: [{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Movie'
+    }]
 });
 
 module.exports = mongoose.model ('Staff', staffSchema)

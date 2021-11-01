@@ -18,7 +18,7 @@ router.get('/', async (req, res) => {
         res.render('search', {
             movies: movies, 
             staff: staff,
-            searchOptions: req.query })
+            searchOptions: req.query.search })
 
     } catch (err) {
         console.log('error on searching movies in search.js (router) : ' + err);

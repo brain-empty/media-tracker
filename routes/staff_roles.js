@@ -1,13 +1,12 @@
+// THIS FILE IS NOT BEING REQUIRED ANYWHERE. IT'S REDUNDANT. IMPLEMENT LATER. TODO.
+
 const express = require('express');
-const router = express.Router();
+const rolesRouter = express.Router();
 const Staff = require ('../models/staff');
 const Staff_roles = require ('../models/staff_roles');
-const Movie = require ('../models/movie');
 
-
-router.get('/', async (req, res) => {
-    let searchOptions = {}
-
+// view staff roles route
+rolesRouter.get('/', async (req, res) => {
     if (req.query.name != null && req.query.name !== ''){
         searchOptions.name = new RegExp (req.query.name, 'i')
         // regexp makes hte program search for the string even if it's not a full match (ke search would match kevin)
@@ -15,35 +14,33 @@ router.get('/', async (req, res) => {
     }
 
     try {
-        const staff = await Staff.find(searchOptions).populate('role').exec()
+        const staff = await Staff.find(searchOptions)
         res.render('staff/index', {
             staff: staff, 
             searchOptions: req.query })
+
     } catch {
         res.redirect ('/');
-        console.log('error on loading movies/new in movies.js (router)');
+        console.log('error on loading movies/new in movies.js (rolesRouter)');
     }
 });
 
 //new staff (visual form) route
-router.get("/new", async (req,res) => {
+rolesRouter.get("/staff/roles/new", async (req,res) => {
     try{
-        const staff_roles = await Staff_roles.find ({})
-        const staff = new Staff ()
-        const movie = new Movie ()
+        const staff_roles = new Staff_roles ()
         res.render('staff/new', {
-            staff : staff,
-            staff_roles : staff_roles,
-            movies: movie
+            staff_roles : staff_roles
         })
+
     } catch (err) {
-        res.redirect ('staff')
-        console.log("ERROR: movies router get /new request is broken. err : " + err)
+        res.redirect ('/staff/new')
+        console.log("ERROR: movies rolesRouter get /new request is broken. err : " + err)
     }   
 });
 
 // create staff (process of creating after input is given) route
-router.post ('/', async (req, res) => {
+rolesRouter.post ('/', async (req, res) => {
     const staff = new Staff ({
         name: req.body.name,
         role: req.body.role
@@ -55,11 +52,12 @@ router.post ('/', async (req, res) => {
         console.log("staff entry sucess")
     } catch {
         console.log("error on creating")
-        res.render ('staff/new', {
+        res.render ('Staff/new', {
             staff: staff,
             errorMessage: 'error creating staff'
         })
     }
 });
 
-module.exports = router;
+
+module.exports = rolesRouter;

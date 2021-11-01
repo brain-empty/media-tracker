@@ -5,27 +5,14 @@ FINAL PRODUCT THIS IS ONLY FOR TESTING -->
      list here</p>
 <br>
 
-<div> <!--search-->
-    <form action="/staff
-    " method="GET">
-    <label>Name</label>
-    <input type="text" name="name" value="<%= searchOptions.name %>">
-    <button type="submit">search</button>
-    </form>
-</div>
-<br>
-<div> <!--list staff
--->
-    <% staff
-    .forEach ( staff => { %>
-        <div><%= staff.name%></div>
-        <div><p>Role: <%= staff.role ||  "Unknown"%></p></div>
-        <br>
+<div> <!--list staff-->
+    <% staff.forEach ( staff => { %>
+        <div>Name: <%= staff.name %></div>
+        <div>Role: <%=staff.role.name%></div>
+    <%console.log(staff.role)%>
         ~
-        <br>
     <% }) %>
 </div>
-
 <a href="staff
 /new">add new staff</a>
 <hr>

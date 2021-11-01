@@ -27,23 +27,29 @@
 <br><br>
 
 <div>
-<label>Staff</label>
-<div id = staffFields>
-    <select name="staff">
-        <%staff.forEach(staff => { %>
-            <% if (staff.id == movie.staff.id) { %>
-                <option selected label= "<%=staff.name%>" value = "<%= staff.id %>">
-            <%} else {%>
-                <option selected label= "<%=staff.name%>" value = "<%= staff.id %>">
-            <%}%>
-        <%})%>
-    </select>
-        
-    <input type="text" Id="stafField0" name="staff" value="<%= movie.staff%>">
-    <br id="br0">
+    <div>
+    <label>Staff</label>
+    <div id = staffFields>
+        <div id= staffFields0>
+            <select name="staff">
+                <%staff.forEach(staff => { %>
+                    <option label= "<%=staff.name%>" name= "staff" value = "<%= staff.id %>"></option>
+                <%})%>
+            </select>
+        </div>
+        <br id="br0">
+    </div>
+
     </div>
     <input id="addStaffField" type="button" value="Add field">
     <input id="removeStaffField" type="button" value="Remove field">
+</div>
+
+<div>
+    <label>Release Date</label>
+    <input type="date" name="releaseDate"
+                value = <%= movie.releaseDate == null ? '' :
+                book.releaseDate.toISOString().split('T')[0]  %>
 </div>
 
 <br><br>
@@ -59,11 +65,18 @@
         var i = 0;
         document.getElementById("addStaffField").addEventListener("click", function(){
             i++;
-            var newStaffField = document.createElement("input")
-                newStaffField.setAttribute('type', 'text');
+            var newStaffField = document.createElement("div")
                 newStaffField.setAttribute('id', 'staffField' + i);
                 newStaffField.setAttribute('name', 'staff');
                 newStaffField.setAttribute('value', '<%=movie.staff%>')
+                newStaffField.innerHTML = `
+                <select name="staff">
+                <%staff.forEach(staff => { %>
+                        <option selected label= "<%=staff.name%>" value = "<%= staff.id %>">
+                <%})%>
+                </select>
+                `
+            ;
 
             var br = document.createElement("br")
                 br.setAttribute ('id', 'br'+i)
@@ -80,7 +93,7 @@
                 document.getElementById("staffFields").removeChild(br);
                 i--;
             }
-        })
+        });
 
 
     // TAG FIELD CODE

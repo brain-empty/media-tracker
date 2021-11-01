@@ -1,7 +1,8 @@
 const express = require('express');
 const router = express.Router();
 const Movie = require ('../models/movie');
-const Staff = require ('../models/staff')
+const Staff = require ('../models/staff');
+const fs = require ('fs')
 
 //cover file upload setup
 const multer = require ('multer')
@@ -27,37 +28,20 @@ router.get('/', async (req, res) => {
     }
 
     try {
-        const movies = await Movie.find(searchOptions)
+        const movies = await Movie.find(searchOptions).populate('staff').exec()
         res.render('movies/index', {
             movies: movies, 
-            searchOptions: req.query })
-
+            searchOptions: req.query });
     } catch {
         res.redirect ('/');
-        console.log('error on loading movies/new in movies.js (router)');
+        console.log('error on loading movies in movies.js (router)');
     }
 });
 
 //new movies (visual form) route
 router.get("/new", async (req,res) => {
-    try {
-        const staff = await Staff.find ({})
-        const movie = new Movie ()
-        res.render ('movies/new', {
-            staff:staff,
-            movie:movie
-        }) 
-    } catch (err){
-        res.redirect ('/movies')
-        console.log ("ERROR: movies router get /new request is broken. err : " + err)
-
-
-    }
-    
-    
-    // res.render('movies/new', { movie : new Movie () })
+    renderNewPage (res, new Movie ())
 });
-
 
 // create movie (process of creating after input is given) route
 router.post ('/', upload.single('cover'), async (req, res) => {
@@ -66,21 +50,46 @@ router.post ('/', upload.single('cover'), async (req, res) => {
     const movie = new Movie ({
         name : req.body.name,
         summary : req.body.summary,
-        tags: req.body.tags,  
-        coverImageName: fileName
+        tags: req.body.tags,
+        staff: req.body.staff,
+        coverImageName: fileName,
+        releaseDate: new Date(req.body.releaseDate)
      }) 
 
     try {
         const newMovie = await movie.save()
         //res.redirect (`movies/${newMovies.id}`)
         res.redirect ('movies')
-        console.log("movie entry sucess")
     } catch {
-        res.render ('movies/new', {
-        movie: movie,
-        errorMessage: 'error creating movie'
-        })
+        if (movie.coverImageName != null){
+            removeMovieCover(movie.coverImageName)
+            console.log(movie)
+        }
+        renderNewPage (res, movie, true)
     }
+    
 });
 
+function removeMovieCover (fileName) {
+    fs.unlink(path.join(uploadPath, fileName), err =>{
+        if (err) console.error(err)
+    }
+    )
+}
+ 
+async function renderNewPage (res, movie, hasError = false) {
+    try {
+        const staff = await Staff.find ({})
+        const params = {
+            staff:staff,
+            movie:movie
+        }
+        if (hasError) {params.errorMessage = 'error creating movie'}
+        res.render ('movies/new', params);
+        console.log(params.errorMessage);
+    } catch (err){
+        res.redirect ('/movies')
+        console.log ("ERROR: renderNewPage in movies.js router is broken. err : " + err)
+    }
+}
 module.exports = router;

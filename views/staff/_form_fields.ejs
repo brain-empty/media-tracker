@@ -1,6 +1,18 @@
 <label>Name</label>
 <input type="text" name="name" value="<%= staff.name %>"> 
 <br>
+<div>
+
 <label>Role</label>
-<input type="text" name="role" value="<%= staff.role %>"> 
+<div id = staffFields>
+    <div id= roleFields0>
+        <select name="role">
+            <%staff_roles.forEach (staff => { %>
+                    <option label= "<%=staff.name%>" name= "staff" value = "<%= staff.id %>"></option>
+            <%})%>
+        </select>
+    </div>
+    <br id="br0">
+
+</div>
 <!--name refers to the thing it will be connected to when the data is sent -->

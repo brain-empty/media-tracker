@@ -5,7 +5,6 @@
     <ul>
     <% movies.forEach ( movie => { %>
         <a href=><li class='media-box'><img src="<%= movie.coverImagePath || "images/missing_movie.png"%>"><br><%= movie.name %></li></a>
-    <%console.log(movie.coverImageName)%>
     <% }) %>
     </ul>
 </div>
