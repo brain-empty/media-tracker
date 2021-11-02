@@ -4,30 +4,21 @@
         <div>
             <h2 class="movie-header">Top rated movies</h2>
             <ul>
-                <a href="#"><li class='media-box'><img src="#" alt="movie 1"></li></a>
-                <a href="#"><li class='media-box'><img src="#" alt="movie 2"></img></li></a>
-                <a href="#"><li class='media-box'><img src="#" alt="movie 3"></img></li></a>
-                <a href="#"><li class='media-box'><img src="#" alt="movie 4"></img></li></a>
+                <a href="#"><li class='media-box'><img src="<%= "images/missing_movie.png"%>"></li></a>
                 <a href="/movies"><li class='media-box'>See more</li></a>
             </ul>
         </div>
         <div>
             <h2>Top rated tv series</h2>
             <ul>
-                <a href="#"><li class='media-box'><img  src="#" alt="series 1"></img></li><a>
-                <a href="#"><li class='media-box'><img src="#" alt="series 2"></img></li></a>
-                <a href="#"><li class='media-box'><img src="#" alt="series 3"></img></li></a>
-                <a href="#"><li class='media-box'><img src="#" alt="series 4"></img></li></a>
+                <a href="#"><li class='media-box'><img src="<%=  "images/missing_movie.png"%>"></img></li><a>
                 <a href=""><li class='media-box'>See more</li></a>
             </ul>
         </div>
         <div>
             <h2>Top rated books</h2>
             <ul>
-                <a href="#"><li class='media-box'><img src="#" alt="book 1"></img></li></a>
-                <a href="#"><li class='media-box'><img src="#" alt="book 2"></img></li></a>
-                <a href="#"><li class='media-box'><img src="#" alt="book 3"></img></li></a>
-                <a href="#"><li class='media-box'><img src="#" alt="book 4"></img></li></a>
+                <a href="#"><li class='media-box'><img src="<%= (!!locals.movie)?movie.coverImagePath:"images/missing_movie.png" %>"></img></li></a>
                 <a href="#"><li class='media-box'>See more</li></a>
             </ul>
         </div>

@@ -3,18 +3,15 @@
     <head>
         <title>Back to the log - Home</title>
         <meta name="description" content="Keep track of all your media, from books to movies to TV shows.">
+
+        <link href="https://unpkg.com/filepond@^4/dist/filepond.css" rel="stylesheet" />
         <link id="main-css" rel="stylesheet" href="/stylesheets/main.css">
+
+        <script defer src="https://unpkg.com/filepond@^4/dist/filepond.js"></script>
     </head>
     <body>
         <%- include('../partials/header.ejs') %>
         <%- include('../partials/errorMessage.ejs') %>
         <%- body %>
-        <footer>
-            <ul>
-                <li><a href="*">FAQ</a></li>
-                <li><a href="*">Terms of service and privacy policy</a></li>
-                <li><a href="*">Support</a></li>
-            </ul>
-        </footer>
     </body>
 </html>

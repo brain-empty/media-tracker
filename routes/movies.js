@@ -19,19 +19,10 @@ const upload = multer ({
 //all movies route
 router.get('/', async (req, res) => {
 
-    let searchOptions = {}
-
-    if (req.query.search != null && req.query.search !== ''){
-        searchOptions.search = new RegExp (req.query.search, 'i')
-        // regexp makes hte program search for the string even if it's not a full match (ke search would match kevin)
-        // 'i' states that it's not case sensitive
-    }
-
     try {
-        const movies = await Movie.find(searchOptions).populate('staff').exec()
+        const movies = await Movie.find().populate('staff').exec()
         res.render('movies/index', {
-            movies: movies, 
-            searchOptions: req.query });
+            movies: movies});
     } catch {
         res.redirect ('/');
         console.log('error on loading movies in movies.js (router)');
@@ -50,7 +41,7 @@ router.post ('/', upload.single('cover'), async (req, res) => {
     const movie = new Movie ({
         name : req.body.name,
         summary : req.body.summary,
-        tags: req.body.tags,
+        tags: req.body.tags.split(', '),
         staff: req.body.staff,
         coverImageName: fileName,
         releaseDate: new Date(req.body.releaseDate)
