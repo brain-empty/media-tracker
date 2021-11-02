@@ -15,25 +15,38 @@
 
 <div>
     <label>Tags</label>
-    <div id = staffFields>
-    <input type="text" Id="staffField0" name="tags" value="<%= book.tags %>">
+    <div id = tagFields>
+    <input type="text" Id="tagField0" name="tags" value="<%= book.tags %>">
     <br id="br0">
     </div>
-
-    <input id="addStaffField" type="button" value="Add field">
-    <input id="removeStaffField" type="button" value="Remove field">
 </div>
 
 <br><br>
 
 <div>
-<label>Staff</label>
-<div id = tagFields>
-<input type="text" Id="tagField0" name="staff" value="<%= book.staff%>">
-<br id="br0">
+    <div>
+    <label>Staff</label>
+    <div id = staffFields>
+        <div id= staffFields0>
+            <select name="staff">
+                <%staff.forEach(staff => { %>
+                    <option label= "<%=staff.name%>" name= "staff" value = "<%= staff.id %>"></option>
+                <%})%>
+            </select>
+        </div>
+        <br id="br0">
+    </div>
+
+    </div>
+    <input id="addStaffField" type="button" value="Add field">
+    <input id="removeStaffField" type="button" value="Remove field">
 </div>
-<input id="addTagField" type="button" value="Add field">
-<input id="removeTagField" type="button" value="Remove field">
+
+<div>
+    <label>Release Date</label>
+    <input type="date" name="releaseDate"
+                value = <%= book.releaseDate == null ? '' :
+                book.releaseDate.toISOString().split('T')[0]  %>
 </div>
 
 <br><br>
@@ -42,56 +55,40 @@
     <label>Cover</label>
     <input type="file" name="cover">
 </div>
+
 <script>
-    var i = 0;
-    document.getElementById("addStaffField").addEventListener("click", function(){
-        i++;
-        var newStaffField = document.createElement("input")
-            newStaffField.setAttribute('type', 'text');
-            newStaffField.setAttribute('id', 'staffField' + i);
-            newStaffField.setAttribute('name', 'staff');
-            newStaffField.setAttribute('value', '<%=book.staff%>')
 
-        var br = document.createElement("br")
-            br.setAttribute ('id', 'br'+i)
+    // STAFF FIELD CODE
+        var i = 0;
+        document.getElementById("addStaffField").addEventListener("click", function(){
+            i++;
+            var newStaffField = document.createElement("div")
+                newStaffField.setAttribute('id', 'staffField' + i);
+                newStaffField.setAttribute('name', 'staff');
+                newStaffField.setAttribute('value', '<%=book.staff%>')
+                newStaffField.innerHTML = `
+                <select name="staff">
+                <%staff.forEach(staff => { %>
+                        <option selected label= "<%=staff.name%>" value = "<%= staff.id %>">
+                <%})%>
+                </select>
+                `
+            ;
 
-        document.getElementById("staffFields").appendChild(newStaffField);
-        document.getElementById("staffFields").appendChild(br)
-    });
+            var br = document.createElement("br")
+                br.setAttribute ('id', 'br'+i)
 
-    document.getElementById("removeStaffField").addEventListener("click", function(){
-        if (i>0) {
-            var removeStaffField = document.getElementById("staffField" + i);
-            var br = document.getElementById("br" + i);
-            document.getElementById("staffFields").removeChild(removeStaffField);
-            document.getElementById("staffFields").removeChild(br);
-            i--;
-        }
-    })
+            document.getElementById("staffFields").appendChild(newStaffField);
+            document.getElementById("staffFields").appendChild(br)
+        });
 
-    var j = 0;
-    document.getElementById("addTagField").addEventListener("click", function(){
-        j++;
-        var newTagField = document.createElement("input")
-            newTagField.setAttribute('type', 'text');
-            newTagField.setAttribute('id', 'tagField' + j);
-            newTagField.setAttribute('name', 'tags');
-            newTagField.setAttribute('value', '<%=[book.tags]%>')
-
-        var br = document.createElement("br")
-            br.setAttribute ('id', 'br'+j)
-
-        document.getElementById("tagFields").appendChild(newTagField);
-        document.getElementById("tagFields").appendChild(br)
-    });
-
-    document.getElementById("removeTagField").addEventListener("click", function(){
-        if (j>0) {
-            var removetagField = document.getElementById("tagField" + j);
-            var br = document.getElementById("br" + j);
-            document.getElementById("tagFields").removeChild(removetagField);
-            document.getElementById("tagFields").removeChild(br);
-            j--;
-        }
-    });
+        document.getElementById("removeStaffField").addEventListener("click", function(){
+            if (i>0) {
+                var removeStaffField = document.getElementById("staffField" + i);
+                var br = document.getElementById("br" + i);
+                document.getElementById("staffFields").removeChild(removeStaffField);
+                document.getElementById("staffFields").removeChild(br);
+                i--;
+            }
+        });
 </script>

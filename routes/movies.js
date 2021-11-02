@@ -23,9 +23,9 @@ router.get('/', async (req, res) => {
         const movies = await Movie.find().populate('staff').exec()
         res.render('movies/index', {
             movies: movies});
-    } catch {
+    } catch (err ){
         res.redirect ('/');
-        console.log('error on loading movies in movies.js (router)');
+        console.log('error on loading movies in movies.js (router)' + err);
     }
 });
 
@@ -41,7 +41,7 @@ router.post ('/', upload.single('cover'), async (req, res) => {
     const movie = new Movie ({
         name : req.body.name,
         summary : req.body.summary,
-        tags: req.body.tags.split(', '),
+        tags: req.body.tags.split(','),
         staff: req.body.staff,
         coverImageName: fileName,
         releaseDate: new Date(req.body.releaseDate)
@@ -83,4 +83,5 @@ async function renderNewPage (res, movie, hasError = false) {
         console.log ("ERROR: renderNewPage in movies.js router is broken. err : " + err)
     }
 }
+
 module.exports = router;

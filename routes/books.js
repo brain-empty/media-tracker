@@ -1,11 +1,14 @@
 const express = require('express');
 const router = express.Router();
-const Book = require ('../models/Book');
+const Book = require ('../models/book');
+const Staff = require ('../models/staff');
+const fs = require ('fs')
 
 //cover file upload setup
 const multer = require ('multer')
 const path = require ('path')
 const uploadPath = path.join('public', Book.coverImageBasePath)
+const imageMimeTypes = ['image/jpeg', 'image/png', 'image/gif']
 const upload = multer ({
     dest: uploadPath,
     FileFilter: (req, file, callback) => {
@@ -13,46 +16,71 @@ const upload = multer ({
     }
 })
 
-//all Books route
-router.get('/', async (req, res) =>{ 
+//all books route
+router.get('/', async (req, res) => {
 
     try {
-        const Books = await Book.find()
-        res.render('Books/index', {
-            books: Books})
-
+        const books = await Book.find().populate('staff').exec()
+        res.render('books/index', {
+            books: books});
     } catch {
         res.redirect ('/');
-        console.log('error on loading Books/new in Books.js (router)');
+        console.log('error on loading books in books.js (router)');
     }
 });
 
-//new Books (visual form) route
-router.get("/new", (req,res) => {
-    res.render('books/new', { book : new Book () })
+//new books (visual form) route
+router.get("/new", async (req,res) => {
+    renderNewPage (res, new Book (), false)
 });
 
+// create book (process of creating after input is given) route
+router.post ('/', upload.single('cover'), async (req, res) => {
+    const fileName = req.file != null ? req.file.filename : null
 
-// create Book (process of creating after input is given) route
-router.post ('/', async (req, res) => {
     const book = new Book ({
         name : req.body.name,
         summary : req.body.summary,
-        tags: req.body.tags
-    }) 
-    console.log(Book)
+        tags: req.body.tags.split(','),
+        staff: req.body.staff,
+        coverImageName: fileName,
+        releaseDate: new Date(req.body.releaseDate)
+     }) 
+
     try {
-        const newBook = await Book.save()
-        //res.redirect (`Books/${newBooks.id}`)
-        //TODO : figure out how to accept array inputs
-        res.redirect ('Books')
-        console.log("Book entry sucess")
+        const newBook = await book.save()
+        //res.redirect (`movies/${newBooks.id}`)
+        res.redirect ('books')
     } catch {
-        res.render ('Books/new', {
-        Book: Book,
-        errorMessage: 'error creating Book'
-        })
+        if (book.coverImageName != null){
+            removeBookCover(book.coverImageName)
+            console.log(book)
+        }
+        renderNewPage (res, book, true)
     }
+    
 });
+
+function removeBookCover (fileName) {
+    fs.unlink(path.join(uploadPath, fileName), err =>{
+        if (err) console.error(err)
+    })
+}
+ 
+async function renderNewPage (res, book, hasError) {
+    try {
+        const staff = await Staff.find ({})
+        const params = {
+            staff:staff,
+            book:book
+        }
+        if (hasError) { params.errorMessage = 'error creating book'}
+        res.render ('books/new', params);
+        console.log( params.errorMessage + ". In renderNewPage function");
+    } catch (err){
+        res.redirect ('/books')
+        console.log ("ERROR: renderNewPage in movies.js router is broken. err : " + err)
+    }
+}
 
 module.exports = router;
