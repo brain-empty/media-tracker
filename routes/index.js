@@ -4,8 +4,7 @@ const Movie = require ('../models/movie');
 const Staff = require ('../models/staff');
 
 router.get('/', (req, res) => {
-    let searchOptions = {};
-    res.render('index', {searchOptions});
+    res.render('index');
 })
 
 module.exports = router;
