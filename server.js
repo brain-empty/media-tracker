@@ -28,11 +28,13 @@ const indexRouter = require ('./routes/index');
 const moviesRouter = require ('./routes/movies');
 const staffRouter = require ('./routes/staff');
 const searchRouter = require ('./routes/search');
+const booksRouter = require ('./routes/books');
 //routes setting
 app.use('/', indexRouter);
 app.use('/movies', moviesRouter);
 app.use('/staff', staffRouter);
 app.use('/search', searchRouter);
+app.use('/books', booksRouter);
 
 app.listen(process.env.PORT || 3000, () => console.log ("started app on port 3000"));
 

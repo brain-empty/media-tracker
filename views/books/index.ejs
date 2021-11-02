@@ -1,0 +1,14 @@
+<section class="topmedia">
+    <br>
+<br>
+<div> <!--list books-->
+    <ul>
+    <% books.forEach ( book => { %>
+        <a href=><li class='media-box'><img src="/images/missing_book.png"><br><%= book.name %></li></a>
+    <% }) %>
+    </ul>
+</div>
+
+<p>can't find what you're looking for? <a href="books/new">add a new book</a></p>
+<hr>
+</section>
