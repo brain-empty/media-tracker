@@ -8,7 +8,7 @@
     <div id= roleFields0>
         <select name="role">
             <%staff_roles.forEach (staff => { %>
-                    <option label= "<%=staff.name%>" name= "staff" value = "<%= staff.id %>"></option>
+                    <option label= "<%=staff.work.name%>" name= "staff" value = "<%= staff.id %>"></option>
             <%})%>
         </select>
     </div>

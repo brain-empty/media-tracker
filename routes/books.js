@@ -37,6 +37,7 @@ router.get("/new", async (req,res) => {
 // create book (process of creating after input is given) route
 router.post ('/', upload.single('cover'), async (req, res) => {
     const fileName = req.file != null ? req.file.filename : null
+    const Date = req.body.releaseDate != null ? req.body.releaseDate : null
 
     const book = new Book ({
         name : req.body.name,
@@ -44,7 +45,7 @@ router.post ('/', upload.single('cover'), async (req, res) => {
         tags: req.body.tags.split(','),
         staff: req.body.staff,
         coverImageName: fileName,
-        releaseDate: new Date(req.body.releaseDate)
+        releaseDate: Date
      }) 
 
     try {

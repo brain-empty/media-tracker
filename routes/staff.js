@@ -7,12 +7,13 @@ const Movie = require ('../models/movie');
 
 router.get('/', async (req, res) => {
     try {
-        const staff = await Staff.find().populate('role').exec()
+        const staff = await Staff.find()
+        //.populate('work.role').exec()
         res.render('staff/index', {
             staff: staff })
     } catch {
         res.redirect ('/');
-        console.log('error on loading movies/new in movies.js (router)');
+        console.log('error on loading staff/new in staff.js (router)');
     }
 });
 
