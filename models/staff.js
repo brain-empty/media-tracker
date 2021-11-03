@@ -1,26 +1,39 @@
 const mongoose = require ('mongoose');
 
-const worksSchema = new mongoose.Schema ({
-    role: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'Staff_roles'
-    },
-    movie: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'Movie'
-    },
-    character: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref:"character"
-    }
-})
+// const worksSchema = new mongoose.Schema ({
+//     role: {
+//         type: mongoose.Schema.Types.ObjectId,
+//         ref: 'Staff_roles'
+//     },
+//     movie: {
+//         type: mongoose.Schema.Types.ObjectId,
+//         ref: 'Movie'
+//     },
+//     character: {
+//         type: mongoose.Schema.Types.ObjectId,
+//         ref:"character"
+//     }
+// })
 
 const staffSchema = new mongoose.Schema ({
     name: {
         type: String,
         required: true,
     },
-    works : [worksSchema],
+    works : [{
+        role: {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: 'Staff_roles'
+        },
+        movie: {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: 'Movie'
+        },
+        character: {
+            type: mongoose.Schema.Types.ObjectId,
+            ref:"character"
+        }
+    }],
     summary: {
         type: String
     },

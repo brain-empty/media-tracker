@@ -11,5 +11,3 @@ FilePond.setOptions({
 })
   
 FilePond.parse(document.body)
-
-

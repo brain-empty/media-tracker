@@ -3,18 +3,18 @@ const router = express.Router();
 const Book = require ('../models/book');
 const Staff = require ('../models/staff');
 const fs = require ('fs')
-
-//cover file upload setup
-const multer = require ('multer')
 const path = require ('path')
 const uploadPath = path.join('public', Book.coverImageBasePath)
-const imageMimeTypes = ['image/jpeg', 'image/png', 'image/gif']
-const upload = multer ({
-    dest: uploadPath,
-    FileFilter: (req, file, callback) => {
-        callback (null, boolean)
-    }
-})
+
+//cover file upload setup
+// const multer = require ('multer')
+// const imageMimeTypes = ['image/jpeg', 'image/png', 'image/gif']
+// const upload = multer ({
+//     dest: uploadPath,
+//     FileFilter: (req, file, callback) => {
+//         callback (null, boolean)
+//     }
+// })
 
 //all books route
 router.get('/', async (req, res) => {
@@ -35,7 +35,7 @@ router.get("/new", async (req,res) => {
 });
 
 // create book (process of creating after input is given) route
-router.post ('/', upload.single('cover'), async (req, res) => {
+router.post ('/', async (req, res) => {
     const fileName = req.file != null ? req.file.filename : null
     const Date = req.body.releaseDate != null ? req.body.releaseDate : null
 

@@ -2,19 +2,9 @@ const express = require('express');
 const router = express.Router();
 const Movie = require ('../models/movie');
 const Staff = require ('../models/staff');
-const fs = require ('fs')
 
-//cover file upload setup
-const multer = require ('multer')
-const path = require ('path')
-const uploadPath = path.join('public', Movie.coverImageBasePath)
+// file upload with filepond
 const imageMimeTypes = ['image/jpeg', 'image/png', 'image/gif']
-const upload = multer ({
-    dest: uploadPath,
-    FileFilter: (req, file, callback) => {
-        callback (null, boolean)
-    }
-})
 
 //all movies route
 router.get('/', async (req, res) => {
@@ -35,38 +25,27 @@ router.get("/new", async (req,res) => {
 });
 
 // create movie (process of creating after input is given) route
-router.post ('/', upload.single('cover'), async (req, res) => {
-    const fileName = req.file != null ? req.file.filename : null
+router.post ('/', async (req, res) => {
 
     const movie = new Movie ({
         name : req.body.name,
         summary : req.body.summary,
         tags: req.body.tags.split(','),
         staff: req.body.staff,
-        coverImageName: fileName,
         releaseDate: new Date(req.body.releaseDate)
      }) 
+
+    saveCover(movie, req.body.cover)
 
     try {
         const newMovie = await movie.save()
         //res.redirect (`movies/${newMovies.id}`)
         res.redirect ('movies')
     } catch {
-        if (movie.coverImageName != null){
-            removeMovieCover(movie.coverImageName)
-            console.log(movie)
-        }
         renderNewPage (res, movie, true)
     }
     
 });
-
-function removeMovieCover (fileName) {
-    fs.unlink(path.join(uploadPath, fileName), err =>{
-        if (err) console.error(err)
-    }
-    )
-}
  
 async function renderNewPage (res, movie, hasError = false) {
     try {
@@ -81,6 +60,16 @@ async function renderNewPage (res, movie, hasError = false) {
     } catch (err){
         res.redirect ('/movies')
         console.log ("ERROR: renderNewPage in movies.js router is broken. err : " + err)
+    }
+}
+
+function saveCover (movie, coverEncoded) {
+    if (coverEncoded == null ) return
+
+    const cover = JSON.parse(coverEncoded)
+    if (coverEncoded != null && imageMimeTypes.includes(cover.type)) {
+        movie.coverImage = new Buffer.from(cover.data, "base64")
+        movie.coverImageType = cover.type
     }
 }
 

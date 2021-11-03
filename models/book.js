@@ -20,10 +20,12 @@ const bookSchema = new mongoose.Schema({
     releaseDate:{
         type: Date
     },
-    coverImageName: {
-        type: String,
-        required: false
-    }
+    coverImage: {
+        type: Buffer
+    },
+    coverImageType:{
+        type:String
+    }  
 });
 
 bookSchema.virtual ('coverImagePath').get (function() {
