@@ -38,7 +38,7 @@ router.get("/new", async (req,res) => {
 });
 
 // create staff (process of creating after input is given) route
-router.post ('/', async (req, res, i) => {
+router.post ('/', async (req, res) => {
     console.log(i)
 
     let staffTemp = new Staff ({
