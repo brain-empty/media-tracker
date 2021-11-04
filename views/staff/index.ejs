@@ -8,10 +8,9 @@ FINAL PRODUCT THIS IS ONLY FOR TESTING -->
 <div> <!--list staff-->
     <% staff.forEach ( staff => { %>
         <div>Name: <%= staff.name %></div>
-        <div>Role: <%=staff.role%></div>
+        <div>Role: <%=staff.works.role%></div>
         ~
     <% }) %>
 </div>
-<a href="staff
-/new">add new staff</a>
+<a href="staff/new">add new staff</a>
 <hr>

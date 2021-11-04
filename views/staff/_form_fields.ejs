@@ -1,18 +1,60 @@
-<label>Name</label>
-<input type="text" name="name" value="<%= staff.name %>"> 
-<br>
 <div>
-
-<label>Role</label>
-<div id = staffFields>
-    <div id= roleFields0>
-        <select name="role">
-            <%staff_roles.forEach (staff => { %>
-                    <option label= "<%=staff.work.name%>" name= "staff" value = "<%= staff.id %>"></option>
-            <%})%>
-        </select>
-    </div>
-    <br id="br0">
-
+    <label>Name</label>
+    <input type="text" name="name" value="<%= staff.name %>"> 
 </div>
-<!--name refers to the thing it will be connected to when the data is sent -->
+<br>
+
+<div>
+    <label>Works</label>    
+    <div id = staffWorks>
+    
+    </div>
+    <input id="addWorksDiv" type="button" value="Add new work">
+    <input id="removeWorksDiv" type="button" value="Remove field">
+</div>
+
+<script>
+
+    // STAFF FIELD CODE
+        var i = 0;
+        document.getElementById("addWorksDiv").addEventListener("click", function(){
+            i++;
+            var newWorkDiv = document.createElement("div")
+                newWorkDiv.setAttribute('id', 'workDiv' + i);
+                newWorkDiv.innerHTML = `
+                
+                <label>Movie</label>
+                <select name="movie">
+                    <%movies.forEach(movies => { %>
+                            <option label= "<%=movies.name%>" value = "<%= movies.id %>">
+                    <%})%>
+                </select>
+
+                <label>Role</label>
+                <select name="role">
+                    <%staff_roles.forEach(staff_roles => { %>
+                            <option label= "<%=staff_roles.name%>" value = "<%= staff_roles.id %>">
+                    <%})%>
+                </select>
+                `
+            ;
+
+            var br = document.createElement("br")
+                br.setAttribute ('id', 'br'+i)
+
+            document.getElementById("staffWorks").appendChild(newWorkDiv);
+            document.getElementById("staffWorks").appendChild(br)
+        });
+
+        document.getElementById("removeWorksDiv").addEventListener("click", function(){
+            if (i>0) {
+                var WorkDiv = document.getElementById('workDiv' + i);
+                var br = document.getElementById("br" + i);
+                var staffWorks = document.getElementById("staffWorks");
+
+                staffWorks.removeChild(WorkDiv);
+                staffWorks.removeChild(br);
+                i--;
+            }
+        });
+</script>

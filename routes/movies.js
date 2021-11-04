@@ -35,7 +35,9 @@ router.post ('/', async (req, res) => {
         releaseDate: new Date(req.body.releaseDate)
      }) 
 
+    if (req.body.coverEncoded != null || movie.cover != null ) {
     saveCover(movie, req.body.cover)
+    }
 
     try {
         const newMovie = await movie.save()
@@ -44,7 +46,6 @@ router.post ('/', async (req, res) => {
     } catch {
         renderNewPage (res, movie, true)
     }
-    
 });
  
 async function renderNewPage (res, movie, hasError = false) {
@@ -54,17 +55,18 @@ async function renderNewPage (res, movie, hasError = false) {
             staff:staff,
             movie:movie
         }
+        console.log("this worked")
         if (hasError) {params.errorMessage = 'error creating movie'}
         res.render ('movies/new', params);
         console.log(params.errorMessage);
-    } catch (err){
+    } catch (err) {
         res.redirect ('/movies')
         console.log ("ERROR: renderNewPage in movies.js router is broken. err : " + err)
     }
 }
 
 function saveCover (movie, coverEncoded) {
-    if (coverEncoded == null ) return
+    if (coverEncoded == null || movie.cover==null ) return
 
     const cover = JSON.parse(coverEncoded)
     if (coverEncoded != null && imageMimeTypes.includes(cover.type)) {

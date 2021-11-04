@@ -17,19 +17,29 @@ header nav{
     align-items: center;
     padding:20px;
 }
+
 nav li {
     display: inline-block;
     margin-left: 40px ;
     position: relative;
     
 }
-nav a {
-    color: rgb(13, 255, 243);
+
+.tempNav {
+    color: white;
+}
+
+.tempNav label {
+    object-position: 50px;
+}
+.tempNav a {
     text-decoration: none;
+    color: white;
     text-transform: uppercase;
     font-size: 14px;
 }
-nav a::before{
+
+.tempNav a::before{
     content:'';
     display: block;
     height: 5px;
@@ -40,7 +50,8 @@ nav a::before{
     top: 0;
     transition: all ease-in-out 250ms;
 }
-nav a:hover::before{
+
+.tempNav a:hover::before{
     width: 100%;
 }
 
@@ -50,22 +61,11 @@ nav a:hover::before{
 }
 
 .search {
-    height:20px;
+    height:35px;
     width:500px;
-    height: 40px;
     border-radius: 40px;
-    background: #fd98e7;
     color: #080808;
-    font-family: Helvetica, Arial, sans-serif;
-    font-weight: bold;
-    font-size: 18px;
 
-   
-
-    
-    
-    
-    
 }
 header button{
     margin-left:5px;
