@@ -1,16 +1,12 @@
 <!-- THIS IS NOT THE ACTUAL CODE FOR THE INDEX FOR STAFF, I'M SIMPLY NOT CONSIDERING ON HAVING THIS ON THE 
 FINAL PRODUCT THIS IS ONLY FOR TESTING -->
 
-<p>all staff
-     list here</p>
-<br>
-
 <div> <!--list staff-->
+    <ul>
     <% staff.forEach ( staff => { %>
-        <div>Name: <%= staff.name %></div>
-        <div>Role: <%=staff.works.role%></div>
-        ~
+        <li class='media-box'><a href="/staff/<%=staff.id%>"><img src="<%= staff.coverImagePath || "images/missing_movie.png"%>"><br><%= staff.name %></a></li>
     <% }) %>
+    </ul>
 </div>
 <a href="staff/new">add new staff</a>
 <hr>

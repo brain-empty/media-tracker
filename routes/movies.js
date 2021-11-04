@@ -28,6 +28,7 @@ router.get("/new", async (req,res) => {
 router.post ('/', async ( req, res ) => {
 
 setDate = (req.body.releaseDate != "" ? new Date(req.body.releaseDate) : "")
+
     const movie = new Movie ({
         name : req.body.name,
         summary : req.body.summary,

@@ -37,20 +37,15 @@ router.get("/new", async (req,res) => {
 // create staff (process of creating after input is given) route
 router.post ('/', async (req, res) => {
 
-    const works = ({
-        role : req.body.role,
-        movie : req.body.movie,
-        character : req.body.character
-    })
+    setDate = (req.body.birthdate != "" ? new Date(req.body.birthdate) : "")
 
     const staff = new Staff ({
-        name : req.body.name
+        name : req.body.name,
+        summary : req.body.summary,
+        birthdate: setDate
     })
 
-
-    // staff.findByIdAndUpdate(staff.id,
-    //     {$push {works : works}}
-    // )
+    console.log (staff)
 
     try {
         const newStaff = await staff.save()
@@ -67,8 +62,55 @@ router.post ('/', async (req, res) => {
             staff : staff,
             staff_roles : staff_roles,
             errorMessage: 'error creating staff'
-        })
+    })
     }
 });
+
+router.get ('/:id', async (req,res) => {
+    try {
+        const staff = await Staff.findById(req.params.id).populate('works').exec()
+        const movies = await Movie.find({ staff : staff.id}).limit(5).exec()
+        console.log(staff)
+        res.render ('staff/show', {
+            staff : staff,
+            movies : movies
+        })
+     } catch (err){
+        console.log (err)
+        res.redirect ('/')
+    }
+})
+
+router.put ('/:id', async (req,res) => {
+    let staff;
+
+    try {
+        staff = await Staff.findById(req.params.id)
+        await staff.save
+        res.redirect (`/movies/${staff.id}`)
+        console.log("staff entry sucess")
+    } catch {
+        if ( author == null ) {
+            res.redirect ('/')
+        }
+        const staff_roles = await Staff_roles.find ({})
+        const movies = await Movie.find({})
+        res.render('staff/new', {
+            movies:movies,
+            staff : staff,
+            staff_roles : staff_roles,
+            errorMessage: 'error udpating staff'
+    })
+    }
+})
+
+router.get ('/:id/edit', (req,res) => {
+    
+})
+
+
+router.delete ('/:id', (req,res) => {
+    
+})
 
 module.exports = router;

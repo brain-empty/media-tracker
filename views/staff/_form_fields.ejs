@@ -5,56 +5,15 @@
 <br>
 
 <div>
-    <label>Works</label>    
-    <div id = staffWorks>
-    
+    <label>Summary</label>    
+    <div>
+        <input type="text" name="summary">
     </div>
-    <input id="addWorksDiv" type="button" value="Add new work">
-    <input id="removeWorksDiv" type="button" value="Remove field">
+    
+    <div>
+    <label>Birthdate</label>
+    <input type="date" name="birthdate"
+            value = `<%= staff.birthdate == null ? '' :
+            book.releaseDate.toISOString().split('T')[0]  %>`
+    </div>
 </div>
-
-<script>
-
-    // STAFF FIELD CODE
-        var i = 0;
-        document.getElementById("addWorksDiv").addEventListener("click", function(){
-            i++;
-            var newWorkDiv = document.createElement("div")
-                newWorkDiv.setAttribute('id', 'workDiv' + i);
-                newWorkDiv.innerHTML = `
-                
-                <label>Movie</label>
-                <select name="works.movie">
-                    <%movies.forEach(movies => { %>
-                            <option label= "<%=movies.name%>" value = "<%= movies.id %>">
-                    <%})%>
-                </select>
-
-                <label>Role</label>
-                <select name="works.role">
-                    <%staff_roles.forEach(staff_roles => { %>
-                            <option label= "<%=staff_roles.name%>" value = "<%= staff_roles.id %>">
-                    <%})%>
-                </select>
-                `
-            ;
-
-            var br = document.createElement("br")
-                br.setAttribute ('id', 'br'+i)
-
-            document.getElementById("staffWorks").appendChild(newWorkDiv);
-            document.getElementById("staffWorks").appendChild(br)
-        });
-
-        document.getElementById("removeWorksDiv").addEventListener("click", function(){
-            if (i>0) {
-                var WorkDiv = document.getElementById('workDiv' + i);
-                var br = document.getElementById("br" + i);
-                var staffWorks = document.getElementById("staffWorks");
-
-                staffWorks.removeChild(WorkDiv);
-                staffWorks.removeChild(br);
-                i--;
-            }
-        });
-</script>
