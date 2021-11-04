@@ -27,16 +27,17 @@ router.get("/new", async (req,res) => {
 // create movie (process of creating after input is given) route
 router.post ('/', async (req, res) => {
 
+setDate = (req.body.releaseDate != "" ? new Date(req.body.releaseDate) : "")
     const movie = new Movie ({
         name : req.body.name,
         summary : req.body.summary,
         tags: req.body.tags.split(','),
         staff: req.body.staff,
-        releaseDate: new Date(req.body.releaseDate)
+        releaseDate: setDate
      }) 
 
     if (req.body.coverEncoded != null || movie.cover != null ) {
-    saveCover(movie, req.body.cover)
+        saveCover(movie, req.body.cover)
     }
 
     try {
@@ -55,7 +56,6 @@ async function renderNewPage (res, movie, hasError = false) {
             staff:staff,
             movie:movie
         }
-        console.log("this worked")
         if (hasError) {params.errorMessage = 'error creating movie'}
         res.render ('movies/new', params);
         console.log(params.errorMessage);

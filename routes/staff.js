@@ -2,7 +2,6 @@ const express = require('express');
 const router = express.Router();
 const Staff = require ('../models/staff');
 const Staff_roles = require ('../models/staff_roles');
-const Staff_work = require ('../models/staff_work');
 const Movie = require ('../models/movie');
 
 
@@ -24,12 +23,10 @@ router.get("/new", async (req,res) => {
         const staff_roles = await Staff_roles.find ({})
         const movies = await Movie.find({})
         const staff = new Staff ([])
-        const staff_work = new Staff_work ()
         res.render('staff/new', {
             movies:movies,
             staff : staff,
-            staff_roles : staff_roles,
-            staff_work : staff_work
+            staff_roles : staff_roles
         })
     } catch (err) {
         res.redirect ('/staff')
@@ -39,27 +36,24 @@ router.get("/new", async (req,res) => {
 
 // create staff (process of creating after input is given) route
 router.post ('/', async (req, res) => {
-    console.log(i)
 
-    let staffTemp = new Staff ({
-        name: req.body.name
-    })
-
-    const staff_works = new Staff_work ({
-        staff: staffTemp.id,
-        role: req.body.role,
-        movie: req.body.movie,
-        character: req.body.character,
+    const works = ({
+        role : req.body.role,
+        movie : req.body.movie,
+        character : req.body.character
     })
 
     const staff = new Staff ({
-        _id: staffTemp.id,
-        name : staffTemp.name, 
-        works : staff_works.id
+        name : req.body.name
     })
+
+
+    // staff.findByIdAndUpdate(staff.id,
+    //     {$push {works : works}}
+    // )
+
     try {
         const newStaff = await staff.save()
-        const newStaff_work = await staff_works.save()
         //res.redirect (`movies/${newStaff.id}`)
         res.redirect('staff')
         console.log("staff entry sucess")
@@ -72,7 +66,6 @@ router.post ('/', async (req, res) => {
             movies:movies,
             staff : staff,
             staff_roles : staff_roles,
-            staff_works : staff_works,
             errorMessage: 'error creating staff'
         })
     }
