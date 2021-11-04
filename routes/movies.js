@@ -19,13 +19,13 @@ router.get('/', async (req, res) => {
     }
 });
 
-//new movies (visual form) route
+// new movies (visual form) route
 router.get("/new", async (req,res) => {
     renderNewPage (res, new Movie ())
 });
 
 // create movie (process of creating after input is given) route
-router.post ('/', async (req, res) => {
+router.post ('/', async ( req, res ) => {
 
 setDate = (req.body.releaseDate != "" ? new Date(req.body.releaseDate) : "")
     const movie = new Movie ({
@@ -36,7 +36,7 @@ setDate = (req.body.releaseDate != "" ? new Date(req.body.releaseDate) : "")
         releaseDate: setDate
      }) 
 
-    if (req.body.coverEncoded != null || movie.cover != null ) {
+    if (req.body.coverEncoded != null || req.body.cover != null ) {
         saveCover(movie, req.body.cover)
     }
 
@@ -66,10 +66,10 @@ async function renderNewPage (res, movie, hasError = false) {
 }
 
 function saveCover (movie, coverEncoded) {
-    if (coverEncoded == null || movie.cover==null ) return
+    if (coverEncoded == null) return
 
     const cover = JSON.parse(coverEncoded)
-    if (coverEncoded != null && imageMimeTypes.includes(cover.type)) {
+    if (cover != null && imageMimeTypes.includes(cover.type)) {
         movie.coverImage = new Buffer.from(cover.data, "base64")
         movie.coverImageType = cover.type
     }
