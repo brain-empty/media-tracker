@@ -44,8 +44,16 @@ router.post ('/', async (req, res) => {
         summary : req.body.summary,
         birthdate: setDate
     })
-
-    console.log (staff)
+    
+    for (i=0; i < req.body.role.length; i++) {
+        let work = ({
+            role: req.body.role[i],
+            movie : req.body.role[i]
+        })
+        console.log(work)
+        staff.works.push(work);
+        console.log (staff)
+    }
 
     try {
         const newStaff = await staff.save()
