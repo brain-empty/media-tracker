@@ -16,6 +16,9 @@
             value = `<%= staff.birthdate == null ? '' :
             book.releaseDate.toISOString().split('T')[0]  %>`
     </div>
+
+    <div id="staffWorks"></div>
+
 </div>
     <input id="addWorksDiv" type="button" value="Add new work">
     <input id="removeWorksDiv" type="button" value="Remove field">
@@ -32,7 +35,7 @@
                 newWorkDiv.innerHTML = `
                 
                 <label>Movie</label>
-                <select name="movie">
+                <select name="movies">
                     <%movies.forEach(movies => { %>
                             <option label= "<%=movies.name%>" value = "<%= movies.id %>">
                     <%})%>

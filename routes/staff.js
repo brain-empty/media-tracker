@@ -4,7 +4,6 @@ const Staff = require ('../models/staff');
 const Staff_roles = require ('../models/staff_roles');
 const Movie = require ('../models/movie');
 
-
 router.get('/', async (req, res) => {
     try {
         const staff = await Staff.find()
@@ -44,15 +43,28 @@ router.post ('/', async (req, res) => {
         summary : req.body.summary,
         birthdate: setDate
     })
-    
-    for (i=0; i < req.body.role.length; i++) {
-        let work = ({
-            role: req.body.role[i],
-            movie : req.body.role[i]
-        })
-        console.log(work)
-        staff.works.push(work);
-        console.log (staff)
+    let movieStaff = {
+        staff:[]
+    }
+    if (req.body.role!=null && req.body.role !="") {
+        if (Array.isArray(req.body.role)) {
+            for (i=0; i < req.body.role.length; i++) {
+                let work = new Work ({
+                    role: req.body.role[i],
+                    movie : req.body.movies[i]
+                })
+                movieStaff.staff.push(work.id)
+                staff.works.push(work);
+                movieStaff.staff.push(work.id)
+            }
+        } else {
+            let work = new Work ({
+                role: req.body.role,
+                movie : req.body.movies
+            })
+            movieStaff.staff.push(work.id)
+            staff.works.push(work);
+        }
     }
 
     try {
@@ -76,13 +88,14 @@ router.post ('/', async (req, res) => {
 
 router.get ('/:id', async (req,res) => {
     try {
-        const staff = await Staff.findById(req.params.id).populate('works').exec()
-        const movies = await Movie.find({ staff : staff.id}).limit(5).exec()
-        console.log(staff)
+        const staff = await Staff.find({id:req.params.id}).populate('works.movie works.role').exec()
+        const movies = await Movie.find({ staff : staff.id})
         res.render ('staff/show', {
             staff : staff,
             movies : movies
         })
+        console.log(staff)
+        console.log (movies)
      } catch (err){
         console.log (err)
         res.redirect ('/')

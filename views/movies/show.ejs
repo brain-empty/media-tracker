@@ -1,0 +1,18 @@
+<h2><%=movie.name%></h3>
+<a href="/movies/<%=staff.id%>/edit">Edit</a>
+
+<h3>Works<h4>
+    <%if ( staff!="" || staff!= null ) {%>
+    <div> <!--list books-->
+        <ul>
+        <% staff.forEach ( staff => { %>
+            <br>
+            <li>
+                <%= staff.name %> - 
+                <%= staff.works.role.name %><br>
+            </li>
+        <% }) %>
+
+            </ul>
+        </div>
+    <%}%>

@@ -3,18 +3,13 @@
 
 <h3>Works<h4>
     <%if ( staff.works!="" || staff.works != null ) {%>
-    <%works=staff.works%>
     <div> <!--list books-->
         <ul>
-        <%console.log(staff.works)%>
-        <%works=staff.works%>
-        <%console.log(works)%>
-        <%console.log(staff.works)%>
-        <% works.forEach ( works => { %>
+        <% staff.works.forEach ( works => { %>
             <br>
             <li>
-                <%= works.movie %><br>
-                <%= works.role %><br>
+                <%= works.movie.name %> - 
+                <%= works.role.name %><br>
             </li>
         <% }) %>
 

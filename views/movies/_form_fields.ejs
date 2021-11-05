@@ -23,20 +23,8 @@
 
 <br><br>
 
-<div>
-    <div>
     <label>Staff</label>
     <div id = staffFields>
-        <div id= staffFields0>
-            <select name="staff">
-                <%staff.forEach(staff => { %>
-                    <option label= "<%=staff.name%>" name= "staff" value = "<%= staff.id %>"></option>
-                <%})%>
-            </select>
-        </div>
-        <br id="br0">
-    </div>
-
     </div>
     <input id="addStaffField" type="button" value="Add field">
     <input id="removeStaffField" type="button" value="Remove field">
@@ -67,10 +55,18 @@
                 newStaffField.setAttribute('name', 'staff');
                 newStaffField.setAttribute('value', '<%=movie.staff%>')
                 newStaffField.innerHTML = `
+                <label>Staff</label>
                 <select name="staff">
-                <%staff.forEach(staff => { %>
-                        <option selected label= "<%=staff.name%>" value = "<%= staff.id %>">
-                <%})%>
+                    <%staff.forEach(staff => { %>
+                            <option label= "<%=staff.name%>" value = "<%= staff.id %>">
+                    <%})%>
+                </select>
+
+                <label>Role</label>
+                <select name="roles">
+                    <%roles.forEach(roles => { %>
+                            <option label= "<%=roles.name%>" value = "<%= roles.id %>">
+                    <%})%>
                 </select>
                 `
             ;
