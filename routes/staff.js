@@ -37,20 +37,22 @@ router.get("/new", async (req,res) => {
 // create staff (process of creating after input is given) route
 router.post ('/', async (req, res) => {
 
-    const works = ({
-        role : req.body.role,
-        movie : req.body.movie,
-        character : req.body.character
-    })
+    console.log (req.body.role)
+    console.log(req.body.role.length)
 
     const staff = new Staff ({
         name : req.body.name
     })
 
-
-    // staff.findByIdAndUpdate(staff.id,
-    //     {$push {works : works}}
-    // )
+    for (i=0; i < req.body.role.length; i++) {
+        let work = ({
+            role: req.body.role[i],
+            movie : req.body.role[i]
+        })
+        console.log(work)
+        staff.works.push(work);
+        console.log (staff)
+    }
 
     try {
         const newStaff = await staff.save()

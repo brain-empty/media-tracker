@@ -24,14 +24,14 @@
                 newWorkDiv.innerHTML = `
                 
                 <label>Movie</label>
-                <select name="works.movie">
+                <select name="movie">
                     <%movies.forEach(movies => { %>
                             <option label= "<%=movies.name%>" value = "<%= movies.id %>">
                     <%})%>
                 </select>
 
                 <label>Role</label>
-                <select name="works.role">
+                <select name="role">
                     <%staff_roles.forEach(staff_roles => { %>
                             <option label= "<%=staff_roles.name%>" value = "<%= staff_roles.id %>">
                     <%})%>
