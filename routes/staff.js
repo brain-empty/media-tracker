@@ -3,6 +3,8 @@ const router = express.Router();
 const Staff = require ('../models/staff');
 const Staff_roles = require ('../models/staff_roles');
 const Movie = require ('../models/movie');
+const Work = require ('../models/work')
+const mongoose = require ('mongoose');
 
 router.get('/', async (req, res) => {
     try {
@@ -43,27 +45,35 @@ router.post ('/', async (req, res) => {
         summary : req.body.summary,
         birthdate: setDate
     })
+
     let movieStaff = {
         staff:[]
     }
-    if (req.body.role!=null && req.body.role !="") {
-        if (Array.isArray(req.body.role)) {
-            for (i=0; i < req.body.role.length; i++) {
+    if (req.body.roles!=null && req.body.roles !="") {
+        if (Array.isArray(req.body.roles)) {
+            for (i=0; i < req.body.roles.length; i++) {
                 let work = new Work ({
-                    role: req.body.role[i],
+                    role: req.body.roles[i],
                     movie : req.body.movies[i]
                 })
-                movieStaff.staff.push(work.id)
+                await Movie.findByIdAndUpdate(req.body.movies[i],
+                    {$push: {staff:staff.id}},
+                    {safe:true, upsert:true}
+                );
                 staff.works.push(work);
                 movieStaff.staff.push(work.id)
             }
         } else {
             let work = new Work ({
-                role: req.body.role,
+                role: req.body.roles,
                 movie : req.body.movies
             })
-            movieStaff.staff.push(work.id)
+            await Movie.findByIdAndUpdate(req.body.movies,
+                {$push: {staff:staff.id}},
+                {safe:true, upsert:true}
+            );
             staff.works.push(work);
+            movieStaff.staff.push(work.id)
         }
     }
 
@@ -88,7 +98,7 @@ router.post ('/', async (req, res) => {
 
 router.get ('/:id', async (req,res) => {
     try {
-        const staff = await Staff.find({id:req.params.id}).populate('works.movie works.role').exec()
+        const staff = await Staff.findById(req.params.id).populate('works.movie works.role').exec()
         const movies = await Movie.find({ staff : staff.id})
         res.render ('staff/show', {
             staff : staff,
@@ -106,7 +116,7 @@ router.put ('/:id', async (req,res) => {
     let staff;
 
     try {
-        staff = await Staff.findById(req.params.id)
+        staff = await Staff.findById(req.params.id).populate ('works.role works.movie').exec()
         await staff.save
         res.redirect (`/movies/${staff.id}`)
         console.log("staff entry sucess")

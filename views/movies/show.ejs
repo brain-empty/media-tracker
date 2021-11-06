@@ -1,17 +1,20 @@
 <h2><%=movie.name%></h3>
 <a href="/movies/<%=staff.id%>/edit">Edit</a>
 
-<h3>Works<h4>
+<h3>Summary</h3>
+<p><%=movie.summary%></p>
+
+<h3>Tags</h3>
+<p><%=movie.tags%></p>
+
+<h3>Staff<h4>
     <%if ( staff!="" || staff!= null ) {%>
     <div> <!--list books-->
         <ul>
-        <% staff.forEach ( staff => { %>
-            <br>
-            <li>
-                <%= staff.name %> - 
-                <%= staff.works.role.name %><br>
-            </li>
-        <% }) %>
+        <% for (let i = 0; i < staff.length; i++){ %>
+            <%=staff[i].name%> - 
+            <%=staff[i].works.role[0].name%><br>
+        <%}%>
 
             </ul>
         </div>

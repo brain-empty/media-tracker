@@ -45,6 +45,19 @@
 </div>
 
 <script>
+    $(document).ready(function() {
+
+        // var data = $.map(staff, function (obj) {
+        //     obj.id = obj.id || obj.id; // replace pk with your identifier
+        //     return obj;
+        // });
+
+        // var data = $.map(staff, function (obj) {
+        //     obj.text = obj.text || obj.name; // replace name with the property used for the text
+        //     return obj;
+        // });
+
+        // console.log(data)
 
     // STAFF FIELD CODE
         var i = 0;
@@ -56,16 +69,16 @@
                 newStaffField.setAttribute('value', '<%=movie.staff%>')
                 newStaffField.innerHTML = `
                 <label>Staff</label>
-                <select name="staff">
+                <select class="js-example-basic-single" style="width:300px" name="staff">
                     <%staff.forEach(staff => { %>
-                            <option label= "<%=staff.name%>" value = "<%= staff.id %>">
+                            <option label= "<%=staff.name%>" value = "<%= staff.id %>"><%=staff.name%></option>
                     <%})%>
                 </select>
 
                 <label>Role</label>
-                <select name="roles">
+                <select class="js-example-basic-single" style="width:150px" name="roles">
                     <%roles.forEach(roles => { %>
-                            <option label= "<%=roles.name%>" value = "<%= roles.id %>">
+                            <option label= "<%=roles.name%>" value = "<%= roles.id %>"><%=roles.name%></option>
                     <%})%>
                 </select>
                 `
@@ -76,6 +89,7 @@
 
             document.getElementById("staffFields").appendChild(newStaffField);
             document.getElementById("staffFields").appendChild(br)
+            $('.js-example-basic-single').select2();
         });
 
         document.getElementById("removeStaffField").addEventListener("click", function(){
@@ -87,4 +101,5 @@
                 i--;
             }
         });
+    })
 </script>

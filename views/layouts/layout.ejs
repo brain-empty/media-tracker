@@ -4,13 +4,27 @@
         <title>Back to the log - Home</title>
         <meta name="description" content="Keep track of all your media, from books to movies to TV shows.">
 
+        <!-- filepond -->
         <link href="https://unpkg.com/filepond/dist/filepond.css" rel="stylesheet">
-  <link href="https://unpkg.com/filepond-plugin-image-preview/dist/filepond-plugin-image-preview.css" rel="stylesheet">
-  <script defer src="https://unpkg.com/filepond-plugin-image-preview/dist/filepond-plugin-image-preview.js"></script>
-  <script defer src="https://unpkg.com/filepond-plugin-file-encode/dist/filepond-plugin-file-encode.js"></script>
-  <script defer src="https://unpkg.com/filepond-plugin-image-resize/dist/filepond-plugin-image-resize.js"></script>
-  <script defer src="https://unpkg.com/filepond/dist/filepond.js"></script>
-  <script defer src="/javascripts/fileUpload.js"></script>
+        <link href="https://unpkg.com/filepond-plugin-image-preview/dist/filepond-plugin-image-preview.css" rel="stylesheet">
+        <script defer src="https://unpkg.com/filepond-plugin-image-preview/dist/filepond-plugin-image-preview.js"></script>
+        <script defer src="https://unpkg.com/filepond-plugin-file-encode/dist/filepond-plugin-file-encode.js"></script>
+        <script defer src="https://unpkg.com/filepond-plugin-image-resize/dist/filepond-plugin-image-resize.js"></script>
+        <script defer src="https://unpkg.com/filepond/dist/filepond.js"></script>
+        <script defer src="/javascripts/fileUpload.js"></script>
+
+        <!-- jquery -->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+        <!-- select2 -->
+        <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+        <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+        <script>
+        $(document).ready(function() {
+            $('.js-example-basic-single').select2();
+        });
+        </script>
+
         <link id="main-css" rel="stylesheet" href="/stylesheets/main.css">
         
     </head>

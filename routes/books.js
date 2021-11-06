@@ -6,16 +6,6 @@ const fs = require ('fs')
 const path = require ('path')
 const uploadPath = path.join('public', Book.coverImageBasePath)
 
-//cover file upload setup
-// const multer = require ('multer')
-// const imageMimeTypes = ['image/jpeg', 'image/png', 'image/gif']
-// const upload = multer ({
-//     dest: uploadPath,
-//     FileFilter: (req, file, callback) => {
-//         callback (null, boolean)
-//     }
-// })
-
 //all books route
 router.get('/', async (req, res) => {
 
