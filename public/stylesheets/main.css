@@ -113,12 +113,6 @@ header button{
     padding-bottom:5px;
     margin-inline: 10%; 
 }
-
-.cover-upload {
-    height: 600px;
-    width: 200px;
-}
-
 .input-summary {
     height: 80px;
     width: 30%;

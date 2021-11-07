@@ -91,8 +91,7 @@ router.post ('/', async ( req, res ) => {
 
     try {
         const newMovieTemp = await newMovie.save()
-        //res.redirect (`movies/${newMoviesTemp.id}`)
-        res.redirect ('movies') 
+        res.redirect (`movies/${newMoviesTemp.id}`)
     } catch {
         renderNewPage (res, newMovie, true)
     }
@@ -123,6 +122,7 @@ router.get ('/:id', async (req,res) => {
         res.redirect ('/')
     }
 })
+
 router.get ('/:id/edit', async (req,res) => {
     try{
         const staff_roles = await Staff_roles.find ()
@@ -141,11 +141,63 @@ router.get ('/:id/edit', async (req,res) => {
     }  
 })
 
-router.put (':/id', (req,res) => {
-    res.send ('update ' + req.params.id)
+router.put ('/:id', async (req,res) => {
+    setDate = (req.body.releaseDate != "" ? new Date(req.body.releaseDate) : "")
+    let movie   
+    let movieStaff = {
+        staff:[]
+    }
+
+    if (req.body.staff!=null && req.body.staff !="") {
+        if (Array.isArray(req.body.staff)) {
+            for (i=0; i < req.body.staff.length; i++) {
+                const work = new Work ({
+                    role: req.body.roles[i],
+                    movie : newMovie.id
+                })
+                movieStaff.staff.push(work.id)
+                await Staff.findByIdAndUpdate(req.body.staff[i],
+                    {$push: {works: work}},
+                    {safe: true, upsert: true}
+                );
+            }
+        } else {
+            let work = new Work ({
+                role: req.body.roles,
+                movie : newMovie.id
+            })
+            console.log(work)
+            movieStaff.staff.push(work.id)
+            await Staff.findByIdAndUpdate(req.body.staff,
+                {$push: {works: work}},
+                {safe: true, upsert: true}
+            );
+        }
+    }
+
+    newMovie.staff = movieStaff.staff
+
+    if (req.body.coverEncoded != null || req.body.cover != null) {
+        saveCover(newMovie, req.body.cover)
+    }
+
+    try {
+        const movie = await Movie.findById (req.params.id)
+        console.log(req.body)
+        await movie.save()
+        res.redirect (`/movies/${newMoviesTemp.id}`)
+    } catch {
+        if (movie == null ) {
+            res.redirect('/')
+        } else {
+        res.render('movise/edit', {
+            movie:movie,
+            errorMessage:"Error updating author"
+        })}
+    }
 })
 
-router.get (':/id/delete', (req,res) => {
+router.get ('/:id/delete', (req,res) => {
     res.send ('delete ' + req.params.id)
 })
  
