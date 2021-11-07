@@ -18,7 +18,7 @@ header nav{
     padding:20px;
 }
 
-nav li {
+header li {
     display: inline-block;
     margin-left: 40px ;
     position: relative;
@@ -90,18 +90,53 @@ header button{
     width:120px;
 }
 
+.media-header {
+    display:grid;
+    grid-column-gap: 30px;
+    grid-template-columns: 200px auto;
+    padding:5px;
+    padding-bottom:5px;
+    background-color: darkslategrey;
+    margin-inline: 3%; 
+}
+
+.media-header img {
+    height: 300px;
+    width:200px;
+}
+
+.media-body {
+    display:grid;
+    grid-column-gap: 2%;
+    grid-template-columns: 200px auto;
+    padding:5px;
+    padding-bottom:5px;
+    margin-inline: 10%; 
+}
+
+.cover-upload {
+    height: 600px;
+    width: 200px;
+}
+
+.input-summary {
+    height: 80px;
+    width: 30%;
+}
+
+.input-tags {
+    width: 10%;
+}
+
+ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+}
 
 li {
     display: inline-block;
-}
-
-footer li{
-    display:block;
-}
-
-footer {
-    background-color:darkslategrey;
-    margin-bottom:-20px;
 }
 
 .signup {

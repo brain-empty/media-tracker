@@ -1,21 +1,42 @@
-<h2><%=movie.name%></h3>
-<a href="/movies/<%=staff.id%>/edit">Edit</a>
+<section class='home'>
+    <!-- insert cover image here later -->
+<div class='media-header'>
+    <div id="header-left">
+        <img src="<%= movie.coverImagePath || "/images/missing_movie.png"%>">
+    </div>
+    <div>
+        <h2><%=movie.name%></h2>
+        <p><%=movie.summary%></p>
+    </div id="header-right">
+</div>
 
-<h3>Summary</h3>
-<p><%=movie.summary%></p>
+<div class='media-body'>
 
-<h3>Tags</h3>
-<p><%=movie.tags%></p>
-
-<h3>Staff<h4>
-    <%if ( staff!="" || staff!= null ) {%>
-    <div> <!--list books-->
+    <div id="body-left">
+        <h3>Tags</h3>
         <ul>
-        <% for (let i = 0; i < staff.length; i++){ %>
-            <%=staff[i].name%> - 
-            <%=staff[i].works.role[0].name%><br>
+        <% for (i=0;i<movie.tags.length;i++) { %>
+            <li><%=movie.tags[i].name%></li><br>
         <%}%>
+        </ul>
+        
+    </div>
 
-            </ul>
-        </div>
-    <%}%>
+    <div id="body-right">
+        <h3>Staff</h3>
+            <%if ( staff!="" || staff!= null ) {%>
+            <div> <!--list books-->
+                <ul>
+                <% for (let i = 0; i < staff.length; i++){ %>
+                    <li><%=staff[i].name%> - <%=staff[i].works.role[0].name%></li><br>
+                <%}%>
+                </ul>
+                </div>
+            <%}%>
+    </div>
+    
+</div>
+<a href="/movies/<%=movie.id%>/edit">Edit</a>
+<%- include ('../partials/deleteForm', {url : `/movies/${movie.id}`}) %>
+</form>
+</section>

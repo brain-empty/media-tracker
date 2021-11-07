@@ -4,6 +4,7 @@ const Movie = require ('../models/movie');
 const Staff_roles = require ('../models/staff_roles');
 const Staff = require ('../models/staff');
 const Work = require ('../models/work')
+const Tag = require ('../models/tag')
 const mongoose = require ('mongoose');
 
 // file upload with filepond
@@ -28,10 +29,12 @@ router.get("/new", async (req,res) => {
         const staff_roles = await Staff_roles.find ()
         const movie = new Movie ()
         const staff = await Staff.find()
+        const tags = await Tag.find()
         res.render('movies/new', {
             movie : movie,
             staff : staff,
-            roles : staff_roles
+            roles : staff_roles,
+            tags : tags
         })
     } catch (err) {
         res.redirect ('/movies')
@@ -41,14 +44,12 @@ router.get("/new", async (req,res) => {
 
 // create movie (process of creating after input is given) route
 router.post ('/', async ( req, res ) => {
-    console.log("\n req.body = ")
-    console.log (req.body)
     setDate = (req.body.releaseDate != "" ? new Date(req.body.releaseDate) : "")
 
     let newMovie = new Movie ({
         name : req.body.name,
         summary : req.body.summary,
-        tags: req.body.tags.split(','),
+        tags: req.body.tags,
         releaseDate: setDate
     }) 
     let movieStaff = {
@@ -99,7 +100,7 @@ router.post ('/', async ( req, res ) => {
 
 router.get ('/:id', async (req,res) => {
     try {
-        const movieTemp = await Movie.findById(req.params.id)
+        const movieTemp = await Movie.findById(req.params.id).populate('tags').exec()
         let id = mongoose.Types.ObjectId(movieTemp.id);
 
         const staff = await Staff.aggregate([
@@ -121,6 +122,31 @@ router.get ('/:id', async (req,res) => {
         console.log (err)
         res.redirect ('/')
     }
+})
+router.get ('/:id/edit', async (req,res) => {
+    try{
+        const staff_roles = await Staff_roles.find ()
+        const movie = await Movie.findById (req.params.id)
+        const staff = await Staff.find()
+        const tags = await Tag.find()
+        res.render('movies/edit', {
+            movie : movie,
+            staff : staff,
+            roles : staff_roles,
+            tags : tags
+        })
+    } catch (err) {
+        res.redirect ('/movies')
+        console.log("ERROR: movies router get /edit request is broken. err : " + err)
+    }  
+})
+
+router.put (':/id', (req,res) => {
+    res.send ('update ' + req.params.id)
+})
+
+router.get (':/id/delete', (req,res) => {
+    res.send ('delete ' + req.params.id)
 })
  
 async function renderNewPage (res, movie, hasError = false) {

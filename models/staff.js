@@ -18,7 +18,7 @@ const workSchema = new mongoose.Schema ({
 const staffSchema = new mongoose.Schema ({
     name: {
         type: String,
-        required: true,
+        required: true
     },
     works : [workSchema],
     summary: {

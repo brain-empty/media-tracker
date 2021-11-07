@@ -5,7 +5,7 @@ const coverImageBasePath = 'uploads/covers/books'
 const bookSchema = new mongoose.Schema({
     name: {
         type: String,
-        required: true,
+        required: true
     },
     summary: {
         type:String

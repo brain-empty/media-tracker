@@ -3,7 +3,7 @@ const mongoose = require ('mongoose');
 const movieSchema = new mongoose.Schema({
     name: {
         type: String,
-        required: true,
+        required: true
     },
     summary: {
         type:String
@@ -13,7 +13,8 @@ const movieSchema = new mongoose.Schema({
         ref: 'Staff'
     }],
     tags:[{
-        type: String
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Tag'
     }],
     releaseDate:{
         type: Date

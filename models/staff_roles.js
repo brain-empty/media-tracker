@@ -4,6 +4,7 @@ const staff_rolesSchema = new mongoose.Schema({
     name: {
         type: String,
         required: true,
+        unique:true
     }
 }); 
 
