@@ -1,9 +1,18 @@
-<h2>new movie</h2>
+<h2>new staff member</h2>
 <form action="/staff" method="POST">
+    
+<div>
+    <label>Name</label>
+    <input type="text" name="name" value="<%= staff.name %>"> 
+</div>
 
-    <%- include("_form_fields") %>
-    <br>
-    <a href="/movies">cancel</a>
-    <button type='submit'>add new staff member</button>
+<br><br>
+
+<%- include("_form_fields") %>
+<br><br>
+<%- include("_add_staff_work") %>
+<br>
+<a href="/staff">cancel</a>
+<button type='submit'>add new staff member</button>
 
 </form>

@@ -14,7 +14,7 @@ const imageMimeTypes = ['image/jpeg', 'image/png', 'image/gif']
 router.get('/', async (req, res) => {
 
     try {
-        const movies = await Movie.find().populate('staff').exec()
+        const movies = await Movie.find()
         res.render('movies/index', {
             movies: movies});
     } catch (err ){
@@ -43,7 +43,7 @@ router.get("/new", async (req,res) => {
 });
 
 // create movie (process of creating after input is given) route
-router.post ('/', async ( req, res ) => {
+router.post ('/', async ( req, res ) => {   
     setDate = (req.body.releaseDate != "" ? new Date(req.body.releaseDate) : "")
 
     let newMovie = new Movie ({
@@ -52,10 +52,12 @@ router.post ('/', async ( req, res ) => {
         tags: req.body.tags,
         releaseDate: setDate
     }) 
+
     let movieStaff = {
         staff:[]
     }
 
+    // add new staff work
     if (req.body.staff!=null && req.body.staff !="") {
         if (Array.isArray(req.body.staff)) {
             for (i=0; i < req.body.staff.length; i++) {
@@ -85,14 +87,16 @@ router.post ('/', async ( req, res ) => {
 
     newMovie.staff = movieStaff.staff
 
-    if (req.body.coverEncoded != null || req.body.cover != null) {
+    //set cover
+    if (req.body.coverEncoded != null || req.body.cover != null) { 
         saveCover(newMovie, req.body.cover)
     }
 
     try {
         const newMovieTemp = await newMovie.save()
-        res.redirect (`movies/${newMoviesTemp.id}`)
-    } catch {
+        res.redirect (`movies/${newMovieTemp.id}`)
+    } catch (err) {
+        console.log(err + " - in last catch statement in router post in movies router")
         renderNewPage (res, newMovie, true)
     }
 });
@@ -121,7 +125,7 @@ router.get ('/:id', async (req,res) => {
         console.log (err)
         res.redirect ('/')
     }
-})
+});
 
 router.get ('/:id/edit', async (req,res) => {
     try{
@@ -139,80 +143,85 @@ router.get ('/:id/edit', async (req,res) => {
         res.redirect ('/movies')
         console.log("ERROR: movies router get /edit request is broken. err : " + err)
     }  
-})
+});
 
-router.put ('/:id', async (req,res) => {
+router.put('/:id', async (req, res) => {
     setDate = (req.body.releaseDate != "" ? new Date(req.body.releaseDate) : "")
-    let movie   
-    let movieStaff = {
-        staff:[]
-    }
 
-    if (req.body.staff!=null && req.body.staff !="") {
-        if (Array.isArray(req.body.staff)) {
-            for (i=0; i < req.body.staff.length; i++) {
-                const work = new Work ({
-                    role: req.body.roles[i],
-                    movie : newMovie.id
-                })
-                movieStaff.staff.push(work.id)
-                await Staff.findByIdAndUpdate(req.body.staff[i],
-                    {$push: {works: work}},
-                    {safe: true, upsert: true}
-                );
-            }
-        } else {
-            let work = new Work ({
-                role: req.body.roles,
-                movie : newMovie.id
-            })
-            console.log(work)
-            movieStaff.staff.push(work.id)
-            await Staff.findByIdAndUpdate(req.body.staff,
-                {$push: {works: work}},
-                {safe: true, upsert: true}
-            );
-        }
-    }
+    let movie
 
-    newMovie.staff = movieStaff.staff
-
-    if (req.body.coverEncoded != null || req.body.cover != null) {
-        saveCover(newMovie, req.body.cover)
+    //set cover
+    if (req.body.coverEncoded != null || req.body.cover != null) { 
+        saveCover(movie, req.body.cover)
     }
 
     try {
-        const movie = await Movie.findById (req.params.id)
-        console.log(req.body)
+        movie = await Movie.findById(req.params.id)
+        movie.summary = req.body.summary
+        movie.releaseDate = setDate
         await movie.save()
-        res.redirect (`/movies/${newMoviesTemp.id}`)
-    } catch {
-        if (movie == null ) {
+        res.redirect (`/movies/${movie.id}`)
+    } catch (err) {
+        if (movie==null) {
             res.redirect('/')
         } else {
-        res.render('movise/edit', {
-            movie:movie,
-            errorMessage:"Error updating author"
-        })}
+            console.log(err + " - in last catch statement in router post in movies router")
+            res.render ('movies/edit', {
+                movie:movie,
+                errorMessage:"Error updating movie"
+            })
+        } 
     }
-})
+});
 
-router.get ('/:id/delete', (req,res) => {
-    res.send ('delete ' + req.params.id)
+router.delete ('/:id', async (req,res) => {
+    let movie
+    let id = mongoose.Types.ObjectId(req.params.id);
+
+    try {
+        //find movie
+        movie = await Movie.findById(req.params.id)
+
+        //remove works relating to this movie
+        let staff = await Staff.updateMany(
+            { 'works.movie':id },
+            { $pull : { works : { movie : id}}}
+        )
+
+        //delete movie
+        await movie.remove()
+
+        //redirect to home page
+        res.redirect ('/movies')
+    } catch (err) {
+        if (movie==null) {
+            console.log(err + " - in last catch statement in router delete in movies router (movie is null)")
+            res.redirect('/')
+        } else {
+            console.log(err + " - in last catch statement in router delete in movies router")
+            res.redirect (`/movies/${movie.id}`)
+        }
+        
+    }
 })
  
 async function renderNewPage (res, movie, hasError = false) {
     try {
         const staff = await Staff.find ()
         const staff_roles = await Staff_roles.find ()
+        const tags = await Tag.find()
         const params = {
             staff:staff,
             movie:movie,
-            roles : staff_roles
+            roles : staff_roles,
+            tags : tags
         }
-        if (hasError) {params.errorMessage = 'error creating movie'}
+        if (hasError) {
+            {params.errorMessage = 'error creating movie'}
+            console.log(params.errorMessage);
+        }
         res.render ('movies/new', params);
-        console.log(params.errorMessage);
+        
     } catch (err) {
         res.redirect ('/movies')
         console.log ("ERROR: renderNewPage in movies.js router is broken. err : " + err)

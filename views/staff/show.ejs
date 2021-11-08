@@ -1,19 +1,41 @@
-<h2><%=staff.name%></h3>
-<a href="/staff/<%=staff.id%>/edit">Edit</a>
 
-<h3>Works<h4>
-    
-    <%if ( staff.works!="" || staff.works != null ) {%>
-    <div> <!--list books-->
-        <ul>
-        <% staff.works.forEach ( works => { %>
-            <br>
-            <li>
-                <%= works.movie.name %> - 
-                <%= works.role.name %><br>
-            </li>
-        <% }) %>
-
-        </ul>
+<section class='home'>
+    <div class='media-header'>
+        <div id="header-left">
+            <img src="<%= staff.coverImagePath || "/images/missing_movie.png"%>">
+        </div>
+        <div>
+            <h2><%=staff.name%></h2>
+            <p><%=staff.summary%></p>
+        </div id="header-right">
     </div>
-    <%}%>
+    
+    <div>
+        Birthdate: <%=staff.birthdate%>
+    </div>
+    
+    <div>
+        <h3>Works</h3>
+        <%if ( staff.works!="" || staff.works != null ) {%>
+        <div> <!--list books-->
+            <ul>
+                <%console.log(staff.works.movie)%>
+            <% staff.works.forEach ( works => { %>
+                </ul>
+                <br>
+                <li>
+                    <%= works.movie.name %> - 
+                    <%= works.role.name %><br>
+                </li>
+            <% }) %>
+
+            </ul>
+        </div>
+        <%}%>
+    </div>
+        
+    </div>
+    <a href="/staff/<%=staff.id%>/edit">Edit</a>
+    <%- include ('../partials/deleteForm', {url : `/staff/${staff.id}`}) %>
+    </form>
+    </section>

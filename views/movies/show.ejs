@@ -13,13 +13,19 @@
 <div class='media-body'>
 
     <div id="body-left">
-        <h3>Tags</h3>
-        <ul>
-        <% for (i=0;i<movie.tags.length;i++) { %>
-            <li><%=movie.tags[i].name%></li><br>
-        <%}%>
-        </ul>
-        
+        <div>
+            <h3>Tags</h3>
+            <ul>
+            <% for (i=0;i<movie.tags.length;i++) { %>
+                <li><%=movie.tags[i].name%></li><br>
+            <%}%>
+            </ul>
+        </div>
+
+        <div>
+            <h3>Release Date</h3>
+            <%=movie.releaseDate%>
+        </div>
     </div>
 
     <div id="body-right">

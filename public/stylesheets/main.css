@@ -1,14 +1,19 @@
 body {
     padding:0;
     margin:0;
-    background-color:darkseagreen;
-    font-family:'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+    background-color:rgb(32, 32, 32);
+    color:white;
+    font-family: sans-serif;
+}
+
+a {
+    text-decoration: none;
+    color:white
 }
 
 header{
-
     width:100%;
-    background-color:darkslategrey;
+    background-color:rgb(34, 20, 114);
 }
 
 header nav{
@@ -16,22 +21,39 @@ header nav{
     justify-content: space-between;
     align-items: center;
     padding:20px;
+    margin-right:50px;
 }
 
 header li {
     display: inline-block;
     margin-left: 40px ;
     position: relative;
-    
+}
+
+.search-box {
+    left:-13%;
+    margin:-10px;
+    padding:0px;
+    position:relative;
+}
+
+.search-box input {
+    position:absolute;
+    height:30px;
+    width:400px;
+}
+
+.search-box button {
+    height:36px;
+    width:36px;
+    position:relative;
+    left:380px;
 }
 
 .tempNav {
     color: white;
 }
 
-.tempNav label {
-    object-position: 50px;
-}
 .tempNav a {
     text-decoration: none;
     color: white;
@@ -60,13 +82,6 @@ header li {
     height:60px;
 }
 
-.search {
-    height:35px;
-    width:500px;
-    border-radius: 40px;
-    color: #080808;
-
-}
 header button{
     margin-left:5px;
     margin-right:5px;
@@ -79,24 +94,57 @@ header button{
 }
 
 .media-box {
-    padding:5px;
-    padding-bottom:5px;
-    margin: 10px;
-    background-color: darkslategrey;
+    display:inline-block;
+    height:200px;
+    width:120px; 
+    position:relative;
+    margin-inline:50px;
+    margin-block: 40px;
+}
+
+.media-box a::after {
+    content: ""; 
+    position: absolute;
+    top:0px;
+    left: 0;
+    height:180px;
+    width:120px;  
+    background: rgb(63,94,251);
+    background: radial-gradient(circle, rgba(255, 255, 255, 0) 0%, rgb(0, 0, 0) 200%);
+    opacity: 0;
+    transition: all ease-in-out 150ms;
+}
+
+.media-box a {
+    text-decoration: none;
+    color:white
+}
+
+.media-box a:hover::after {
+    opacity: .8;
 }
 
 .media-box img {
     height:180px;
-    width:120px;
+    width:120px; 
+}
+
+.media-box img:hover::after {
+    transform: scale(1.5);
+}
+
+.media-box-more {
+    margin-block: -165px;
+    top:-165px;
 }
 
 .media-header {
+    background-color:rgb(34, 20, 114);
     display:grid;
     grid-column-gap: 30px;
     grid-template-columns: 200px auto;
     padding:5px;
     padding-bottom:5px;
-    background-color: darkslategrey;
     margin-inline: 3%; 
 }
 
@@ -120,6 +168,10 @@ header button{
 
 .input-tags {
     width: 10%;
+}
+
+.add-new a{
+    text-decoration:underline;
 }
 
 ul {

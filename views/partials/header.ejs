@@ -1,25 +1,16 @@
 <header>
     <nav>
         <a href="/"><img src="/images/homebuttonlogo.png" class="home" alt="btl home"></img></a>
-        <form action="/search" method="GET" >
-            <label for="search"></label>
-            <input class="search" type="text" id="search" name="search" placeholder="Search..." value="<%= (!!locals.searchOptions)?searchOptions:'' %>"></input>
-    <button type="submit">search<i class="fa fa-search"></i>
-    </button>
-        </form>
-            <ul>
-                <li><button>Register</button></li>
-                <li><button>Log in</button></li>
-            </ul>
-        <div class="tempNav">
-            <label>Temporary nav bar</label>
-            <br>
-            <ul>
-            <li><a href="/movies">movies</a></li>
-            <li><a href="/staff">staff</a></li>
-            <li><a href="/search">search</a></li>
-            <li><a href="/books">books</a></li>
-            </ul>
+        <div class='search-box'>
+            <form action="/search" method="GET">
+                <label for="search"></label>
+                <input class="search" type="text" id="search" name="search" placeholder="Search..." value="<%= (!!locals.searchOptions)?searchOptions:'' %>"></input>
+                <button type="submit">s</button>
+            </form>
         </div>
+            <ul>
+                <li><a href="">Register</a></li>
+                <li><a href="">Log in</a></li>
+            </ul>
     </nav>
 </header>

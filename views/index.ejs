@@ -1,27 +1,24 @@
-
-    <section>
-        <div class="topmedia">
-        <div>
-            <h2 class="movie-header">Top rated movies</h2>
-            <ul>
-                <a href="#"><li class='media-box'><img src="<%= "images/missing_movie.png"%>"></li></a>
-                <a href="/movies"><li class='media-box'>See more</li></a>
-            </ul>
-        </div>
-        <div>
-            <h2>Top rated tv series</h2>
-            <ul>
-                <a href="#"><li class='media-box'><img src="<%=  "images/missing_movie.png"%>"></img></li><a>
-                <a href=""><li class='media-box'>See more</li></a>
-            </ul>
-        </div>
-        <div>
-            <h2>Top rated books</h2>
-            <ul>
-                <a href="#"><li class='media-box'><img src="<%= (!!locals.movie)?movie.coverImagePath:"images/missing_movie.png" %>"></img></li></a>
-                <a href="#"><li class='media-box'>See more</li></a>
-            </ul>
-        </div>
-        </div>
-    </section>
-    
+<section>
+    <div class="topmedia">
+    <div>
+        <h2>Top rated movies</h2>
+            <%movies.forEach ( movies => {%>
+                <div class='media-box'><a href="/movies/<%=movies.id%>"><img src="<%= movies.coverImagePath || "images/missing_movie.png"%>"></a></div>
+            <%})%>
+            <div class='media-box-more media-box'><a href="/movies">See more</a></div>
+        
+    </div>
+    <div>
+        <h2>Top rated tv series</h2>
+            <div class='media-box'><a href="#"><img src="<%=  "images/missing_movie.png"%>"></a></div>
+            <div class='media-box-more media-box'><a href="#">See more</a></div>
+    </div>
+    <div>
+        <h2>Top rated books</h2>
+        <ul>
+            <div class='media-box'><a href="#"><img src="<%= (!!locals.movie)?movie.coverImagePath:"images/missing_movie.png" %>"></img></a></div>
+            <div class='media-box-more media-box'><a href="#">See more</a></div>
+        </ul>
+    </div>
+    </div>
+</section>

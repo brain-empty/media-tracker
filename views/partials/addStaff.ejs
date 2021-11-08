@@ -1,0 +1,52 @@
+<div>
+    <label>Staff</label>
+    <div id = staffFields>
+    </div>
+    <input id="addStaffField" type="button" value="Add field">
+    <input id="removeStaffField" type="button" value="Remove field">
+</div>
+
+<script>
+// STAFF FIELD CODE
+var i = 0;
+document.getElementById("addStaffField").addEventListener("click", function(){
+    i++;
+    var newStaffField = document.createElement("div")
+        newStaffField.setAttribute('id', 'staffField' + i);
+        newStaffField.setAttribute('name', 'staff');
+        newStaffField.setAttribute('value', '<%=movie.staff%>')
+        newStaffField.innerHTML = `
+        <label>Staff</label>
+        <select class="js-example-basic-single" style="width:300px" name="staff">
+            <%staff.forEach(staff => { %>
+                    <option label= "<%=staff.name%>" value = "<%= staff.id %>"><%=staff.name%></option>
+            <%})%>
+        </select>
+
+        <label>Role</label>
+        <select class="js-example-basic-single" style="width:150px" name="roles">
+            <%roles.forEach(roles => { %>
+                    <option label= "<%=roles.name%>" value = "<%= roles.id %>"><%=roles.name%></option>
+            <%})%>
+        </select>
+        `
+    ;
+
+    var br = document.createElement("br")
+        br.setAttribute ('id', 'br'+i)
+
+    document.getElementById("staffFields").appendChild(newStaffField);
+    document.getElementById("staffFields").appendChild(br)
+    $('.js-example-basic-single').select2();
+});
+
+document.getElementById("removeStaffField").addEventListener("click", function(){
+    if (i>0) {
+        var removeStaffField = document.getElementById("staffField" + i);
+        var br = document.getElementById("br" + i);
+        document.getElementById("staffFields").removeChild(removeStaffField);
+        document.getElementById("staffFields").removeChild(br);
+        i--;
+    }
+});
+</script>

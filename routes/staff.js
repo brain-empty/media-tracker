@@ -79,8 +79,7 @@ router.post ('/', async (req, res) => {
 
     try {
         const newStaff = await staff.save()
-        //res.redirect (`movies/${newStaff.id}`)
-        res.redirect('staff')
+        res.redirect (`movies/${newStaff.id}`)
         console.log("staff entry sucess")
     } catch {
         console.log("error on creating")
@@ -112,31 +111,73 @@ router.get ('/:id', async (req,res) => {
     }
 })
 
-router.put ('/:id', async (req,res) => {
-    let staff;
-
-    try {
-        staff = await Staff.findById(req.params.id).populate ('works.role works.movie').exec()
-        await staff.save
-        res.redirect (`/movies/${staff.id}`)
-        console.log("staff entry sucess")
-    } catch {
-        if ( author == null ) {
-            res.redirect ('/')
-        }
+router.get ('/:id/edit', async (req,res) => {
+    try{
         const staff_roles = await Staff_roles.find ({})
         const movies = await Movie.find({})
-        res.render('staff/new', {
-            movies:movies,
+        const staff = await Staff.findById (req.params.id)
+        res.render('staff/edit', {
+            movies : movies,
             staff : staff,
-            staff_roles : staff_roles,
-            errorMessage: 'error udpating staff'
-    })
+            staff_roles : staff_roles
+        })
+    } catch (err) {
+        res.redirect (`/staff/${req.params.id}`)
+        console.log("ERROR: staff router get /edit request is broken. err : " + err)
+    }  
+})
+
+router.put ('/:id', async (req,res) => {
+    setDate = (req.body.birthdate != "" ? new Date(req.body.birthdate) : "")
+    let staff
+
+    try {
+        staff = await Staff.findById(req.params.id);
+        staff.summary = req.body.summary;
+        staff.birthdate = setDate;
+        await staff.save();
+        res.redirect (`/staff/${staff.id}`);
+    } catch (err){
+        if (staff==null) {
+            res.redirect('/')
+        } else {
+            console.log(err + " - in last catch statement in router delete in mstaff router")
+            res.render('staff/edit', {
+                staff : staff,
+                errorMessage: 'error editing staff'
+            })
+        }
     }
 })
 
-router.get ('/:id/edit', (req,res) => {
-    
+router.delete ('/:id', async (req,res) => {
+    let staff
+    let id = mongoose.Types.ObjectId(req.params.id);
+
+    try {
+        //find staff
+        staff = await Staff.findById(req.params.id);
+
+        //remove staff
+        let movie = await Movie.updateMany(
+            { 'staff':id },
+            { $pull : { staff : id}}
+        )
+
+        //delete staff
+        await staff.remove();
+        res.redirect ('/staff');
+    } catch (err){
+        if (staff==null) {
+            res.redirect('/')
+        } else {
+            console.log(err + " - in last catch statement in router delete in mstaff router")
+            res.render('staff/edit', {
+                staff : staff,
+                errorMessage: 'error editing staff'
+            })
+        }
+    }
 })
 
 
