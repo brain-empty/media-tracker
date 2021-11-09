@@ -3,14 +3,14 @@ body {
     margin:0;
     background-color:rgb(32, 32, 32);
     color:white;
-    font-family: sans-serif;
+    font-family: 'Poppins', sans-serif;
 }
 
 a {
     text-decoration: none;
     color:white
 }
-
+/* 920 pixel is where the website header needs to be changed. */
 header{
     width:100%;
     background-color:rgb(34, 20, 114);
