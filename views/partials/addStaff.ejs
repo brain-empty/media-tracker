@@ -14,7 +14,7 @@ document.getElementById("addStaffField").addEventListener("click", function(){
     var newStaffField = document.createElement("div")
         newStaffField.setAttribute('id', 'staffField' + i);
         newStaffField.setAttribute('name', 'staff');
-        newStaffField.setAttribute('value', '<%=movie.staff%>')
+        newStaffField.setAttribute('value', '<%=book.staff%>')
         newStaffField.innerHTML = `
         <label>Staff</label>
         <select class="js-example-basic-single" style="width:300px" name="staff">

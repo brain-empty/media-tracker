@@ -4,11 +4,11 @@
 <div> <!--list books-->
     <ul>
     <% books.forEach ( book => { %>
-        <a href=><li class='media-box'><img src="/images/missing_book.png"><br><%= book.name %></li></a>
+        <div class='media-box'><a href="/books/<%=book.id%>"><img src="<%= book.coverImagePath || "images/missing_book.png"%>"><%=book.name%></a></div>
     <% }) %>
     </ul>
 </div>
 
-<p>can't find what you're looking for? <a href="books/new">add a new book</a></p>
+<p class="add-new">Can't find what you're looking for? <a href="books/new">Add a new book.</a></p>
 <hr>
 </section>

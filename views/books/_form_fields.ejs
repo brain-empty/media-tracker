@@ -1,13 +1,7 @@
 <div>
-    <label>Name</label>
-    <input type="text" name="name" value="<%= book.name %>"> 
-</div>
-
-<br><br>
-
-<div>
     <label>Summary</label>
-    <input type="text" name="summary" value="<%= book.summary %>">
+    <br>
+    <textarea name="summary" class='input-summary'><%= book.summary %></textarea>
     <br>
 </div>
 
@@ -16,31 +10,16 @@
 <div>
     <label>Tags</label>
     <div id = tagFields>
-    <input type="text" Id="tagField0" name="tags" value="<%= book.tags %>">
+    <select class="input-tags js-example-basic-multiple"  name="tags" multiple="multiple">
+        <%tags.forEach ( tags => {%>
+            <option label= "<%=tags.name%>" value = "<%= tags.id %>"><%=tags.name%></option>
+        <%})%>
+    </select>
     <br id="br0">
     </div>
 </div>
 
 <br><br>
-
-<div>
-    <div>
-    <label>Staff</label>
-    <div id = staffFields>
-        <div id= staffFields0>
-            <select name="staff">
-                <%staff.forEach(staff => { %>
-                    <option label= "<%=staff.name%>" name= "staff" value = "<%= staff.id %>"></option>
-                <%})%>
-            </select>
-        </div>
-        <br id="br0">
-    </div>
-
-    </div>
-    <input id="addStaffField" type="button" value="Add field">
-    <input id="removeStaffField" type="button" value="Remove field">
-</div>
 
 <div>
     <label>Release Date</label>
@@ -53,42 +32,12 @@
 
 <div>
     <label>Cover</label>
-    <input type="file" name="cover" class="filepond">
+    <input type="file" name="cover" class='filepond cover-upload'>
 </div>
 
 <script>
-
-    // STAFF FIELD CODE
-        var i = 0;
-        document.getElementById("addStaffField").addEventListener("click", function(){
-            i++;
-            var newStaffField = document.createElement("div")
-                newStaffField.setAttribute('id', 'staffField' + i);
-                newStaffField.setAttribute('name', 'staff');
-                newStaffField.setAttribute('value', '<%=book.staff%>')
-                newStaffField.innerHTML = `
-                <select name="staff">
-                <%staff.forEach(staff => { %>
-                        <option selected label= "<%=staff.name%>" value = "<%= staff.id %>">
-                <%})%>
-                </select>
-                `
-            ;
-
-            var br = document.createElement("br")
-                br.setAttribute ('id', 'br'+i)
-
-            document.getElementById("staffFields").appendChild(newStaffField);
-            document.getElementById("staffFields").appendChild(br)
-        });
-
-        document.getElementById("removeStaffField").addEventListener("click", function(){
-            if (i>0) {
-                var removeStaffField = document.getElementById("staffField" + i);
-                var br = document.getElementById("br" + i);
-                document.getElementById("staffFields").removeChild(removeStaffField);
-                document.getElementById("staffFields").removeChild(br);
-                i--;
-            }
-        });
+    $(document).ready(function() {
+        $('.js-example-basic-multiple').select2();
+        $('.js-example-basic-single').select2();
+    });
 </script>
