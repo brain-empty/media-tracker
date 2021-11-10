@@ -1,0 +1,48 @@
+<section class='home'>
+    <!-- insert cover image here later -->
+<div class='media-header'>
+    <div id="header-left">
+        <img src="<%= show.coverImagePath || "/images/missing_show.png"%>">
+    </div>
+    <div>
+        <h2><%=show.name%></h2>
+        <p><%=show.summary%></p>
+    </div id="header-right">
+</div>
+
+<div class='media-body'>
+
+    <div id="body-left">
+        <div>
+            <h3>Tags</h3>
+            <ul>
+            <% for (i=0;i<show.tags.length;i++) { %>
+                <li><%=show.tags[i].name%></li><br>
+            <%}%>
+            </ul>
+        </div>
+
+        <div>
+            <h3>Release Date</h3>
+            <%=show.releaseDate%>
+        </div>
+    </div>
+
+    <div id="body-right">
+        <h3>Staff</h3>
+            <%if ( staff!="" || staff!= null ) {%>
+            <div> <!--list books-->
+                <ul>
+                <% for (let i = 0; i < staff.length; i++){ %>
+                    <li><%=staff[i].name%> - <%=staff[i].works.role[0].name%></li><br>
+                <%}%>
+                </ul>
+                </div>
+            <%}%>
+    </div>
+    
+</div>
+<a href="/shows/<%=show.id%>/edit">Edit</a>
+<%- include ('../partials/deleteForm', {url : `/shows/${show.id}`}) %>
+</form>
+</section>

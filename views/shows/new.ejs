@@ -1,0 +1,26 @@
+<section>
+    <h2>new show</h2>
+    <form action="/shows" method="POST">
+    
+        <div>
+            <label>Name</label>
+            <br>
+            <input type="text" name="name" value="<%= show.name %>"> 
+        </div>
+        
+        <br><br>    
+    
+        <%- include("_form_fields") %>
+        
+    
+    <br><br>
+    
+    <div>
+        <%-include("../partials/addStaff.ejs")%>
+    </div>
+    
+        <br>
+        <a href="/staff">cancel</a>
+        <button type='submit'>add new show</button>
+    </form>
+    </section>

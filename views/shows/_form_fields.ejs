@@ -1,0 +1,43 @@
+<div>
+    <label>Summary</label>
+    <br>
+    <textarea name="summary" class='input-summary'><%= show.summary %></textarea>
+    <br>
+</div>
+
+<br><br>
+
+<div>
+    <label>Tags</label>
+    <div id = tagFields>
+    <select class="input-tags js-example-basic-multiple"  name="tags" multiple="multiple">
+        <%tags.forEach ( tags => {%>
+            <option label= "<%=tags.name%>" value = "<%= tags.id %>"><%=tags.name%></option>
+        <%})%>
+    </select>
+    <br id="br0">
+    </div>
+</div>
+
+<br><br>
+
+<div>
+    <label>Release Date</label>
+    <input type="date" name="releaseDate"
+                value = <%= show.releaseDate == null ? '' :
+                show.releaseDate.toISOString().split('T')[0]  %>
+</div>
+
+<br><br>
+
+<div>
+    <label>Cover</label>
+    <input type="file" name="cover" class='filepond cover-upload'>
+</div>
+
+<script>
+    $(document).ready(function() {
+        $('.js-example-basic-multiple').select2();
+        $('.js-example-basic-single').select2();
+    });
+</script>
