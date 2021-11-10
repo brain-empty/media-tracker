@@ -1,4 +1,4 @@
-<section class='home'>
+<section>
     <!-- insert cover image here later -->
 <div class='media-header'>
     <div id="header-left">
@@ -42,7 +42,10 @@
     </div>
     
 </div>
-<a href="/movies/<%=movie.id%>/edit">Edit</a>
+
+<div style="margin-left:75%;">
+<a class="btn btn-primary" href="/movies/<%=movie.id%>/edit">Edit</a>
 <%- include ('../partials/deleteForm', {url : `/movies/${movie.id}`}) %>
+</div>
 </form>
 </section>

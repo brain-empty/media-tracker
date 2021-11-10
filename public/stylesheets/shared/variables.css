@@ -1,0 +1,8 @@
+:root {
+    --color-bg: rgb(32, 32, 32);
+    --color-primary:rgb(34, 20, 114);
+    --color-btn-primary:rgb(34, 20, 114);
+    --color-btn-danger: rgb(161, 20, 55);
+    --color-base-text: white;
+    --color-base-anchor: white;
+}

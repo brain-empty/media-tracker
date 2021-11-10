@@ -1,23 +1,32 @@
+@import 'shared/variables.css';
+@import 'shared/buttons.css';
+
+:root {
+    font-family: '{Poppins}';
+    font-size: 20px;
+    color: var(--color-base-text);
+}
+
 body {
     padding:0;
     margin:0;
-    background-color:rgb(32, 32, 32);
-    color:white;
-    font-family: 'Poppins', sans-serif;
+    background-color:var(--color-bg);
 }
 
 a {
     text-decoration: none;
-    color:white
+    color: var(--color-base-anchor);
 }
 /* 920 pixel is where the website header needs to be changed. */
+
 header{
     width:100%;
-    background-color:rgb(34, 20, 114);
+    background-color:var(--color-primary);
 }
 
 header nav{
     display:flex;
+    flex-wrap:wrap;
     justify-content: space-between;
     align-items: center;
     padding:20px;
@@ -61,22 +70,6 @@ header li {
     font-size: 14px;
 }
 
-.tempNav a::before{
-    content:'';
-    display: block;
-    height: 5px;
-    width: 100%;
-    background-color: rgb(0, 0, 0);
-    position: absolute;
-    width: 0%;
-    top: 0;
-    transition: all ease-in-out 250ms;
-}
-
-.tempNav a:hover::before{
-    width: 100%;
-}
-
 .home {
     margin-left:30px;
     height:60px;
@@ -95,8 +88,8 @@ header button{
 
 .media-box {
     display:inline-block;
-    height:200px;
-    width:120px; 
+    height:222px;
+    width:140px; 
     position:relative;
     margin-inline:50px;
     margin-block: 40px;
@@ -106,10 +99,10 @@ header button{
     content: ""; 
     position: absolute;
     top:0px;
-    left: 0;
+    left: 10px;
     height:180px;
     width:120px;  
-    background: rgb(63,94,251);
+    background: var(--color-base-hue);
     background: radial-gradient(circle, rgba(255, 255, 255, 0) 0%, rgb(0, 0, 0) 200%);
     opacity: 0;
     transition: all ease-in-out 150ms;
@@ -120,11 +113,16 @@ header button{
     color:white
 }
 
+.media-box p {
+    margin:0px;
+}
+
 .media-box a:hover::after {
     opacity: .8;
 }
 
 .media-box img {
+    margin-inline: 10px;
     height:180px;
     width:120px; 
 }
@@ -134,6 +132,12 @@ header button{
 }
 
 .media-box-more {
+    display:inline-block;
+    height:222px;
+    width:140px; 
+    position:relative;
+    margin-inline:50px;
+    margin-block: 40px;
     margin-block: -165px;
     top:-165px;
 }
