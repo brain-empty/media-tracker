@@ -116,7 +116,6 @@ router.get ('/:id', async (req,res) => {
                     foreignField: "_id",
                     as: "works.role"}}
         ]);
-
         res.render ('books/show', {
             staff : staff,
             book : bookTemp
