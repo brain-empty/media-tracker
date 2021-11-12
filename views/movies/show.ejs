@@ -1,14 +1,24 @@
-<section>
-    <!-- insert cover image here later -->
-<div class='media-header'>
-    <div id="header-left">
-        <img src="<%= movie.coverImagePath || "/images/missing_movie.png"%>">
+<div class='wrapper'>
+        <div class="wallpaper-wrapper">
+            <div class="wallpaper">
+                <!-- using a risky move here to render wallpaper in the bg with gradient, perhaps change later -->
+                    <div class='wallpaper-img' style="
+                    background: linear-gradient(180deg, rgba(0, 0, 0, 0) 0%, rgb(32, 32, 32) 100%),
+                    url('<%=movie.wallpaperImagePath||`/images/missing_wallpaper.png`%>');"></div>
+            </div>
+        
     </div>
-    <div>
-        <h2><%=movie.name%></h2>
-        <p><%=movie.summary%></p>
-    </div id="header-right">
-</div>
+
+
+    <div class='media-header'>
+        <div id="header-left">
+            <img src="<%= movie.coverImagePath || "/images/missing_movie.png"%>">
+        </div>
+        <div id="header-right">
+            <h2><%=movie.name%></h2>
+            <p><%=movie.summary%></p>
+        </div>
+    </div>
 
 <div class='media-body'>
 
@@ -24,7 +34,7 @@
 
         <div>
             <h3>Release Date</h3>
-            <%=movie.releaseDate%>
+            <% if(movie.releaseDate!=null){%><%=movie.releaseDate.toDateString()%><%}%>
         </div>
     </div>
 
@@ -48,4 +58,7 @@
 <%- include ('../partials/deleteForm', {url : `/movies/${movie.id}`}) %>
 </div>
 </form>
+
+</div>
+
 </section>

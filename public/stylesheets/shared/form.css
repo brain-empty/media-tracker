@@ -1,0 +1,11 @@
+.form-section{
+    margin:10px;
+}
+
+.form-gen {
+    margin:5px;
+}
+
+.form-item-no-grow {
+    flex-grow:0;
+}

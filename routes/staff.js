@@ -79,7 +79,7 @@ router.post ('/', async (req, res) => {
 
     try {
         const newStaff = await staff.save()
-        res.redirect (`movies/${newStaff.id}`)
+        res.redirect (`staff/${newStaff.id}`)
         console.log("staff entry sucess")
     } catch {
         console.log("error on creating")
@@ -103,8 +103,6 @@ router.get ('/:id', async (req,res) => {
             staff : staff,
             movies : movies
         })
-        console.log(staff)
-        console.log (movies)
      } catch (err){
         console.log (err)
         res.redirect ('/')

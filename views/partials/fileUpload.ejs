@@ -1,0 +1,32 @@
+<script src="https://unpkg.com/filepond-plugin-image-preview/dist/filepond-plugin-image-preview.js"></script>
+<script src="https://unpkg.com/filepond/dist/filepond.js"></script>
+<script src="https://unpkg.com/filepond-plugin-file-encode/dist/filepond-plugin-file-encode.js"></script>
+<script src="https://unpkg.com/filepond-plugin-image-resize/dist/filepond-plugin-image-resize.js"></script>
+
+<script>
+    //cover
+        // Register the plugin with FilePond
+        FilePond.registerPlugin(FilePondPluginImagePreview, FilePondPluginFileEncode, FilePondPluginImageResize);
+
+        // Get a reference to the file input element
+        const coverUpload = document.querySelector('input[id="coverUp"]');
+
+        // Create the FilePond instance
+        const pondcoverUpload = FilePond.create(coverUpload);
+
+    //wallpaper
+
+        // Get a reference to the file input element
+        const wallUpload = document.querySelector('input[id="wallpaperUp"]');
+
+        // Create the FilePond instance
+        const pondWallUpload = FilePond.create(wallUpload);
+
+    //squareimg
+
+        // Get a reference to the file input element
+        const squareimgUpload = document.querySelector('input[id="squareimgUp"]');
+
+        // Create the FilePond instance
+        const pondSquareimgUpload = FilePond.create(squareimgUpload);
+</script>

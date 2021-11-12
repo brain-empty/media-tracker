@@ -1,5 +1,10 @@
 @import 'shared/variables.css';
 @import 'shared/buttons.css';
+@import 'shared/form.css';
+@import 'shared/header.css';
+@import 'shared/mediabox.css';
+@import 'shared/showmedia.css';
+
 
 :root {
     font-family: '{Poppins}';
@@ -19,152 +24,21 @@ a {
 }
 /* 920 pixel is where the website header needs to be changed. */
 
-header{
-    width:100%;
-    background-color:var(--color-primary);
-}
-
-header nav{
-    display:flex;
-    flex-wrap:wrap;
-    justify-content: space-between;
-    align-items: center;
-    padding:20px;
-    margin-right:50px;
-}
-
-header li {
-    display: inline-block;
-    margin-left: 40px ;
-    position: relative;
-}
-
-.search-box {
-    left:-13%;
-    margin:-10px;
-    padding:0px;
-    position:relative;
-}
-
-.search-box input {
-    position:absolute;
-    height:30px;
-    width:400px;
-}
-
-.search-box button {
-    height:36px;
-    width:36px;
-    position:relative;
-    left:380px;
-}
-
-.tempNav {
-    color: white;
-}
-
-.tempNav a {
-    text-decoration: none;
-    color: white;
-    text-transform: uppercase;
-    font-size: 14px;
-}
-
-.home {
-    margin-left:30px;
-    height:60px;
-}
-
-header button{
-    margin-left:5px;
-    margin-right:5px;
-    height:35px;
-    width:100px;
-}
-
 .topmedia {
     margin-left:40px;
 }
 
-.media-box {
-    display:inline-block;
-    height:222px;
-    width:140px; 
-    position:relative;
-    margin-inline:50px;
-    margin-block: 40px;
+
+
+.media-box-title {
+    height:500px;
 }
 
-.media-box a::after {
-    content: ""; 
-    position: absolute;
-    top:0px;
-    left: 10px;
-    height:180px;
-    width:120px;  
-    background: var(--color-base-hue);
-    background: radial-gradient(circle, rgba(255, 255, 255, 0) 0%, rgb(0, 0, 0) 200%);
-    opacity: 0;
-    transition: all ease-in-out 150ms;
+.show-background img {
+    filter: blur(2px);
+
 }
 
-.media-box a {
-    text-decoration: none;
-    color:white
-}
-
-.media-box p {
-    margin:0px;
-}
-
-.media-box a:hover::after {
-    opacity: .8;
-}
-
-.media-box img {
-    margin-inline: 10px;
-    height:180px;
-    width:120px; 
-}
-
-.media-box img:hover::after {
-    transform: scale(1.5);
-}
-
-.media-box-more {
-    display:inline-block;
-    height:222px;
-    width:140px; 
-    position:relative;
-    margin-inline:50px;
-    margin-block: 40px;
-    margin-block: -165px;
-    top:-165px;
-}
-
-.media-header {
-    background-color:rgb(34, 20, 114);
-    display:grid;
-    grid-column-gap: 30px;
-    grid-template-columns: 200px auto;
-    padding:5px;
-    padding-bottom:5px;
-    margin-inline: 3%; 
-}
-
-.media-header img {
-    height: 300px;
-    width:200px;
-}
-
-.media-body {
-    display:grid;
-    grid-column-gap: 2%;
-    grid-template-columns: 200px auto;
-    padding:5px;
-    padding-bottom:5px;
-    margin-inline: 10%; 
-}
 .input-summary {
     height: 80px;
     width: 30%;

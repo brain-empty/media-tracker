@@ -51,7 +51,7 @@ router.post ('/', async ( req, res ) => {
         summary : req.body.summary,
         tags: req.body.tags,
         releaseDate: setDate
-    }) 
+    })
 
     let movieStaff = {
         staff:[]
@@ -88,17 +88,23 @@ router.post ('/', async ( req, res ) => {
     newMovie.staff = movieStaff.staff
 
     //set cover
-    if (req.body.coverEncoded != null || req.body.cover != null) { 
-        saveCover(newMovie, req.body.cover)
-    }
+        if (req.body.coverEncoded != null || req.body.cover != null) { 
+            saveCover(newMovie, req.body.cover)
+        }
 
-    try {
-        const newMovieTemp = await newMovie.save()
-        res.redirect (`movies/${newMovieTemp.id}`)
-    } catch (err) {
-        console.log(err + " - in last catch statement in router post in movies router")
-        renderNewPage (res, newMovie, true)
-    }
+    //set wallpaper
+        if (req.body.wallpaperEncoded != null || req.body.wallpaper != null) { 
+            saveWallpaper(newMovie, req.body.wallpaper)
+        }
+
+    //save in db and render new page 
+        try {
+            const newMovieTemp = await newMovie.save()
+            res.redirect (`movies/${newMovieTemp.id}`)
+        } catch (err) {
+            console.log(err + " - in last catch statement in router post in movies router")
+            renderNewPage (res, newMovie, true)
+        }
 });
 
 router.get ('/:id', async (req,res) => {
@@ -153,6 +159,11 @@ router.put('/:id', async (req, res) => {
     //set cover
     if (req.body.coverEncoded != null || req.body.cover != null) { 
         saveCover(movie, req.body.cover)
+    }
+
+    //set wallpaper
+    if (req.body.wallpaperEncoded != null || req.body.wallpaper != null) { 
+        saveWallpaper(movie, req.body.wallpaper)
     }
 
     try {
@@ -235,6 +246,17 @@ function saveCover (movie, coverEncoded) {
     if (cover != null && imageMimeTypes.includes(cover.type)) {
         movie.coverImage = new Buffer.from(cover.data, "base64")
         movie.coverImageType = cover.type
+    }
+}
+
+function saveWallpaper (movie, wallpaperEncoded) {
+    if (wallpaperEncoded == null || wallpaperEncoded == "") return
+
+    const wallpaper = JSON.parse(wallpaperEncoded)
+    
+    if (wallpaper != null && imageMimeTypes.includes(wallpaper.type)) {
+        movie.wallpaperImage = new Buffer.from(wallpaper.data, "base64")
+        movie.wallpaperImageType = wallpaper.type
     }
 }
 

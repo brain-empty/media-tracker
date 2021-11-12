@@ -31,8 +31,16 @@
 <br><br>
 
 <div>
-    <label>Cover</label>
-    <input type="file" name="cover" class='filepond cover-upload'>
+    <div>
+        <label>Cover</label>
+        <input id="coverUp" class="form-item-no-grow" type="file" name="cover">
+    </div>
+    <br>
+    <div>
+        <label>Background</label>
+        <input id="wallpaperUp" class="form-item-no-grow" type="file" name="wallpaper">
+    </div>
+    <%- include('../partials/fileUpload.ejs') %>
 </div>
 
 <script>
