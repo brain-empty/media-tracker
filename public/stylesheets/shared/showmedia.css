@@ -63,12 +63,18 @@
 
 .media-body {
     border-radius: 5px;
-    background-color:var(--color-primary);
     display:grid;
     grid-column-gap: 2%;
-    background-color:rgb(34, 20, 114);
     grid-template-columns: 200px auto;
     padding:5px;
     padding-bottom:5px;
     margin-inline: 20%; 
 }
+
+.media-body-children {
+    padding:15px;
+    border-radius: 5px;
+    margin-block:20px;
+    background-color:rgb(22, 22, 22)
+}
+
