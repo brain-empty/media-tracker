@@ -4,6 +4,7 @@
 @import 'shared/header.css';
 @import 'shared/mediabox.css';
 @import 'shared/showmedia.css';
+@import 'shared/auth.css';
 
 
 :root {
@@ -63,6 +64,11 @@ li {
     display: inline-block;
 }
 
-.signup {
+.login {
     padding: 15px;
 }
+
+.register {
+    padding: 15px;
+}
+

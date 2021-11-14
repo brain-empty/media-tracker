@@ -6,25 +6,26 @@ const Staff = require ('../models/staff');
 const Work = require ('../models/work')
 const Tag = require ('../models/tag')
 const mongoose = require ('mongoose');
+const passport = require ('passport');
 
 // file upload with filepond
 const imageMimeTypes = ['image/jpeg', 'image/png', 'image/gif']
 
 //all movies route
 router.get('/', async (req, res) => {
-
     try {
         const movies = await Movie.find()
-        res.render('movies/index', {
-            movies: movies});
+        let passObj = {movies: movies}
+        if (req.user) {passObj.username=req.user.username}
+        res.render('movies/index', passObj);
     } catch (err ){
-        res.redirect ('/');
         console.log('error on loading movies in movies.js (router)' + err);
+        res.redirect ('/');
     }
 });
 
 // new movies (visual form) route
-router.get("/new", async (req,res) => {
+router.get("/new", checkAuthenticated, async (req,res) => {
     try{
         const staff_roles = await Staff_roles.find ()
         const movie = new Movie ()
@@ -34,7 +35,8 @@ router.get("/new", async (req,res) => {
             movie : movie,
             staff : staff,
             roles : staff_roles,
-            tags : tags
+            tags : tags,
+            username : req.user.username
         })
     } catch (err) {
         res.redirect ('/movies')
@@ -43,7 +45,7 @@ router.get("/new", async (req,res) => {
 });
 
 // create movie (process of creating after input is given) route
-router.post ('/', async ( req, res ) => {   
+router.post ('/', checkAuthenticated, async ( req, res ) => {   
     setDate = (req.body.releaseDate != "" ? new Date(req.body.releaseDate) : "")
 
     let newMovie = new Movie ({
@@ -123,17 +125,17 @@ router.get ('/:id', async (req,res) => {
                     as: "works.role"}}
         ]);
 
-        res.render ('movies/show', {
-            staff : staff,
-            movie : movieTemp
-        })
+        let passObj = { staff : staff, movie : movieTemp}
+        if (req.user) {passObj.username=req.user.username}
+        
+        res.render ('movies/show', passObj)
      } catch (err){
         console.log (err)
         res.redirect ('/')
     }
 });
 
-router.get ('/:id/edit', async (req,res) => {
+router.get ('/:id/edit', checkAuthenticated, async (req,res) => {
     try{
         const staff_roles = await Staff_roles.find ()
         const movie = await Movie.findById (req.params.id)
@@ -151,7 +153,7 @@ router.get ('/:id/edit', async (req,res) => {
     }  
 });
 
-router.put('/:id', async (req, res) => {
+router.put('/:id',checkAuthenticated, async (req, res) => {
     setDate = (req.body.releaseDate != "" ? new Date(req.body.releaseDate) : "")
 
     let movie
@@ -185,7 +187,7 @@ router.put('/:id', async (req, res) => {
     }
 });
 
-router.delete ('/:id', async (req,res) => {
+router.delete ('/:id',checkAuthenticated,async (req,res) => {
     let movie
     let id = mongoose.Types.ObjectId(req.params.id);
 
@@ -258,6 +260,14 @@ function saveWallpaper (movie, wallpaperEncoded) {
         movie.wallpaperImage = new Buffer.from(wallpaper.data, "base64")
         movie.wallpaperImageType = wallpaper.type
     }
+}
+
+function checkAuthenticated(req, res, next) {
+    if (req.isAuthenticated()) {
+      return next()
+    }
+  
+    res.redirect('/login')
 }
 
 module.exports = router;

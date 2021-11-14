@@ -8,9 +8,16 @@
                 <button type="submit">s</button>
             </form>
         </div>
+        <%if (locals.username) {%>
+            <div><%= username %>
+                <form action="/logout?_method=DELETE" method="POST">
+                    <button class="logout-btn" type="submit">Logout</button>
+                </form></div>
+        <%} else {%>
             <ul>
-                <li><a href="">Register</a></li>
-                <li><a href="">Log in</a></li>
+                <li><a href="register">Register</a></li>
+                <li><a href="login">Log in</a></li>
             </ul>
+        <%}%>
     </nav>
 </header>

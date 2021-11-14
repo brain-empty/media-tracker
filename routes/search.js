@@ -15,10 +15,15 @@ router.get('/', async (req, res) => {
     try {
         const movies = await Movie.find(searchOptions)
         const staff = await Staff.find(searchOptions)
-        res.render('search', {
+        
+        let passObj = {
             movies: movies, 
             staff: staff,
-            searchOptions: req.query.search })
+            searchOptions: req.query.search
+        }
+        if (req.user) {passObj.username=req.user.username}
+
+        res.render('search', passObj)
 
     } catch (err) {
         console.log('error on searching movies in search.js (router) : ' + err);
