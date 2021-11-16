@@ -10,27 +10,29 @@
         </div id="header-right">
     </div>
     
-    <div>
-        Birthdate: <%=staff.birthdate%>
-    </div>
-    
-    <div>
-        <h3>Works</h3>
-        <%if ( staff.works!="" || staff.works != null ) {%>
-        <div> <!--list books-->
-            <ul>
-            <% staff.works.forEach ( works => { %>
-                </ul>
-                <br>
-                <li>
-                    <%= works.movie.name %> - 
-                    <%= works.role.name %><br>
-                </li>
-            <% }) %>
-
-            </ul>
+    <div class='media-body'>
+        <div class="media-body-children media-body-left">
+            Birthdate: <%=staff.birthdate.toDateString()%>
         </div>
-        <%}%>
+        
+        <div class=" media-body-children media-body-right">
+            <h3>Works</h3>
+            <%if ( staff.works!="" || staff.works != null ) {%>
+            <div> <!--list books-->
+                <ul>
+                <% staff.works.forEach ( works => { %>
+                    </ul>
+                    <br>
+                    <li>
+                        <a href="/movies/<%=works.movie.id%>"><%= works.movie.name %></a> - 
+                        <%= works.role.name %><br>
+                    </li>
+                <% }) %>
+
+                </ul>
+            </div>
+            <%}%>
+        </div>
     </div>
         
     </div>

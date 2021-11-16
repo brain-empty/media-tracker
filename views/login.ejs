@@ -1,15 +1,22 @@
     <section>
-        <%if (messages.error) { %>
-            <%= messages.error%>
-        <%}%>
-        <form method="POST" action="/login" class="login">
-            <label for="email">Email</label>
-            <br>
-            <input type="email" id="email" name="email" required>
-            <br>
-            <label for="password">Password</label>
-            <br>
-            <input type="password" id="password" name="password" required>
-            <button action="submit">register</button>
-        </form>
+        <div class="auth-form-container">
+        <div class="login auth-forms">
+            <%if (messages.error) { %>
+                <%= messages.error%>
+            <%}%>
+            <form method="POST" action="/login" class="login auth-forms">
+                <h2>Login</h2>
+                <label for="email">Email</label>
+                <br>
+                <input type="email" id="email" name="email" required>
+                <br>
+                <label for="password">Password</label>
+                <br>
+                <input type="password" id="password" name="password" required>
+                <br>
+                <button style="margin:20px" class="btn btn-primary" action="submit">Login</button>
+            </form>
+            <p>Don't have an account? <a href="/register">Register</a></p>
+        </div>
+        </div>
     </section>

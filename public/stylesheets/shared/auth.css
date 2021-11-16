@@ -1,5 +1,14 @@
 @import 'shared/variables.css';
 
+.login {
+    padding: 15px;
+}
+
+.register {
+    padding: 15px;
+}
+
+
 .logout-btn {
     border: none;
     color: var(--color-base-text);
@@ -8,4 +17,14 @@
     font-size: 16px;
     cursor: pointer;
     display: inline-block;
+}
+
+.auth-forms-container {
+    display: flex;
+    justify-content: center;
+}
+
+.auth-forms {
+    margin: 0 auto;
+    align-items: center;
 }

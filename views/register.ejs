@@ -1,5 +1,7 @@
-<section>
-    <form action="/register" method="POST" class="register">
+<section class="auth-form-container">
+    <div class="login auth-forms">
+    <form action="/register" method="POST" >
+        <h2>Register</h2>
         <label for="username">Username</label>
         <br>
         <input type="text" id="username" name="username" required>
@@ -15,6 +17,9 @@
         <label for="confirmpassword">Confirm Password</label>
         <br>
         <input type="password" id="confirmpassword" name='confirmpassword' required>
-        <button action="submit">login</button>
+        <br>
+        <button style="margin:20px" class="btn btn-primary" action="submit">Register</button>
     </form>
+    <p>Already have an account? <a href="/login">Login</a></p>
+    </div>
 </section>

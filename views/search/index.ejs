@@ -1,20 +1,20 @@
 <% if (movies != null) {%>
     <div> <!--list movies-->
-    <h6>MOVIES</h6>
-    <% movies.forEach ( movie => { %>
-    <div><%= movie.name%></div>
-    <br>
-    ~
-    <% }) %>
+        <h3>Movies</h3>
+        <ul>
+        <% movies.forEach ( movie => { %>
+            <div class='media-box'><a href="/movies/<%=movie.id%>"><img src="<%= movie.coverImagePath || "images/missing_movie.png"%>"><div class="media-box-title"><%=movie.name%></div></a></div>
+        <% }) %>
+        </ul>
     </div>
 <% } %>
 
 <% if (staff != null) {%>
     <div> <!--list staff-->
     <hr>
-    <h6>STAFF</h6>
+    <h3>STAFF</h3>
     <% staff.forEach ( staff => { %>
-    <div><%= staff.name%></div>
+    <div><a href="/staff/<%=staff.id%>"><%= staff.name%></a></div>
     <br>
     ~
     <% }) %>

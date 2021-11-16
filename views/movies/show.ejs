@@ -1,14 +1,9 @@
-<div class='wrapper'>
-        <div class="wallpaper-wrapper">
-            <div class="wallpaper">
-                <!-- using a risky move here to render wallpaper in the bg with gradient, perhaps change later -->
-                    <div class='wallpaper-img' style="
-                    background: linear-gradient(180deg, rgba(0, 0, 0, 0) 0%, rgb(32, 32, 32) 100%),
-                    url('<%=movie.wallpaperImagePath||`/images/missing_wallpaper.png`%>');"></div>
-            </div>
-        
-    </div>
 
+            <!-- using a risky move here to render wallpaper in the bg with gradient, perhaps change later -->
+                <div  style="
+                background: linear-gradient(180deg, rgba(0, 0, 0, 0) 0%, rgb(32, 32, 32) 100%),
+                url('<%=movie.wallpaperImagePath||`/images/missing_wallpaper.png`%>');margin:0px;position:absolute;width:100%;">
+       
 
     <div class='media-header'>
         <div id="header-left">
@@ -33,8 +28,7 @@
         </div>
 
         <div>
-            <h3>Release Date</h3>
-            <% if(movie.releaseDate!=null){%><%=movie.releaseDate.toDateString()%><%}%>
+            <% if(movie.releaseDate!=null){%><h3>Release Date</h3><%=movie.releaseDate.toDateString()%><%}%>
         </div>
     </div>
 
@@ -44,7 +38,8 @@
             <div> <!--list books-->
                 <ul>
                 <% for (let i = 0; i < staff.length; i++){ %>
-                    <li><%=staff[i].name%> - <%=staff[i].works.role[0].name%></li><br>
+                    <li><a href="/staff/<%=staff.id%>"><%=staff[i].name%></a> - <%=staff[i].works.role[0].name%></li><br>
+                    <div><a href="/staff/<%=staff.id%>"><%= staff.name%></a></div>
                 <%}%>
                 </ul>
                 </div>
@@ -60,5 +55,4 @@
 </form>
 
 </div>
-
-</section>
+</div>

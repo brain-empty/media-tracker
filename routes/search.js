@@ -11,7 +11,6 @@ router.get('/', async (req, res) => {
         // regexp makes the program search for the string even if it's not a full match (ke search would match kevin)
         // 'i' states that it's not case sensitive
     }
-
     try {
         const movies = await Movie.find(searchOptions)
         const staff = await Staff.find(searchOptions)
