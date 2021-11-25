@@ -32,5 +32,14 @@
         <%- include('../partials/header.ejs') %>
         <%- include('../partials/errorMessage.ejs') %>
         <%- body %>
+
+    <script>
+        $(document).ready(function() {
+            $('.js-example-basic-multiple').select2({
+            });
+            $('.js-example-basic-single').select2({
+            });
+        });
+    </script>
     </body>
 </html>

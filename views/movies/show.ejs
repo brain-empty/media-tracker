@@ -3,7 +3,6 @@
                 <div  style="
                 background: linear-gradient(180deg, rgba(0, 0, 0, 0) 0%, rgb(32, 32, 32) 100%),
                 url('<%=movie.wallpaperImagePath||`/images/missing_wallpaper.png`%>');margin:0px;position:absolute;width:100%;">
-       
 
     <div class='media-header'>
         <div id="header-left">
@@ -14,10 +13,18 @@
             <p><%=movie.summary%></p>
         </div>
     </div>
+            
+    <a href="/movies/<%=movie.id%>/track" class="btn btn-primary btn-track">Track</a>
 
 <div class='media-body'>
 
     <div class="media-body-children media-body-left">
+
+        <%if (movie.avgRating!=null) {%>
+            <h3>Rating</h3>
+            <%=movie.avgRating%>
+        <%}%>
+
         <div>
             <h3>Tags</h3>
             <ul>

@@ -49,6 +49,7 @@ app.use (passport.session())
     const staffRouter = require ('./routes/staff');
     const searchRouter = require ('./routes/search');
     const booksRouter = require ('./routes/books');
+    const userRouter = require ('./routes/user');
 
 //routes setting
     app.use('/', indexRouter);
@@ -56,6 +57,7 @@ app.use (passport.session())
     app.use('/staff', staffRouter);
     app.use('/search', searchRouter);
     app.use('/books', booksRouter);
+    app.use('/user', userRouter);
 
 //user auth
     // user auth setup 
@@ -79,8 +81,22 @@ app.use (passport.session())
 
     //save user 
         app.post('/register', checkNotAuthenticated, async (req,res) => {
-            if (req.body.password!=req.body.confirmpassword){
-                console.log('mismatch password')
+            checkUser = await User.find({ username : req.body.username})
+            checkEmail = await User.find({ email : req.body.email})
+
+            if (checkEmail.length!=0){
+                res.render('register', {
+                    errorMessage:'Email is already being used for another account.',
+                    username:req.body.username,
+                    email:req.body.email
+                })
+            } else if (checkUser.length!=0) {
+                res.render('register', {
+                    errorMessage:'Username is already taken.',
+                    username:req.body.username,
+                    email:req.body.email
+                })
+            }  else if (req.body.password!=req.body.confirmpassword) {
                 res.render('register', {
                     errorMessage:'Passwords do not match.',
                     username:req.body.username,

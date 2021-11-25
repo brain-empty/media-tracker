@@ -10,9 +10,9 @@
 <div>
     <label>Tags</label>
     <div id = tagFields>
-    <select class="input-tags js-example-basic-multiple"  name="tags" multiple="multiple">
+    <select style="color:black" class="input-tags js-example-basic-multiple"  name="tags" multiple="multiple">
         <%tags.forEach ( tags => {%>
-            <option label= "<%=tags.name%>" value = "<%= tags.id %>"><%=tags.name%></option>
+            <option  label= "<%=tags.name%>" value = "<%= tags.id %>"><%=tags.name%></option>
         <%})%>
     </select>
     <br id="br0">
@@ -31,6 +31,13 @@
 <br><br>
 
 <div>
+    <label>Your rating</label>
+    <input type="text" name="rating">
+</div>
+
+<br><br>
+
+<div>
     <div>
         <label>Cover</label>
         <input id="coverUp" class="form-item-no-grow" type="file" name="cover">
@@ -42,10 +49,3 @@
     </div>
     <%- include('../partials/fileUpload.ejs') %>
 </div>
-
-<script>
-    $(document).ready(function() {
-        $('.js-example-basic-multiple').select2();
-        $('.js-example-basic-single').select2();
-    });
-</script>

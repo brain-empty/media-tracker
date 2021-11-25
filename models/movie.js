@@ -30,8 +30,12 @@ const movieSchema = new mongoose.Schema({
     },
     wallpaperImageType: {
         type: Buffer
-    }
-
+    },
+    ratings: [{
+        rating: { type:Number },
+        review: {type:String},
+        user: {type:mongoose.Schema.Types.ObjectId, ref : "User"}
+    }]
 });
 
 movieSchema.virtual('coverImagePath').get(function() {
@@ -43,6 +47,17 @@ movieSchema.virtual('coverImagePath').get(function() {
 movieSchema.virtual('wallpaperImagePath').get(function() {
     if (this.wallpaperImage != null && this.wallpaperImageType != null) {
       return `data:${this.wallpaperImageType};charset=utf-8;base64,${this.wallpaperImage.toString('base64')}`
+    }
+})
+
+movieSchema.virtual('avgRating').get(function() {
+    if (this.ratings.length != 0) {
+        var avgRating=0;
+        this.ratings.forEach ( ratings => {
+            avgRating = avgRating + ratings.rating;
+        })
+        avgRating = avgRating/this.ratings.length;
+        return avgRating;
     }
 })
 

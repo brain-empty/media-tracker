@@ -8,8 +8,15 @@ const userSchema = new mongoose.Schema  ({
     email : {
         type : String,
         required : true,
-
     },
+    movies : [{
+        movie : {type:mongoose.Schema.Types.ObjectId, ref : "Movie"},
+        watchStatus : {type:String},
+        date : {type:Date},
+        rewatches: {type:Number}
+    }],
+    books : {},
+    shows : {},
     password : {
         type : String, 
         required : true

@@ -20,7 +20,7 @@ router.get('/', async (req, res) => {
             staff: staff,
             searchOptions: req.query.search
         }
-        if (req.user) {passObj.username=req.user.username}
+        if (req.user) {passObj.user=req.user}
 
         res.render('search', passObj)
 

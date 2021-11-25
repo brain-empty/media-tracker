@@ -6,7 +6,7 @@ const Staff = require ('../models/staff');
 router.get('/', async (req, res) => {
     const movies = await Movie.find().limit(5);
     let passObj = {movies:movies}
-    if (req.user) {passObj.username = req.user.username}
+    if (req.user) {passObj.user = req.user}
     res.render('index', passObj);
 })
 

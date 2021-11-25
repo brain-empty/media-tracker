@@ -1,0 +1,34 @@
+<form action='/movies/<%=movie.id%>/track/submit'>
+<div>
+    <label>Watch status</label>
+    <br>
+    <select class="js-example-basic-single" style="width:300px" name="watchStatus">
+        <option value="Watched">Watched</option>
+        <option value="Plan to watch">Plan to watch</option>
+    </select>
+</div>
+
+<div>
+    <label>Watch Date</label>
+    <input type="date" name="watchDate">
+</div>
+
+<div>
+    <label>Number of rewatches</label>
+    <input type="number" name="rewatches" min="0">
+</div>
+
+<div>
+    <label>Rating</label>
+        <br>
+            <input type="number" name="userRating" min="1" max="100">
+        <br>
+    <label>Leave a review (optional)</label>
+    <br>
+        <textarea name="userReview" class='input-summary'></textarea>
+</div>
+<button type="submit">Submit</button>
+</form>
+
+<br><br>
+

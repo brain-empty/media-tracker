@@ -8,8 +8,8 @@
                 <button type="submit">s</button>
             </form>
         </div>
-        <%if (locals.username) {%>
-            <div><%= username %>
+        <%if (locals.user) {%>
+            <div><a href="/user/<%=user.id%>"><%= user.username %></a>
                 <form action="/logout?_method=DELETE" method="POST">
                     <button class="logout-btn" type="submit">Logout</button>
                 </form></div>

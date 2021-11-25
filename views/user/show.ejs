@@ -1,0 +1,19 @@
+<%=user.username%>
+
+<%if (user.movies!=0) {%>
+    <h2>Movies</h2>
+
+    <h3>Watched</h3>
+        <%user.movies.forEach ( movies => { %>
+            <%if (movies.watchStatus == 'Watched') {%>
+                <%=movies.movie.name%>
+            <%}%>
+        <%})%>
+
+    <h3>Planned</h3>
+        <%user.movies.forEach ( movies => { %>
+            <%if (movies.watchStatus == 'Plan to watch') {%>
+                <%=movies.movie.name%>
+            <%}%>
+        <%})%>
+<%}%>

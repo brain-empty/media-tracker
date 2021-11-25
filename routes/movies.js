@@ -5,6 +5,7 @@ const Staff_roles = require ('../models/staff_roles');
 const Staff = require ('../models/staff');
 const Work = require ('../models/work')
 const Tag = require ('../models/tag')
+const User = require ('../models/user')
 const mongoose = require ('mongoose');
 const passport = require ('passport');
 
@@ -16,7 +17,7 @@ router.get('/', async (req, res) => {
     try {
         const movies = await Movie.find()
         let passObj = {movies: movies}
-        if (req.user) {passObj.username=req.user.username}
+        if (req.user) {passObj.user=req.user}
         res.render('movies/index', passObj);
     } catch (err ){
         console.log('error on loading movies in movies.js (router)' + err);
@@ -52,7 +53,7 @@ router.post ('/', checkAuthenticated, async ( req, res ) => {
         name : req.body.name,
         summary : req.body.summary,
         tags: req.body.tags,
-        releaseDate: setDate
+        releaseDate: setDate       
     })
 
     let movieStaff = {
@@ -126,7 +127,7 @@ router.get ('/:id', async (req,res) => {
         ]);
 
         let passObj = { staff : staff, movie : movieTemp}
-        if (req.user) {passObj.username=req.user.username}
+        if (req.user) {passObj.user=req.user}
         
         res.render ('movies/show', passObj)
      } catch (err){
@@ -187,6 +188,84 @@ router.put('/:id',checkAuthenticated, async (req, res) => {
     }
 });
 
+router.get ('/:id/track', checkAuthenticated, async (req,res) => {
+    try{
+        console.log(req.params.id)
+        const movie = await Movie.findById (req.params.id)
+        const user = await User.findById (req.user.id)
+        res.render('movies/track', {
+            movie : movie,
+            user : user
+        })
+    } catch (err) {
+        res.redirect ('/movies')
+        console.log("ERROR: movies router get /track request is broken. err : " + err)
+    }  
+})
+
+router.get('/:id/track/submit',checkAuthenticated, async (req, res) => {
+    try {
+        const entryUserFound = await User.find({"movies.movie": req.params.id})
+
+        console.log(entryUserFound)
+        if (entryUserFound.length!=0) {
+            console.log("if user")
+            await User.updateOne(
+                { _id: req.user.id, "movies.movie": req.params.id },
+                { $set: {
+                            'movies.$.watchStatus' : req.query.watchStatus,
+                            'movies.$.date' : req.query.watchDate,
+                            'movies.$.rewatches' : req.query.rewatches
+                        }
+                }
+            )
+        } else {
+            console.log("else user")
+            const movieEntry = {
+                movie : req.params.id,
+                watchStatus : req.query.watchStatus,
+                date : req.query.watchDate,
+                rewatches: req.query.rewatches
+            }
+    
+            await User.findByIdAndUpdate(req.user.id,
+                {$push: {movies: movieEntry}},
+                {safe: true, upsert: true}
+            )
+        }
+        
+        
+        const ratingFound = await Movie.find({"ratings.user": req.user.id}) //checking if rating already exists
+
+        if (ratingFound.length!=0) {       //if rating array doesn't have an element then just add a new one w
+            await Movie.updateOne(
+                { _id: req.params.id, "ratings.user": req.user.id },
+                { $set: {
+                            "ratings.$.rating" : req.query.userRating, 
+                            'ratings.$.review':req.query.userReview
+                        }
+                }
+            )
+        } else {                            //else modify old one
+            const rating = {
+                rating:req.query.userRating, 
+                review:req.query.userReview, 
+                user:req.user.id
+            }
+
+            await Movie.findByIdAndUpdate(req.params.id,
+                {$push: {ratings: rating}},
+                {safe: true, upsert: true}
+            )
+        }
+        
+        res.redirect('/movies/:id')
+    } catch (err) { 
+        console.log(err)
+        res.redirect('/:id/track/submit')
+    }
+})
+
 router.delete ('/:id',checkAuthenticated,async (req,res) => {
     let movie
     let id = mongoose.Types.ObjectId(req.params.id);
@@ -196,9 +275,15 @@ router.delete ('/:id',checkAuthenticated,async (req,res) => {
         movie = await Movie.findById(req.params.id)
 
         //remove works relating to this movie
-        let staff = await Staff.updateMany(
+        await Staff.updateMany(
             { 'works.movie':id },
             { $pull : { works : { movie : id}}}
+        )
+
+        //remove tracks relating to this movie
+        await User.updateMany (
+            { 'movies.movie':id },
+            { $pull : {movies :  {movie : id }} }
         )
 
         //delete movie
