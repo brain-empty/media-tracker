@@ -32,13 +32,14 @@ router.get("/new", checkAuthenticated, async (req,res) => {
         const movie = new Movie ()
         const staff = await Staff.find()
         const tags = await Tag.find()
-        res.render('movies/new', {
+        let passObj = { movie : movie,
             movie : movie,
             staff : staff,
             roles : staff_roles,
             tags : tags,
-            username : req.user.username
-        })
+        }
+        if (req.user) {passObj.user=req.user}
+        res.render('movies/new', passObj)
     } catch (err) {
         res.redirect ('/movies')
         console.log("ERROR: movies router get /new request is broken. err : " + err)
@@ -142,12 +143,13 @@ router.get ('/:id/edit', checkAuthenticated, async (req,res) => {
         const movie = await Movie.findById (req.params.id)
         const staff = await Staff.find()
         const tags = await Tag.find()
-        res.render('movies/edit', {
-            movie : movie,
+        let passObj = { movie : movie,
             staff : staff,
             roles : staff_roles,
             tags : tags
-        })
+        }
+        if (req.user) {passObj.user=req.user}
+        res.render('movies/edit',passObj)
     } catch (err) {
         res.redirect ('/movies')
         console.log("ERROR: movies router get /edit request is broken. err : " + err)
