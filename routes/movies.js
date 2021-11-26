@@ -195,9 +195,14 @@ router.put('/:id',checkAuthenticated, async (req, res) => {
 
 router.get ('/:id/track', checkAuthenticated, async (req,res) => {
     try{
-        console.log(req.params.id)
+        const movieId = mongoose.Types.ObjectId(req.params.id);
+        const userId = mongoose.Types.ObjectId(req.user.id);
         const movie = await Movie.findById (req.params.id)
-        const user = await User.findById (req.user.id)
+        const userArr = await User.aggregate([
+            { $match:{'_id':userId}},
+            { $unwind : '$movies'},
+        ]);
+        const user = userArr[0]
         res.render('movies/track', {
             movie : movie,
             user : user
@@ -258,13 +263,13 @@ router.get('/:id/track/submit',checkAuthenticated, async (req, res) => {
                 user:req.user.id
             }
 
-            await Movie.findByIdAndUpdate(req.params.id,
+            const newMovietemp = await Movie.findByIdAndUpdate(req.params.id,
                 {$push: {ratings: rating}},
                 {safe: true, upsert: true}
             )
         }
         
-        res.redirect('/movies/:id')
+        res.redirect (`movies/${newMovieTemp.id}`)
     } catch (err) { 
         console.log(err)
         res.redirect('/:id/track/submit')
