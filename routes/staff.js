@@ -12,7 +12,7 @@ router.get('/', async (req, res) => {
         //.populate('work.role').exec()
         let passObj = { staff : staff}
         if (req.user) {passObj.user=req.user}
-        res.render('staff/index', passObj})
+        res.render('staff/index', passObj)
     } catch {
         res.redirect ('/');
         console.log('error on loading staff/new in staff.js (router)');
@@ -114,7 +114,7 @@ router.get ('/:id', async (req,res) => {
     }
 })
 
-router.get ('/:id/edit', checkAuntheticated, async (req,res) => {
+router.get ('/:id/edit', checkAuthenticated, async (req,res) => {
     try{
         const staff_roles = await Staff_roles.find ({})
         const movies = await Movie.find({})
@@ -131,7 +131,7 @@ router.get ('/:id/edit', checkAuntheticated, async (req,res) => {
     }  
 })
 
-router.put ('/:id', checkAunthenticated, async (req,res) => {
+router.put ('/:id', checkAuthenticated, async (req,res) => {
     setDate = (req.body.birthdate != "" ? new Date(req.body.birthdate) : "")
     let staff
 
@@ -154,7 +154,7 @@ router.put ('/:id', checkAunthenticated, async (req,res) => {
     }
 })
 
-router.delete ('/:id', checkAunthenticated, async (req,res) => {
+router.delete ('/:id', checkAuthenticated, async (req,res) => {
     let staff
     let id = mongoose.Types.ObjectId(req.params.id);
 
