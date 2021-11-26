@@ -198,11 +198,17 @@ router.get ('/:id/track', checkAuthenticated, async (req,res) => {
         const movieId = mongoose.Types.ObjectId(req.params.id);
         const userId = mongoose.Types.ObjectId(req.user.id);
         const movie = await Movie.findById (req.params.id)
-        const userArr = await User.aggregate([
-            { $match:{'_id':userId}},
-            { $unwind : '$movies'},
-        ]);
-        const user = userArr[0]
+
+        let user = await User.findById (req.user.id)
+        if (user.movies.length!=0) {
+            const userArr = await User.aggregate([
+                { $match:{'_id':userId}},
+                { $unwind : '$movies'},
+                {$match:{'movies.movie':movieId}}
+            ]);
+            user = userArr[0]
+        }
+
         res.render('movies/track', {
             movie : movie,
             user : user
