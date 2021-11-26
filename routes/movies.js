@@ -32,13 +32,16 @@ router.get("/new", checkAuthenticated, async (req,res) => {
         const movie = new Movie ()
         const staff = await Staff.find()
         const tags = await Tag.find()
-        let passObj = { movie : movie,
+
+        let passObj = { 
             movie : movie,
             staff : staff,
             roles : staff_roles,
-            tags : tags,
+            tags : tags
         }
+
         if (req.user) {passObj.user=req.user}
+
         res.render('movies/new', passObj)
     } catch (err) {
         res.redirect ('/movies')

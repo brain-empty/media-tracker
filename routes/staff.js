@@ -10,8 +10,9 @@ router.get('/', async (req, res) => {
     try {
         const staff = await Staff.find()
         //.populate('work.role').exec()
-        res.render('staff/index', {
-            staff: staff })
+        let passObj = { staff : staff}
+        if (req.user) {passObj.user=req.user}
+        res.render('staff/index', passObj})
     } catch {
         res.redirect ('/');
         console.log('error on loading staff/new in staff.js (router)');
@@ -19,16 +20,18 @@ router.get('/', async (req, res) => {
 });
 
 //new staff (visual form) route
-router.get("/new", async (req,res) => {
+router.get("/new", checkAuthenticated, async (req,res) => {
     try{
         const staff_roles = await Staff_roles.find ({})
         const movies = await Movie.find({})
         const staff = new Staff ([])
-        res.render('staff/new', {
+        let passObj = { 
             movies:movies,
             staff : staff,
             staff_roles : staff_roles
-        })
+        }
+        if (req.user) {passObj.user=req.user}
+        res.render('staff/new', passObj)
     } catch (err) {
         res.redirect ('/staff')
         console.log("ERROR: movies router get /new request is broken. err : " + err)
@@ -36,7 +39,7 @@ router.get("/new", async (req,res) => {
 });
 
 // create staff (process of creating after input is given) route
-router.post ('/', async (req, res) => {
+router.post ('/', checkAuthenticated, async (req, res) => {
 
     setDate = (req.body.birthdate != "" ? new Date(req.body.birthdate) : "")
 
@@ -99,33 +102,36 @@ router.get ('/:id', async (req,res) => {
     try {
         const staff = await Staff.findById(req.params.id).populate('works.movie works.role').exec()
         const movies = await Movie.find({ staff : staff.id})
-        res.render ('staff/show', {
+        let passObj = { 
             staff : staff,
             movies : movies
-        })
+        }
+        if (req.user) {passObj.user=req.user}
+        res.render ('staff/show', passObj)
      } catch (err){
-        console.log (err)
+        console.log (err + " in /:id get router in staff.js")
         res.redirect ('/')
     }
 })
 
-router.get ('/:id/edit', async (req,res) => {
+router.get ('/:id/edit', checkAuntheticated, async (req,res) => {
     try{
         const staff_roles = await Staff_roles.find ({})
         const movies = await Movie.find({})
         const staff = await Staff.findById (req.params.id)
-        res.render('staff/edit', {
-            movies : movies,
+        let passObj = { 
             staff : staff,
-            staff_roles : staff_roles
-        })
+            movies : movies
+        }
+        if (req.user) {passObj.user=req.user}
+        res.render('staff/edit', passObj)
     } catch (err) {
         res.redirect (`/staff/${req.params.id}`)
         console.log("ERROR: staff router get /edit request is broken. err : " + err)
     }  
 })
 
-router.put ('/:id', async (req,res) => {
+router.put ('/:id', checkAunthenticated, async (req,res) => {
     setDate = (req.body.birthdate != "" ? new Date(req.body.birthdate) : "")
     let staff
 
@@ -148,7 +154,7 @@ router.put ('/:id', async (req,res) => {
     }
 })
 
-router.delete ('/:id', async (req,res) => {
+router.delete ('/:id', checkAunthenticated, async (req,res) => {
     let staff
     let id = mongoose.Types.ObjectId(req.params.id);
 
@@ -178,9 +184,12 @@ router.delete ('/:id', async (req,res) => {
     }
 })
 
-
-router.delete ('/:id', (req,res) => {
-    
-})
+function checkAuthenticated(req, res, next) {
+    if (req.isAuthenticated()) {
+      return next()
+    }
+  
+    res.redirect('/login')
+}
 
 module.exports = router;
