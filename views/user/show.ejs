@@ -2,18 +2,18 @@
 
 <%if (user.movies!=0) {%>
     <h2>Movies</h2>
-
+    <%console.log(user.movies)%>
     <h3>Watched</h3>
         <%user.movies.forEach ( movies => { %>
             <%if (movies.watchStatus == 'Watched') {%>
-                <div class='media-box'><a href="/movies/<%=movie.id%>"><img src="<%= movie.coverImagePath || "images/missing_movie.png"%>"><div class="media-box-title"><%=movie.name%></div></a></div>
+                <div class='media-box'><a href="/movies/<%=user.movies.id%>"><img src="<%= user.movies.coverImagePath || "images/missing_movie.png"%>"><div class="media-box-title"><%=user.movies.name%></div></a></div>
             <%}%>
         <%})%>
 
     <h3>Planned</h3>
         <%user.movies.forEach ( movies => { %>
             <%if (movies.watchStatus == 'Plan to watch') {%>
-                <div class='media-box'><a href="/movies/<%=movie.id%>"><img src="<%= movie.coverImagePath || "images/missing_movie.png"%>"><div class="media-box-title"><%=movie.name%></div></a></div>
+                <div class='media-box'><a href="/movies/<%=user.movies.id%>"><img src="<%= user.movies.coverImagePath || "images/missing_movie.png"%>"><div class="media-box-title"><%=user.movies.name%></div></a></div>
             <%}%>
         <%})%>
 <%}%>

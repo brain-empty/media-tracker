@@ -8,10 +8,8 @@ const mongoose = require ('mongoose');
 router.get ('/:id', async (req,res) => {
     try {
         const user = await User.findById(req.params.id).populate('movies.movie').exec();
-
         let passObj = { user:user }
         if (req.user) {passObj.username=req.user.username}
-        
         res.render ('user/show', passObj)
      } catch (err){
         console.log (err)

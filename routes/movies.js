@@ -216,10 +216,7 @@ router.get ('/:id/track', checkAuthenticated, async (req,res) => {
 router.get('/:id/track/submit',checkAuthenticated, async (req, res) => {
     try {
         const entryUserFound = await User.find({"movies.movie": req.params.id})
-
-        console.log(entryUserFound)
         if (entryUserFound.length!=0) {
-            console.log("if user")
             await User.updateOne(
                 { _id: req.user.id, "movies.movie": req.params.id },
                 { $set: {
@@ -230,7 +227,6 @@ router.get('/:id/track/submit',checkAuthenticated, async (req, res) => {
                 }
             )
         } else {
-            console.log("else user")
             const movieEntry = {
                 movie : req.params.id,
                 watchStatus : req.query.watchStatus,
@@ -263,13 +259,13 @@ router.get('/:id/track/submit',checkAuthenticated, async (req, res) => {
                 user:req.user.id
             }
 
-            const newMovietemp = await Movie.findByIdAndUpdate(req.params.id,
+            await Movie.findByIdAndUpdate(req.params.id,
                 {$push: {ratings: rating}},
                 {safe: true, upsert: true}
             )
         }
-        
-        res.redirect (`movies/${newMovieTemp.id}`)
+        const newMovieTemp = Movie.findById(req.params.id)
+        res.redirect (`/movies/${req.params.id}`)
     } catch (err) { 
         console.log(err)
         res.redirect('/:id/track/submit')
