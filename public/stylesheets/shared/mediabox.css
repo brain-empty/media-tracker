@@ -50,3 +50,7 @@
     margin-block: -165px;
     top:-165px;
 }
+
+.media-box-title {
+    height:0px;
+}

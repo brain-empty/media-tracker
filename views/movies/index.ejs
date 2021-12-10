@@ -2,11 +2,9 @@
     <br>
 <br>
 <div> <!--list movies-->
-    <ul>
     <% movies.forEach ( movie => { %>
         <div class='media-box'><a href="/movies/<%=movie.id%>"><img src="<%= movie.coverImagePath || "images/missing_movie.png"%>"><div class="media-box-title"><%=movie.name%></div></a></div>
     <% }) %>
-    </ul>
 </div>
 
 <p class="add-new">Can't find what you're looking for? <a href="movies/new">Add a new movie.</a></p>

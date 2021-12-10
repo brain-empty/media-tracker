@@ -83,7 +83,6 @@ router.post ('/', checkAuthenticated, async ( req, res ) => {
                 role: req.body.roles,
                 movie : newMovie.id
             })
-            console.log(work)
             movieStaff.staff.push(work.id)
             await Staff.findByIdAndUpdate(req.body.staff,
                 {$push: {works: work}},
@@ -192,6 +191,86 @@ router.put('/:id',checkAuthenticated, async (req, res) => {
         } 
     }
 });
+
+router.get ('/:id/addstaff', checkAuthenticated, async (req,res) => {
+    try{
+        console.log(req.params.id)
+        const staff_roles = await Staff_roles.find ()
+        const staff = await Staff.find()
+        let movie = {
+            id : req.params.id
+        }
+        let passObj = { 
+            movie : movie,
+            staff : staff,
+            roles : staff_roles,
+        }
+        if (req.user) {passObj.user=req.user}
+        res.render('movies/addstaff', passObj)
+    } catch (err) {
+        res.redirect ('/movies')
+        console.log("ERROR: movies router get /new request is broken. err : " + err)
+    }  
+})
+
+router.get ('/:id/addstaff/submit', checkAuthenticated, async (req,res) => {
+    try {
+
+        let movie = {
+            id : req.params.id
+        }
+
+        let movieStaff = {
+            staff:[]
+        }
+
+        if (Array.isArray(req.body.staff)) {
+            for (i=0; i < req.body.staff.length; i++) {
+                let staff = req.query.staff[i]
+                console.log(staff)
+                const work = new Work ({
+                    role: req.body.roles[i],
+                    movie : movie.id
+                })
+
+                movieStaff.staff.push(work.id)
+
+                await Staff.findByIdAndUpdate(req.query.staff[i],
+                    {$push: {works: work}},
+                    {safe: true, upsert: true}
+                );
+
+                await Movie.findByIdAndUpdate(movie.id,
+                    {$push: {staff:staff}},
+                    {safe:true, upsert:true}
+                );
+            }
+        } else {
+            let staff = req.query.staff
+            console.log(staff)
+            let work = new Work ({
+                role: req.query.roles,
+                movie : movie.id
+            })
+            movieStaff.staff.push(work.id)
+            await Staff.findByIdAndUpdate(req.query.staff,
+                {$push: {works: work}},
+                {safe: true, upsert: true}
+            );
+            await Movie.findByIdAndUpdate(movie.id,
+                {$push: {staff:staff}},
+                {safe:true, upsert:true}
+            );
+        }
+
+        res.redirect (`/movies/${req.params.id}`)
+        // setting movie staff
+        
+    } catch (e) {
+        console.log("broke" + e)
+    }
+})
+
 
 router.get ('/:id/track', checkAuthenticated, async (req,res) => {
     try{
