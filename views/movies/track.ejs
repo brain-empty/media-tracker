@@ -2,14 +2,20 @@
 <div>
     <label>Watch status</label>
     <br>
+<<<<<<< HEAD
   
     <select class="js-example-basic-single" style="width:300px" name="watchStatus">
         <%console.log(user)%>
         <%if ( user.movies.watchStatus == 'Watched') {%><option selected value="Watched">Watched</option>
         <%} else {%><option value="Watched">Watched</option> <%}%>
+=======
+    <select class="js-example-basic-single" style="width:300px" name="watchStatus">
+            <%if ( user.movies.watchStatus == 'Watched') {%><option selected value="Watched">Watched</option>
+            <%} else {%><option value="Watched">Watched</option> <%}%>
+>>>>>>> e16ffcf3d6b2edec59f9db7333e8a6dc59dae9bd
 
-        <%if ( user.movies.watchStatus == 'Plan to watch') {%><option selected value="Plan to watch">Plan To Watch</option><%%>
-        <%} else {%><option value="Plan to watch">Plan to watch</option> <%}%>
+            <%if ( user.movies.watchStatus == 'Plan to watch') {%><option selected value="Plan to watch">Plan To Watch</option><%%>
+            <%} else {%><option value="Plan to watch">Plan to watch</option> <%}%>
     </select>
 </div>
 
@@ -20,7 +26,6 @@
 
 <div>
     <label>Number of rewatches</label>
-    <%console.log(user.movies.rewatches)%>
     <input type="number" name="rewatches" value='<%user.movies.rewatches%>' min="0">
 </div>
 

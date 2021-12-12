@@ -17,9 +17,12 @@
     font-size: 16px;
     cursor: pointer;
     display: inline-block;
+    
 }
 
 .auth-forms-container {
+    margin-left:-11%;
+    text-align: center;
     display: flex;
     justify-content: center;
 }
@@ -27,4 +30,5 @@
 .auth-forms {
     margin: 0 auto;
     align-items: center;
+    text-align: center;
 }

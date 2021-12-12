@@ -9,10 +9,10 @@
 
 <div>
     <label>Tags</label>
-    <div id = tagFields>
-    <select style="color:black" class="input-tags js-example-basic-multiple"  name="tags" multiple="multiple">
+    <div style="color:black" id = tagFields>
+    <select  class="input-tags js-example-basic-multiple"  name="tags" multiple="multiple">
         <%tags.forEach ( tags => {%>
-            <option  label= "<%=tags.name%>" value = "<%= tags.id %>"><%=tags.name%></option>
+            <option label= "<%=tags.name%>" value = "<%= tags.id %>"><%=tags.name%></option>
         <%})%>
     </select>
     <br id="br0">

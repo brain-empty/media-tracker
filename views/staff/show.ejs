@@ -12,7 +12,10 @@
     
     <div class='media-body'>
         <div class="media-body-children media-body-left">
-            Birthdate: <%=staff.birthdate.toDateString()%>
+            <%if (staff.birthdate) {%>
+                <%console.log("why you run this")%>
+                Birthdate: <%=staff.birthdate.toDateString()%>
+            <%}%>
         </div>
         
         <div class=" media-body-children media-body-right">

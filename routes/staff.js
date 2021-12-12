@@ -106,6 +106,7 @@ router.get ('/:id', async (req,res) => {
             staff : staff,
             movies : movies
         }
+        console.log(staff);
         if (req.user) {passObj.user=req.user}
         res.render ('staff/show', passObj)
      } catch (err){
