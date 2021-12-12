@@ -4,7 +4,7 @@
 <div> <!--list books-->
     <ul>
     <% books.forEach ( book => { %>
-        <div class='media-box'><a href="/books/<%=book.id%>"><img src="<%= book.coverImagePath || "images/missing_book.png"%>"><%=book.name%></a></div>
+        <div class='media-box'><a href="/books/<%=book.id%>"><img src="<%= book.coverImagePath || "images/missing_movie.png"%>"><%=book.name%></a></div>
     <% }) %>
     </ul>
 </div>

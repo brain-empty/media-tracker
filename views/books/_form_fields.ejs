@@ -10,9 +10,9 @@
 <div>
     <label>Tags</label>
     <div id = tagFields>
-    <select class="input-tags js-example-basic-multiple"  name="tags" multiple="multiple">
+    <select style="color:black" class="input-tags js-example-basic-multiple"  name="tags" multiple="multiple">
         <%tags.forEach ( tags => {%>
-            <option label= "<%=tags.name%>" value = "<%= tags.id %>"><%=tags.name%></option>
+            <option  label= "<%=tags.name%>" value = "<%= tags.id %>"><%=tags.name%></option>
         <%})%>
     </select>
     <br id="br0">
@@ -22,22 +22,29 @@
 <br><br>
 
 <div>
-    <label>Release Date</label>
+    <label>Publish Date</label>
     <input type="date" name="releaseDate"
                 value = <%= book.releaseDate == null ? '' :
-                book.releaseDate.toISOString().split('T')[0]  %>
+                book.releaseDate.toISOString().split('T')[0]  %>>
 </div>
 
 <br><br>
 
 <div>
-    <label>Cover</label>
-    <input id="coverUp" type="file" name="cover" class='filepond cover-upload'>
+    <label>Your rating</label>
+    <input type="text" name="rating">
 </div>
 
-<script>
-    $(document).ready(function() {
-        $('.js-example-basic-multiple').select2();
-        $('.js-example-basic-single').select2();
-    });
-</script>
+<br><br>
+
+<div>
+    <div style="width:150px;display:inline-block;margin-right: 50px;">
+        <label>Cover</label>
+        <input id="coverUp" class="filepond" type="file" name="cover">
+    </div>
+    <div style="width:500px;display:inline-block;">
+        <label>Background</label>
+        <input id="wallpaperUp" class="filepond" type="file" name="wallpaper">
+    </div>
+    <%- include('../partials/fileUpload.ejs') %>
+</div>

@@ -5,37 +5,44 @@ const Staff_roles = require ('../models/staff_roles');
 const Staff = require ('../models/staff');
 const Work = require ('../models/work')
 const Tag = require ('../models/tag')
+const User = require ('../models/user')
 const mongoose = require ('mongoose');
+const passport = require ('passport');
 
 // file upload with filepond
 const imageMimeTypes = ['image/jpeg', 'image/png', 'image/gif']
 
 //all books route
 router.get('/', async (req, res) => {
-
     try {
         const books = await Book.find()
-        res.render('books/index', {
-            books: books});
+        let passObj = {books: books}
+        if (req.user) {passObj.user=req.user}
+        res.render('books/index', passObj);
     } catch (err ){
-        res.redirect ('/');
         console.log('error on loading books in books.js (router)' + err);
+        res.redirect ('/');
     }
 });
 
 // new books (visual form) route
-router.get("/new", async (req,res) => {
+router.get("/new", checkAuthenticated, async (req,res) => {
     try{
         const staff_roles = await Staff_roles.find ()
         const book = new Book ()
         const staff = await Staff.find()
         const tags = await Tag.find()
-        res.render('books/new', {
+
+        let passObj = { 
             book : book,
             staff : staff,
             roles : staff_roles,
             tags : tags
-        })
+        }
+
+        if (req.user) {passObj.user=req.user}
+
+        res.render('books/new', passObj)
     } catch (err) {
         res.redirect ('/books')
         console.log("ERROR: books router get /new request is broken. err : " + err)
@@ -43,17 +50,17 @@ router.get("/new", async (req,res) => {
 });
 
 // create book (process of creating after input is given) route
-router.post ('/', async ( req, res ) => {   
+router.post ('/', checkAuthenticated, async ( req, res ) => {   
     setDate = (req.body.releaseDate != "" ? new Date(req.body.releaseDate) : "")
 
     let newBook = new Book ({
         name : req.body.name,
         summary : req.body.summary,
         tags: req.body.tags,
-        releaseDate: setDate
-    }) 
+        releaseDate: setDate       
+    })
 
-    let bookStaff = {
+    let bookstaff = {
         staff:[]
     }
 
@@ -65,7 +72,7 @@ router.post ('/', async ( req, res ) => {
                     role: req.body.roles[i],
                     book : newBook.id
                 })
-                bookStaff.staff.push(work.id)
+                bookstaff.staff.push(work.id)
                 await Staff.findByIdAndUpdate(req.body.staff[i],
                     {$push: {works: work}},
                     {safe: true, upsert: true}
@@ -77,7 +84,7 @@ router.post ('/', async ( req, res ) => {
                 book : newBook.id
             })
             console.log(work)
-            bookStaff.staff.push(work.id)
+            bookstaff.staff.push(work.id)
             await Staff.findByIdAndUpdate(req.body.staff,
                 {$push: {works: work}},
                 {safe: true, upsert: true}
@@ -85,20 +92,26 @@ router.post ('/', async ( req, res ) => {
         }
     }
 
-    newBook.staff = bookStaff.staff
+    newBook.staff = bookstaff.staff
 
     //set cover
-    if (req.body.coverEncoded != null || req.body.cover != null) { 
-        saveCover(newBook, req.body.cover)
-    }
+        if (req.body.coverEncoded != null || req.body.cover != null) { 
+            saveCover(newBook, req.body.cover)
+        }
 
-    try {
-        const newBookTemp = await newBook.save()
-        res.redirect (`books/${newBookTemp.id}`)
-    } catch (err) {
-        console.log(err + " - in last catch statement in router post in books router")
-        renderNewPage (res, newBook, true)
-    }
+    //set wallpaper
+        if (req.body.wallpaperEncoded != null || req.body.wallpaper != null) { 
+            saveWallpaper(newBook, req.body.wallpaper)
+        }
+
+    //save in db and render new page 
+        try {
+            const newBookTemp = await newBook.save()
+            res.redirect (`books/${newBookTemp.id}`)
+        } catch (err) {
+            console.log(err + " - in last catch statement in router post in books router")
+            renderNewPage (res, newBook, true)
+        }
 });
 
 router.get ('/:id', async (req,res) => {
@@ -116,35 +129,37 @@ router.get ('/:id', async (req,res) => {
                     foreignField: "_id",
                     as: "works.role"}}
         ]);
-        res.render ('books/show', {
-            staff : staff,
-            book : bookTemp
-        })
+
+        let passObj = { staff : staff, book : bookTemp}
+        if (req.user) {passObj.user=req.user}
+        
+        res.render ('books/show', passObj)
      } catch (err){
         console.log (err)
         res.redirect ('/')
     }
 });
 
-router.get ('/:id/edit', async (req,res) => {
+router.get ('/:id/edit', checkAuthenticated, async (req,res) => {
     try{
         const staff_roles = await Staff_roles.find ()
         const book = await Book.findById (req.params.id)
         const staff = await Staff.find()
         const tags = await Tag.find()
-        res.render('books/edit', {
-            book : book,
+        let passObj = { book : book,
             staff : staff,
             roles : staff_roles,
             tags : tags
-        })
+        }
+        if (req.user) {passObj.user=req.user}
+        res.render('books/edit',passObj)
     } catch (err) {
         res.redirect ('/books')
         console.log("ERROR: books router get /edit request is broken. err : " + err)
     }  
 });
 
-router.put('/:id', async (req, res) => {
+router.put('/:id',checkAuthenticated, async (req, res) => {
     setDate = (req.body.releaseDate != "" ? new Date(req.body.releaseDate) : "")
 
     let book
@@ -152,6 +167,11 @@ router.put('/:id', async (req, res) => {
     //set cover
     if (req.body.coverEncoded != null || req.body.cover != null) { 
         saveCover(book, req.body.cover)
+    }
+
+    //set wallpaper
+    if (req.body.wallpaperEncoded != null || req.body.wallpaper != null) { 
+        saveWallpaper(book, req.body.wallpaper)
     }
 
     try {
@@ -173,7 +193,88 @@ router.put('/:id', async (req, res) => {
     }
 });
 
-router.delete ('/:id', async (req,res) => {
+router.get ('/:id/track', checkAuthenticated, async (req,res) => {
+    try{
+        console.log(req.user)
+        const bookId = mongoose.Types.ObjectId(req.params.id);
+        const userId = mongoose.Types.ObjectId(req.user.id);
+        const book = await Book.findById (req.params.id)
+        const userArr = await User.aggregate([
+            { $match:{'_id':userId}},
+            { $unwind : '$books'},
+        ]);
+        const user = userArr[0]
+        console.log(user)
+        res.render('books/track', {
+            book : book,
+            user : user
+        })
+    } catch (err) {
+        res.redirect ('/books')
+        console.log("ERROR: books router get /track request is broken. err : " + err)
+    }  
+})
+
+router.get('/:id/track/submit',checkAuthenticated, async (req, res) => {
+    try {
+        const entryUserFound = await User.find({"books.book": req.params.id})
+        if (entryUserFound.length!=0) {
+            await User.updateOne(
+                { _id: req.user.id, "books.book": req.params.id },
+                { $set: {
+                            'books.$.watchStatus' : req.query.watchStatus,
+                            'books.$.date' : req.query.watchDate,
+                            'books.$.rewatches' : req.query.rewatches
+                        }
+                }
+            )
+        } else {
+            const bookEntry = {
+                book : req.params.id,
+                watchStatus : req.query.watchStatus,
+                date : req.query.watchDate,
+                rewatches: req.query.rewatches
+            }
+    
+            await User.findByIdAndUpdate(req.user.id,
+                {$push: {books: bookEntry}},
+                {safe: true, upsert: true}
+            )
+        }
+        
+        
+        const ratingFound = await Book.find({"ratings.user": req.user.id}) //checking if rating already exists
+
+        if (ratingFound.length!=0) {       //if rating array doesn't have an element then just add a new one w
+            await Book.updateOne(
+                { _id: req.params.id, "ratings.user": req.user.id },
+                { $set: {
+                            "ratings.$.rating" : req.query.userRating, 
+                            'ratings.$.review':req.query.userReview
+                        }
+                }
+            )
+        } else {                            //else modify old one
+            const rating = {
+                rating:req.query.userRating, 
+                review:req.query.userReview, 
+                user:req.user.id
+            }
+
+            await Book.findByIdAndUpdate(req.params.id,
+                {$push: {ratings: rating}},
+                {safe: true, upsert: true}
+            )
+        }
+        const newBookTemp = Book.findById(req.params.id)
+        res.redirect (`/books/${req.params.id}`)
+    } catch (err) { 
+        console.log(err)
+        res.redirect('/:id/track/submit')
+    }
+})
+
+router.delete ('/:id',checkAuthenticated,async (req,res) => {
     let book
     let id = mongoose.Types.ObjectId(req.params.id);
 
@@ -182,9 +283,15 @@ router.delete ('/:id', async (req,res) => {
         book = await Book.findById(req.params.id)
 
         //remove works relating to this book
-        let staff = await Staff.updateMany(
+        await Staff.updateMany(
             { 'works.book':id },
             { $pull : { works : { book : id}}}
+        )
+
+        //remove tracks relating to this book
+        await User.updateMany (
+            { 'books.book':id },
+            { $pull : {books :  {book : id }} }
         )
 
         //delete book
@@ -232,9 +339,28 @@ function saveCover (book, coverEncoded) {
 
     const cover = JSON.parse(coverEncoded)
     if (cover != null && imageMimeTypes.includes(cover.type)) {
-        book.coverImage = new Buffer.from(cover.data, "base64")
-        book.coverImageType = cover.type
+    book.coverImage = new Buffer.from(cover.data, "base64")
+    book.coverImageType = cover.type
     }
+}
+
+function saveWallpaper (book, wallpaperEncoded) {
+    if (wallpaperEncoded == null || wallpaperEncoded == "") return
+
+    const wallpaper = JSON.parse(wallpaperEncoded)
+    
+    if (wallpaper != null && imageMimeTypes.includes(wallpaper.type)) {
+    book.wallpaperImage = new Buffer.from(wallpaper.data, "base64")
+    book.wallpaperImageType = wallpaper.type
+    }
+}
+
+function checkAuthenticated(req, res, next) {
+    if (req.isAuthenticated()) {
+      return next()
+    }
+  
+    res.redirect('/login')
 }
 
 module.exports = router;

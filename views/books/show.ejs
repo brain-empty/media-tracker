@@ -1,48 +1,65 @@
-<section class='home'>
-    <!-- insert cover image here later -->
+
+            <!-- using a risky move here to render wallpaper in the bg with gradient, perhaps change later -->
+            <div  style="
+            background: linear-gradient(180deg, rgba(0, 0, 0, 0) 0%, rgb(32, 32, 32) 100%),
+            url('<%=book.wallpaperImagePath||`/images/missing_wallpaper.png`%>');margin:0px;position:absolute;width:100%;">
+
 <div class='media-header'>
     <div id="header-left">
-        <img src="<%= book.coverImagePath || "/images/missing_movie.png"%>">
+        <img src="<%= book.coverImagePath || "/images/missing_book.png"%>">
     </div>
-    <div>
+    <div id="header-right">
         <h2><%=book.name%></h2>
         <p><%=book.summary%></p>
-    </div id="header-right">
+    </div>
 </div>
+        
+<a href="/books/<%=book.id%>/track" class="btn btn-primary btn-track">Track</a>
 
 <div class='media-body'>
 
-    <div id="body-left">
-        <div>
-            <h3>Tags</h3>
+<div class="media-body-children media-body-left">
+
+    <%if (book.avgRating!=null) {%>
+        <h3>Rating</h3>
+        <%=book.avgRating%>
+    <%}%>
+
+    <div>
+        <h3>Tags</h3>
+        <ul>
+        <% for (i=0;i<book.tags.length;i++) { %>
+            <li><%=book.tags[i].name%></li><br>
+        <%}%>
+        </ul>
+    </div>
+
+    <div>
+        <% if(book.releaseDate!=null){%><h3>Release Date</h3><%=book.releaseDate.toDateString()%><%}%>
+    </div>
+</div>
+
+<div class=" media-body-children media-body-right">
+    <h3>Staff</h3>
+        <%if ( staff!="" || staff!= null ) {%>
+        <div> <!--list books-->
             <ul>
-            <% for (i=0;i<book.tags.length;i++) { %>
-                <li><%=book.tags[i].name%></li><br>
+            <% for (let i = 0; i < staff.length; i++){ %>
+                <li><a href="/staff/<%=staff.id%>"><%=staff[i].name%></a> - <%=staff[i].works.role[0].name%></li><br>
+                <div><a href="/staff/<%=staff.id%>"><%= staff.name%></a></div>
             <%}%>
             </ul>
-        </div>
-
-        <div>
-            <h3>Release Date</h3>
-            <%=book.releaseDate%>
-        </div>
-    </div>
-
-    <div id="body-right">
-        <h3>Staff</h3>
-            <%if ( staff!="" || staff!= null ) {%>
-            <div> <!--list books-->
-                <ul>
-                <% for (let i = 0; i < staff.length; i++){ %>
-                    <li><%=staff[i].name%> - <%=staff[i].works.role[0].name%></li><br>
-                <%}%>
-                </ul>
-                </div>
-            <%}%>
-    </div>
-    
+            </div>
+        <%}%>
 </div>
-<a href="/books/<%=book.id%>/edit">Edit</a>
+
+</div>
+
+<div style="margin-left:75%;">
+<a class="btn btn-primary" href="/books/<%=book.id%>/edit">Edit</a>
 <%- include ('../partials/deleteForm', {url : `/books/${book.id}`}) %>
+</div>
 </form>
-</section>
+
+</div>
+</div>

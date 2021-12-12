@@ -24,12 +24,40 @@ const bookSchema = new mongoose.Schema({
     },
     coverImageType:{
         type: String
-    }   
+    },
+    wallpaperImage: {
+        type: Buffer
+    },
+    wallpaperImageType: {
+        type: Buffer
+    },
+    ratings: [{
+        rating: { type:Number },
+        review: {type:String},
+        user: {type:mongoose.Schema.Types.ObjectId, ref : "User"}
+    }]
 });
 
 bookSchema.virtual('coverImagePath').get(function() {
     if (this.coverImage != null && this.coverImageType != null) {
       return `data:${this.coverImageType};charset=utf-8;base64,${this.coverImage.toString('base64')}`
+    }
+})
+
+bookSchema.virtual('wallpaperImagePath').get(function() {
+    if (this.wallpaperImage != null && this.wallpaperImageType != null) {
+      return `data:${this.wallpaperImageType};charset=utf-8;base64,${this.wallpaperImage.toString('base64')}`
+    }
+})
+
+bookSchema.virtual('avgRating').get(function() {
+    if (this.ratings.length != 0) {
+        var avgRating=0;
+        this.ratings.forEach ( ratings => {
+            avgRating = avgRating + ratings.rating;
+        })
+        avgRating = avgRating/this.ratings.length;
+        return avgRating;
     }
 })
 

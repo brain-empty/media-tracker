@@ -2,8 +2,9 @@
 <div>
     <label>Watch status</label>
     <br>
-    <%console.log(user.movies)%>
+  
     <select class="js-example-basic-single" style="width:300px" name="watchStatus">
+        <%console.log(user)%>
         <%if ( user.movies.watchStatus == 'Watched') {%><option selected value="Watched">Watched</option>
         <%} else {%><option value="Watched">Watched</option> <%}%>
 

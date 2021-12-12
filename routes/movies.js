@@ -195,6 +195,7 @@ router.put('/:id',checkAuthenticated, async (req, res) => {
 
 router.get ('/:id/track', checkAuthenticated, async (req,res) => {
     try{
+        console.log(req.user)
         const movieId = mongoose.Types.ObjectId(req.params.id);
         const userId = mongoose.Types.ObjectId(req.user.id);
         const movie = await Movie.findById (req.params.id)
@@ -203,6 +204,7 @@ router.get ('/:id/track', checkAuthenticated, async (req,res) => {
             { $unwind : '$movies'},
         ]);
         const user = userArr[0]
+        console.log(user)
         res.render('movies/track', {
             movie : movie,
             user : user
