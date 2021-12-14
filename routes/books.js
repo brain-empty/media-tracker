@@ -163,18 +163,19 @@ router.put('/:id',checkAuthenticated, async (req, res) => {
 
     let book
 
-    //set cover
-    if (req.body.coverEncoded != null || req.body.cover != null) { 
-        saveCover(book, req.body.cover)
-    }
-
-    //set wallpaper
-    if (req.body.wallpaperEncoded != null || req.body.wallpaper != null) { 
-        saveWallpaper(book, req.body.wallpaper)
-    }
-
     try {
         book = await Book.findById(req.params.id)
+        
+        //set cover
+        if (req.body.coverEncoded != null || req.body.cover != null) { 
+            saveCover(book, req.body.cover)
+        }
+
+        //set wallpaper
+        if (req.body.wallpaperEncoded != null || req.body.wallpaper != null) { 
+            saveWallpaper(book, req.body.wallpaper)
+        }
+
         book.summary = req.body.summary
         book.releaseDate = setDate
         await book.save()

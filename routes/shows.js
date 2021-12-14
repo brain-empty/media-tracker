@@ -163,18 +163,17 @@ router.put('/:id',checkAuthenticated, async (req, res) => {
 
     let show
 
-    //set cover
-    if (req.body.coverEncoded != null || req.body.cover != null) { 
-        saveCover(show, req.body.cover)
-    }
-
-    //set wallpaper
-    if (req.body.wallpaperEncoded != null || req.body.wallpaper != null) { 
-        saveWallpaper(show, req.body.wallpaper)
-    }
-
     try {
         show = await Show.findById(req.params.id)
+        //set cover
+        if (req.body.coverEncoded != null || req.body.cover != null) { 
+            saveCover(show, req.body.cover)
+        }
+
+        //set wallpaper
+        if (req.body.wallpaperEncoded != null || req.body.wallpaper != null) { 
+            saveWallpaper(show, req.body.wallpaper)
+        }
         show.summary = req.body.summary
         show.releaseDate = setDate
         await show.save()

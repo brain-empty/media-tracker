@@ -163,20 +163,19 @@ router.put('/:id',checkAuthenticated, async (req, res) => {
 
     let movie
 
-    //set cover
-    if (req.body.coverEncoded != null || req.body.cover != null) { 
-        saveCover(movie, req.body.cover)
-    }
-
-    //set wallpaper
-    if (req.body.wallpaperEncoded != null || req.body.wallpaper != null) { 
-        saveWallpaper(movie, req.body.wallpaper)
-    }
-
     try {
         movie = await Movie.findById(req.params.id)
         movie.summary = req.body.summary
         movie.releaseDate = setDate
+        //set cover
+        if (req.body.coverEncoded != null || req.body.cover != null) { 
+            saveCover(movie, req.body.cover)
+        }
+
+        //set wallpaper
+        if (req.body.wallpaperEncoded != null || req.body.wallpaper != null) { 
+            saveWallpaper(movie, req.body.wallpaper)
+        }
         await movie.save()
         res.redirect (`/movies/${movie.id}`)
     } catch (err) {
