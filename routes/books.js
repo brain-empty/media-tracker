@@ -60,7 +60,7 @@ router.post ('/', checkAuthenticated, async ( req, res ) => {
         releaseDate: setDate       
     })
 
-    let bookstaff = {
+    let bookStaff = {
         staff:[]
     }
 
@@ -72,7 +72,7 @@ router.post ('/', checkAuthenticated, async ( req, res ) => {
                     role: req.body.roles[i],
                     book : newBook.id
                 })
-                bookstaff.staff.push(work.id)
+                bookStaff.staff.push(work.id)
                 await Staff.findByIdAndUpdate(req.body.staff[i],
                     {$push: {works: work}},
                     {safe: true, upsert: true}
@@ -81,10 +81,9 @@ router.post ('/', checkAuthenticated, async ( req, res ) => {
         } else {
             let work = new Work ({
                 role: req.body.roles,
-                book : newBook.id
+                book : newBok.id
             })
-            console.log(work)
-            bookstaff.staff.push(work.id)
+            bookStaff.staff.push(work.id)
             await Staff.findByIdAndUpdate(req.body.staff,
                 {$push: {works: work}},
                 {safe: true, upsert: true}
@@ -92,7 +91,7 @@ router.post ('/', checkAuthenticated, async ( req, res ) => {
         }
     }
 
-    newBook.staff = bookstaff.staff
+    newBook.staff = bookStaff.staff
 
     //set cover
         if (req.body.coverEncoded != null || req.body.cover != null) { 
@@ -193,18 +192,103 @@ router.put('/:id',checkAuthenticated, async (req, res) => {
     }
 });
 
+router.get ('/:id/addstaff', checkAuthenticated, async (req,res) => {
+    try{
+        console.log(req.params.id)
+        const staff_roles = await Staff_roles.find ()
+        const staff = await Staff.find()
+        let book = {
+            id : req.params.id
+        }
+        let passObj = { 
+            book : book,
+            staff : staff,
+            roles : staff_roles,
+        }
+        if (req.user) {passObj.user=req.user}
+        res.render('books/addstaff', passObj)
+    } catch (err) {
+        res.redirect ('/books')
+        console.log("ERROR: books router get /new request is broken. err : " + err)
+    }  
+})
+
+router.get ('/:id/addstaff/submit', checkAuthenticated, async (req,res) => {
+    try {
+
+        let book = {
+            id : req.params.id
+        }
+
+        let bookStaff = {
+            staff:[]
+        }
+
+        if (Array.isArray(req.body.staff)) {
+            for (i=0; i < req.body.staff.length; i++) {
+                let staff = req.query.staff[i]
+                console.log(staff)
+                const work = new Work ({
+                    role: req.body.roles[i],
+                    book : book.id
+                })
+
+                bookStaff.staff.push(work.id)
+
+                await Staff.findByIdAndUpdate(req.query.staff[i],
+                    {$push: {works: work}},
+                    {safe: true, upsert: true}
+                );
+
+                await Book.findByIdAndUpdate(book.id,
+                    {$push: {staff:staff}},
+                    {safe:true, upsert:true}
+                );
+            }
+        } else {
+            let staff = req.query.staff
+            console.log(staff)
+            let work = new Work ({
+                role: req.query.roles,
+                book : book.id
+            })
+            bookStaff.staff.push(work.id)
+            await Staff.findByIdAndUpdate(req.query.staff,
+                {$push: {works: work}},
+                {safe: true, upsert: true}
+            );
+            await Book.findByIdAndUpdate(book.id,
+                {$push: {staff:staff}},
+                {safe:true, upsert:true}
+            );
+        }
+
+        res.redirect (`/books/${req.params.id}`)
+        // setting book staff
+        
+    } catch (e) {
+        console.log("broke" + e)
+    }
+})
+
+
 router.get ('/:id/track', checkAuthenticated, async (req,res) => {
     try{
         console.log(req.user)
         const bookId = mongoose.Types.ObjectId(req.params.id);
         const userId = mongoose.Types.ObjectId(req.user.id);
         const book = await Book.findById (req.params.id)
-        const userArr = await User.aggregate([
-            { $match:{'_id':userId}},
-            { $unwind : '$books'},
-        ]);
-        const user = userArr[0]
-        console.log(user)
+
+        let user = await User.findById (req.user.id)
+        if (user.books.length!=0) {
+            const userArr = await User.aggregate([
+                { $match:{'_id':userId}},
+                { $unwind : '$books'},
+                {$match:{'books.book':bookId}}
+            ]);
+            user = userArr[0]
+        }
+
         res.render('books/track', {
             book : book,
             user : user
@@ -339,8 +423,8 @@ function saveCover (book, coverEncoded) {
 
     const cover = JSON.parse(coverEncoded)
     if (cover != null && imageMimeTypes.includes(cover.type)) {
-    book.coverImage = new Buffer.from(cover.data, "base64")
-    book.coverImageType = cover.type
+        book.coverImage = new Buffer.from(cover.data, "base64")
+        book.coverImageType = cover.type
     }
 }
 
@@ -350,8 +434,8 @@ function saveWallpaper (book, wallpaperEncoded) {
     const wallpaper = JSON.parse(wallpaperEncoded)
     
     if (wallpaper != null && imageMimeTypes.includes(wallpaper.type)) {
-    book.wallpaperImage = new Buffer.from(wallpaper.data, "base64")
-    book.wallpaperImageType = wallpaper.type
+        book.wallpaperImage = new Buffer.from(wallpaper.data, "base64")
+        book.wallpaperImageType = wallpaper.type
     }
 }
 

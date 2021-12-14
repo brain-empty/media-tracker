@@ -1,44 +1,42 @@
 <form action='/movies/<%=movie.id%>/track/submit'>
-<div>
-    <label>Watch status</label>
-    <br>
-<<<<<<< HEAD
-  
-    <select class="js-example-basic-single" style="width:300px" name="watchStatus">
-        <%console.log(user)%>
-        <%if ( user.movies.watchStatus == 'Watched') {%><option selected value="Watched">Watched</option>
-        <%} else {%><option value="Watched">Watched</option> <%}%>
-=======
-    <select class="js-example-basic-single" style="width:300px" name="watchStatus">
-            <%if ( user.movies.watchStatus == 'Watched') {%><option selected value="Watched">Watched</option>
-            <%} else {%><option value="Watched">Watched</option> <%}%>
->>>>>>> e16ffcf3d6b2edec59f9db7333e8a6dc59dae9bd
-
-            <%if ( user.movies.watchStatus == 'Plan to watch') {%><option selected value="Plan to watch">Plan To Watch</option><%%>
-            <%} else {%><option value="Plan to watch">Plan to watch</option> <%}%>
-    </select>
-</div>
-
-<div>
-    <label>Watch Date</label>
-    <input type="date" name="watchDate" value ="<%= user.movies.date == null ? '' : user.movies.date.toISOString().split('T')[0]%>">
-</div>
-
-<div>
-    <label>Number of rewatches</label>
-    <input type="number" name="rewatches" value='<%user.movies.rewatches%>' min="0">
-</div>
-
-<div>
-    <label>Rating</label>
+<div style='margin:10px;'>
+    <div style='margin:10px;'>
+        <label>Watch status</label>
         <br>
-            <input type="number" name="userRating" min="1" max="100">
-        <br>
-    <label>Leave a review (optional)</label>
-    <br>
-        <textarea name="userReview" class='input-summary'></textarea>
+        <%console.log(user.movies)%>
+    <select class="js-example-basic-single" style="width:300px" name="watchStatus">
+                <%if ( user.movies.watchStatus == 'Watched') {%><option selected value="Watched">Watched</option>
+                <%} else {%><option value="Watched">Watched</option> <%}%>
+
+
+                <%if ( user.movies.watchStatus == 'Plan to watch') {%><option selected value="Plan to watch">Plan To Watch</option><%%>
+                <%} else {%><option value="Plan to watch">Plan to watch</option> <%}%>
+        </select>
+    </div>
+
+    <div style='margin:10px;'>
+        <label>Watch Date</label><br>
+        <input type="date" name="watchDate" value ="<%= user.movies.date == null ? '' : user.movies.date.toISOString().split('T')[0]%>">
+    </div>
+
+    <div style='margin:10px;'>
+        <label>Number of rewatches</label><br>
+        <input type="number" name="rewatches" value='<%user.movies.rewatches%>' min="0">
+    </div>
+
+    <div style='margin:10px;'>
+        <label>Rating</label>
+            <br>
+                <input type="number" name="userRating" min="1" max="100">
+            <br>
+            <div style='margin-top:10px;'>
+                <label>Leave a review (optional)</label>
+                <br>
+                <textarea name="userReview" class='input-summary'></textarea>
+            </div>
+    </div>
+    <button type="submit" style='margin-left:25px;margin-top:0px' class="btn btn-primary">Submit</button>
 </div>
-<button type="submit">Submit</button>
 </form>
 
 <br><br>

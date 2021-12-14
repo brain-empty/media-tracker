@@ -10,14 +10,18 @@
     </div>
     <div>
         <h2>Top rated Shows</h2>
-            <div class='media-box'><a href="#"><img src="<%=  "images/missing_movie.png"%>"></a></div>
-            <div class='media-box-more'><a href="#">See more</a></div>
+            <%shows.forEach ( shows => {%>
+                <div class='media-box'><a href="/shows/<%=shows.id%>"><img src="<%= shows.coverImagePath || "images/missing_movie.png"%>"></a></div>
+            <%})%>
+            <div class='media-box-more'><a href="/shows">See more</a></div>
     </div>
     <div>
         <h2>Top rated books</h2>
         <ul>
-            <div class='media-box'><a href="#"><img src="<%= (!!locals.movie)?movie.coverImagePath:"images/missing_movie.png" %>"></img></a></div>
-            <div class='media-box-more media-box'><a href="/books">See more</a></div>
+            <%books.forEach ( books => {%>
+                <div class='media-box'><a href="/books/<%=books.id%>"><img src="<%= books.coverImagePath || "images/missing_movie.png"%>"></a></div>
+            <%})%>
+            <div class='media-box-more '><a href="/books">See more</a></div>
         </ul>
     </div>
     </div>

@@ -50,6 +50,7 @@ app.use (passport.session())
     const searchRouter = require ('./routes/search');
     const booksRouter = require ('./routes/books');
     const userRouter = require ('./routes/user');
+    const showsRouter = require ('./routes/shows')
 
 //routes setting
     app.use('/', indexRouter);
@@ -58,6 +59,7 @@ app.use (passport.session())
     app.use('/search', searchRouter);
     app.use('/books', booksRouter);
     app.use('/user', userRouter);
+    app.use('/shows', showsRouter)
 
 //user auth
     // user auth setup 
@@ -105,12 +107,13 @@ app.use (passport.session())
             } else {
                 try {
                     const hashedPassword = await bcrypt.hash (req.body.password, 10);
-
+console.log(User)
                     const newUser = new User ({
                         username : req.body.username,
                         email : req.body.email,
                         password : hashedPassword 
                     })
+                    console.log(newUser)
                     const user = await newUser.save ()
                     res.redirect('/login')
                 } catch (err) {

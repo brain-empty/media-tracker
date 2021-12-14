@@ -1,48 +1,67 @@
-<section class='home'>
-    <!-- insert cover image here later -->
+
+            <!-- using a risky move here to render wallpaper in the bg with gradient, perhaps change later -->
+            <div  style="
+            background: linear-gradient(180deg, rgba(0, 0, 0, 0) 0%, rgb(32, 32, 32) 100%),
+            url('<%=show.wallpaperImagePath||`/images/missing_wallpaper.png`%>');margin:0px;position:absolute;width:100%;">
+
 <div class='media-header'>
     <div id="header-left">
         <img src="<%= show.coverImagePath || "/images/missing_show.png"%>">
     </div>
-    <div>
+    <div id="header-right">
         <h2><%=show.name%></h2>
         <p><%=show.summary%></p>
-    </div id="header-right">
+    </div>
 </div>
+        
+<a href="/shows/<%=show.id%>/track" class="btn btn-primary btn-track">Track</a>
 
 <div class='media-body'>
 
-    <div id="body-left">
-        <div>
-            <h3>Tags</h3>
+<div class="media-body-children media-body-left">
+
+    <%if (show.avgRating!=null) {%>
+        <h3>Rating</h3>
+        <%=show.avgRating%>
+    <%}%>
+    
+    <% if(show.tags.length!=0){%>
+    <div>
+        <h3>Tags</h3>
+        <ul>
+        <% for (i=0;i<show.tags.length;i++) { %>
+            <li><%=show.tags[i].name%></li><br>
+        <%}%>
+        </ul>
+    </div>
+    <%}%>
+
+    <div>
+        <% if(show.releaseDate!=null){%><h3>Release Date</h3><%=show.releaseDate.toDateString()%><%}%>
+    </div>
+</div>
+
+<div class=" media-body-children media-body-right">
+    <h3>Staff</h3>
+        <%if ( staff!="" || staff!= null ) {%>
+        <div> <!--list staff-->
             <ul>
-            <% for (i=0;i<show.tags.length;i++) { %>
-                <li><%=show.tags[i].name%></li><br>
+            <% for (let i = 0; i < staff.length; i++){ %>
+                <li><a href="/staff/<%=staff[i]._id%>"><%=staff[i].name%></a> - <%=staff[i].works.role[0].name%></li><br>
             <%}%>
             </ul>
-        </div>
-
-        <div>
-            <h3>Release Date</h3>
-            <%=show.releaseDate%>
-        </div>
-    </div>
-
-    <div id="body-right">
-        <h3>Staff</h3>
-            <%if ( staff!="" || staff!= null ) {%>
-            <div> <!--list books-->
-                <ul>
-                <% for (let i = 0; i < staff.length; i++){ %>
-                    <li><%=staff[i].name%> - <%=staff[i].works.role[0].name%></li><br>
-                <%}%>
-                </ul>
-                </div>
-            <%}%>
-    </div>
-    
+            </div>
+        <%}%>
+    <p><u><a href="/shows/<%=show.id%>/addstaff">Add new staff member for this show</a></u></p>
 </div>
-<a href="/shows/<%=show.id%>/edit">Edit</a>
+
+</div>
+
+<div style="margin-left:75%;margin-bottom:30px">
+<a class="btn btn-primary" href="/shows/<%=show.id%>/edit">Edit</a>
 <%- include ('../partials/deleteForm', {url : `/shows/${show.id}`}) %>
+</div>
 </form>
-</section>
+
+</div>
+</div>

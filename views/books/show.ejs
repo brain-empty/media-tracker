@@ -6,7 +6,7 @@
 
 <div class='media-header'>
     <div id="header-left">
-        <img src="<%= book.coverImagePath || "/images/missing_book.png"%>">
+        <img src="<%= book.coverImagePath || "/images/missing_movie.png"%>">
     </div>
     <div id="header-right">
         <h2><%=book.name%></h2>
@@ -24,7 +24,8 @@
         <h3>Rating</h3>
         <%=book.avgRating%>
     <%}%>
-
+    
+    <% if(book.tags.length!=0){%>
     <div>
         <h3>Tags</h3>
         <ul>
@@ -33,6 +34,7 @@
         <%}%>
         </ul>
     </div>
+    <%}%>
 
     <div>
         <% if(book.releaseDate!=null){%><h3>Release Date</h3><%=book.releaseDate.toDateString()%><%}%>
@@ -42,20 +44,20 @@
 <div class=" media-body-children media-body-right">
     <h3>Staff</h3>
         <%if ( staff!="" || staff!= null ) {%>
-        <div> <!--list books-->
+        <div> <!--list staff-->
             <ul>
             <% for (let i = 0; i < staff.length; i++){ %>
-                <li><a href="/staff/<%=staff.id%>"><%=staff[i].name%></a> - <%=staff[i].works.role[0].name%></li><br>
-                <div><a href="/staff/<%=staff.id%>"><%= staff.name%></a></div>
+                <li><a href="/staff/<%=staff[i]._id%>"><%=staff[i].name%></a> - <%=staff[i].works.role[0].name%></li><br>
             <%}%>
             </ul>
             </div>
         <%}%>
+    <p><u><a href="/books/<%=book.id%>/addstaff">Add new staff member for this book</a></u></p>
 </div>
 
 </div>
 
-<div style="margin-left:75%;">
+<div style="margin-left:75%;margin-bottom:30px">
 <a class="btn btn-primary" href="/books/<%=book.id%>/edit">Edit</a>
 <%- include ('../partials/deleteForm', {url : `/books/${book.id}`}) %>
 </div>

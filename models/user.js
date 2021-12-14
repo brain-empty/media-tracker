@@ -15,8 +15,20 @@ const userSchema = new mongoose.Schema  ({
         date : {type:Date},
         rewatches: {type:Number}
     }],
-    books : {},
-    shows : {},
+    books : [{
+        book : {type:mongoose.Schema.Types.ObjectId, ref : "Book"},
+        watchStatus : {type:String},
+        date : {type:Date},
+        rewatches: {type:Number},
+        count: {type:Number}
+    }],
+    shows : [{
+        shows : {type:mongoose.Schema.Types.ObjectId, ref : "Show"},
+        watchStatus : {type:String},
+        date : {type:Date},
+        rewatches: {type:Number},
+        count: {type:Number}
+    }],
     password : {
         type : String, 
         required : true
