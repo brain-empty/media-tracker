@@ -301,7 +301,6 @@ router.get ('/:id/track', checkAuthenticated, async (req,res) => {
 })
 
 router.get('/:id/track/submit',checkAuthenticated, async (req, res) => {
-    try {
         const entryUserFound = await User.find({"books.book": req.params.id})
         if (entryUserFound.length!=0) {
             await User.updateOne(
@@ -327,7 +326,7 @@ router.get('/:id/track/submit',checkAuthenticated, async (req, res) => {
             )
         }
         
-        
+        console.log(req.query.userRating)
         const ratingFound = await Book.find({"ratings.user": req.user.id}) //checking if rating already exists
 
         if (ratingFound.length!=0) {       //if rating array doesn't have an element then just add a new one w
@@ -353,10 +352,8 @@ router.get('/:id/track/submit',checkAuthenticated, async (req, res) => {
         }
         const newBookTemp = Book.findById(req.params.id)
         res.redirect (`/books/${req.params.id}`)
-    } catch (err) { 
         console.log(err)
         res.redirect('/:id/track/submit')
-    }
 })
 
 router.delete ('/:id',checkAuthenticated,async (req,res) => {

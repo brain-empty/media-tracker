@@ -1,53 +1,69 @@
-<%=user.username%>
+<h1 style="text-align: center;"><%=user.username%></h1>
+<div style="
+    display:flex;
+    flex-wrap:wrap;
+    justify-content: space-between;
+    align-items: center;
+    margin-inline:10%;
+">
+<div>
+    <%if (user.movies!=0) {%>
+        <h2>Movies</h2>
+        
+        <h4>Watched</h4>
+            <%user.movies.forEach ( movies => { %>
+                <%if (movies.watchStatus == 'Watched') {%>
+                    <div class='media-box-mini'><a href="/movies/<%=movies.movie.id%>"><img src="<%= movies.movie.coverImagePath || "/images/missing_movie.png"%>"><div class="media-box-mini-title"><div><%=movies.movie.name%></div></div></a></div>
+                <%}%>
+            <%})%>
 
-<%if (user.movies!=0) {%>
-    <h2>Movies</h2>
-    
-    <h4>Watched</h4>
-        <%user.movies.forEach ( movies => { %>
-            <%if (movies.watchStatus == 'Watched') {%>
-                <div class='media-box'><a href="/movies/<%=user.movies.id%>"><img src="<%= user.movies.coverImagePath || "images/missing_movie.png"%>"><div class="media-box-title"><%=user.movies.name%></div></a></div>
-            <%}%>
-        <%})%>
+        <h4>Planned</h4>
+            <%user.movies.forEach ( movies => { %>
+                <%if (movies.watchStatus == 'Plan to watch') {%>
+                    <div class='media-box-mini'><a href="/movies/<%=movies.movie.id%>"><img src="<%= movies.movie.coverImagePath || "/images/missing_movie.png"%>"><div class="media-box-mini-title"><div><%=movies.movie.name%></div></div></a></div>
+                <%}%>
+            <%})%>
+    <%}%>
+</div>
 
-    <h4>Planned</h4>
-        <%user.movies.forEach ( movies => { %>
-            <%if (movies.watchStatus == 'Plan to watch') {%>
-                <div class='media-box'><a href="/movies/<%=user.movies.id%>"><img src="<%= user.movies.coverImagePath || "images/missing_movie.png"%>"><div class="media-box-title"><%=user.movies.name%></div></a></div>
-            <%}%>
-        <%})%>
-<%}%>
-<%if (user.books!=0) {%>
-    <h2>Books</h2>
-    
-    <h4>Watched</h4>
-        <%user.books.forEach ( books => { %>
-            <%if (books.watchStatus == 'Watched') {%>
-                <div class='media-box'><a href="/books/<%=user.books.id%>"><img src="<%= user.books.coverImagePath || "images/missing_book.png"%>"><div class="media-box-title"><%=user.books.name%></div></a></div>
-            <%}%>
-        <%})%>
+<div>
+    <%if (user.books!=0) {%>
+        <h2>Books</h2>
+        
+        <h4>Read</h4>
+            <%user.books.forEach ( books => { %>
+                <%if (books.watchStatus == 'Read') {%>
+                    <div class='media-box-mini'><a href="/books/<%=books.book.id%>"><img src="<%= books.book.coverImagePath || "/images/missing_movie.png"%>"><div class="media-box-mini-title"><div><%=books.book.name%></div></div></a></div>
+                <%}%>
+            <%})%>
 
-    <h4>Planned</h4>
-        <%user.books.forEach ( books => { %>
-            <%if (books.watchStatus == 'Plan to watch') {%>
-                <div class='media-box'><a href="/books/<%=user.books.id%>"><img src="<%= user.books.coverImagePath || "images/missing_book.png"%>"><div class="media-box-title"><%=user.books.name%></div></a></div>
-            <%}%>
-        <%})%>
-<%}%>
-<%if (user.shows!=0) {%>
-    <h2>Shows</h2>
-  
-    <h4>Watched</h4>
-        <%user.shows.forEach ( shows => { %>
-            <%if (shows.watchStatus == 'Watched') {%>
-                <div class='media-box'><a href="/shows/<%=user.shows.id%>"><img src="<%= user.shows.coverImagePath || "images/missing_show.png"%>"><div class="media-box-title"><%=user.shows.name%></div></a></div>
-            <%}%>
-        <%})%>
+        <h4>Planned</h4>
+            <%user.books.forEach ( books => { %>
+                <%if (books.watchStatus == 'Plan to read') {%>
+                    if 2
+                    <div class='media-box-mini'><a href="/books/<%=books.book.id%>"><img src="<%= books.book.coverImagePath || "/images/missing_movie.png"%>"><div class="media-box-mini-title"><div><%=books.book.name%></div></div></a></div>
+                <%}%>
+            <%})%>
+    <%}%>
+</div>
 
-    <h4>Planned</h4>
-        <%user.shows.forEach ( shows => { %>
-            <%if (shows.watchStatus == 'Plan to watch') {%>
-                <div class='media-box'><a href="/shows/<%=user.shows.id%>"><img src="<%= user.shows.coverImagePath || "images/missing_show.png"%>"><div class="media-box-title"><%=user.shows.name%></div></a></div>
-            <%}%>
-        <%})%>
-<%}%>
+<div>
+    <%if (user.movies!=0) {%>
+        <h2>Movies</h2>
+        
+        <h4>Watched</h4>
+            <%user.movies.forEach ( movies => { %>
+                <%if (movies.watchStatus == 'Watched') {%>
+                    <div class='media-box-mini'><a href="/movies/<%=movies.movie.id%>"><img src="<%= movies.movie.coverImagePath || "/images/missing_movie.png"%>"><div class="media-box-mini-title"><div><%=movies.movie.name%></div></div></a></div>
+                <%}%>
+            <%})%>
+
+        <h4>Planned</h4>
+            <%user.movies.forEach ( movies => { %>
+                <%if (movies.watchStatus == 'Plan to watch') {%>
+                    <div class='media-box-mini'><a href="/movies/<%=movies.movie.id%>"><img src="<%= movies.movie.coverImagePath || "/images/missing_movie.png"%>"><div class="media-box-mini-title"><div><%=movies.movie.name%></div></div></a></div>
+                <%}%>
+            <%})%>
+    <%}%>
+</div>
+</div>

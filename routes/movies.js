@@ -272,11 +272,8 @@ router.get ('/:id/addstaff/submit', checkAuthenticated, async (req,res) => {
 
 
 router.get ('/:id/track', checkAuthenticated, async (req,res) => {
-    try{
-        console.log(req.user)
         const movieId = mongoose.Types.ObjectId(req.params.id);
         const userId = mongoose.Types.ObjectId(req.user.id);
-        const movie = await Movie.findById (req.params.id)
 
         let user = await User.findById (req.user.id)
         if (user.movies.length!=0) {
@@ -285,22 +282,39 @@ router.get ('/:id/track', checkAuthenticated, async (req,res) => {
                 { $unwind : '$movies'},
                 {$match:{'movies.movie':movieId}}
             ]);
-            user = userArr[0]
+            if (userArr.length!=0) {
+                user=userArr[0]
+            }
+        }
+
+        let movie = await Movie.findById (req.params.id)
+        if (movie.ratings.length!=0) {
+            const movieArr = await Movie.aggregate([
+                { $match:{'_id':movieId}},
+                { $unwind : '$ratings'},
+                { $match: 
+                    {'ratings.user':userId}
+                }
+            ]);
+            if (movieArr.length!=0) {
+                console.log('ran')
+                movie = movieArr[0]
+                movie.id = mongoose.Types.ObjectId(movie._id);
+            }
         }
 
         res.render('movies/track', {
             movie : movie,
             user : user
         })
-    } catch (err) {
-        res.redirect ('/movies')
-        console.log("ERROR: movies router get /track request is broken. err : " + err)
-    }  
 })
 
 router.get('/:id/track/submit',checkAuthenticated, async (req, res) => {
     try {
-        const entryUserFound = await User.find({"movies.movie": req.params.id})
+        const entryUserFound = await User.find({
+            id:req.user.id,
+            "movies.movie": req.params.id}
+        )
         if (entryUserFound.length!=0) {
             await User.updateOne(
                 { _id: req.user.id, "movies.movie": req.params.id },
@@ -325,6 +339,7 @@ router.get('/:id/track/submit',checkAuthenticated, async (req, res) => {
             )
         }
         
+        console.log("this"+req.query.userRating)
         
         const ratingFound = await Movie.find({"ratings.user": req.user.id}) //checking if rating already exists
 

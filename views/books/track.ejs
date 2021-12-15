@@ -5,12 +5,12 @@
         <br>
         
         <select class="js-example-basic-single" style="width:300px" name="watchStatus">
-                <%if ( user.books.watchStatus == 'Watched') {%><option selected value="Watched">Watched</option>
-                <%} else {%><option value="Watched">Watched</option> <%}%>
+                <%if ( user.books.watchStatus == 'Read') {%><option selected value="Read">Read</option>
+                <%} else {%><option value="Read">read</option> <%}%>
 
     
-                <%if ( user.books.watchStatus == 'Plan to watch') {%><option selected value="Plan to watch">Plan To Watch</option><%%>
-                <%} else {%><option value="Plan to watch">Plan to watch</option> <%}%>
+                <%if ( user.books.watchStatus == 'Plan to read') {%><option selected value="Plan to read">Plan To Read</option><%%>
+                <%} else {%><option value="Plan to read">Plan to read</option> <%}%>
         </select>
     </div>
 

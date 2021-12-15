@@ -54,3 +54,25 @@
 .media-box-title {
     height:0px;
 }
+
+.media-box-mini {
+    background-color:rgb(22, 22, 22);
+    width:320px;
+    margin-block:20px;
+    margin-inline:10px;
+    padding-inline:5px;
+    padding-top:5px;
+}
+
+.media-box-mini img {
+    height:120px;
+    width:80px;
+    margin:5px;
+}
+
+.media-box-mini-title {
+    vertical-align: top;
+    margin:10px;
+    width:200px;
+    display:inline-block;
+}
