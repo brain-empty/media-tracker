@@ -275,7 +275,6 @@ router.get ('/:id/track', checkAuthenticated, async (req,res) => {
     const showId = mongoose.Types.ObjectId(req.params.id);
         const userId = mongoose.Types.ObjectId(req.user.id);
         
-
         let user = await User.findById (req.user.id)
         if (user.shows.length!=0) {
             const userArr = await User.aggregate([
@@ -308,7 +307,6 @@ router.get ('/:id/track', checkAuthenticated, async (req,res) => {
             show : show,
             user : user
         })
-   
 })
 
 router.get('/:id/track/submit',checkAuthenticated, async (req, res) => {
