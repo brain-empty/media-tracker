@@ -12,7 +12,7 @@
         
         <h4>Watched</h4>
             <%user.books.forEach ( books => { %>
-                <%if (books.watchStatus == 'Watched') {%>
+                <%if (books.watchStatus == 'Read') {%>
                     <div class='media-box-mini'><a href="/books/<%=books.book.id%>"><img src="<%= books.book.coverImagePath || "/images/missing_book.png"%>"><div class="media-box-mini-title"><div><%=books.book.name%></div></div></a></div>
                 <%}%>
             <%})%>
@@ -23,7 +23,7 @@
 <div>
     <h4>Planned</h4>
     <%user.books.forEach ( books => { %>
-        <%if (books.watchStatus == 'Plan to watch') {%>
+        <%if (books.watchStatus == 'Plan to read') {%>
             <div class='media-box-mini'><a href="/books/<%=books.book.id%>"><img src="<%= books.book.coverImagePath || "/images/missing_book.png"%>"><div class="media-box-mini-title"><div><%=books.book.name%></div></div></a></div>
         <%}%>
     <%})%>

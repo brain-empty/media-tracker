@@ -313,18 +313,18 @@ router.get('/:id/track/submit',checkAuthenticated, async (req, res) => {
     try {
         const entryUserFound = await User.find({
             id:req.user.id,
-            "movies.movie": req.params.id}
-        )
+            "movies.movie": req.params.id
+        })
         if (entryUserFound.length!=0) {
             await User.updateOne(
                 { _id: req.user.id, "movies.movie": req.params.id },
-                { $set: {
-                            'movies.$.watchStatus' : req.query.watchStatus,
-                            'movies.$.date' : req.query.watchDate,
-                            'movies.$.rewatches' : req.query.rewatches
-                        }
-                }
-            )
+                { $set: 
+                    {
+                        'movies.$.watchStatus' : req.query.watchStatus,
+                        'movies.$.date' : req.query.watchDate,
+                        'movies.$.rewatches' : req.query.rewatches
+                    }
+                })
         } else {
             const movieEntry = {
                 movie : req.params.id,

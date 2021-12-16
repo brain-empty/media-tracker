@@ -1,7 +1,8 @@
 const express = require('express')
 const router = express.Router()
 const Movie = require ('../models/movie');
-const Staff = require ('../models/staff');
+const Book = require ('../models/book');
+const Show = require ('../models/show');
 
 router.get('/', async (req, res) => {
     let searchOptions = {}
@@ -13,11 +14,13 @@ router.get('/', async (req, res) => {
     }
     try {
         const movies = await Movie.find(searchOptions)
-        const staff = await Staff.find(searchOptions)
+        const books= await Book.find(searchOptions)
+        const shows = await Show.find(searchOptions)
         
         let passObj = {
-            movies: movies, 
-            staff: staff,
+            movies: movies,
+            shows: shows,
+            books: books,
             searchOptions: req.query.search
         }
         if (req.user) {passObj.user=req.user}

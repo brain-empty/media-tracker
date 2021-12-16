@@ -5,10 +5,11 @@
     justify-content: space-between;
     align-items: center;
     margin-inline:10%;
+    vertical-align: top;
 ">
-<div>
+<div style="vertical-align: top;">
     <%if (user.movies!=0) {%>
-        <h2><u><a href="user/movies">Movies</a></u></h2>
+        <h2><u><a href="/user/<%=user.id%>/movies">Movies</a></u></h2>
         
         <h4>Watched</h4>
             <%user.movies.forEach ( movies => { %>
@@ -26,9 +27,9 @@
     <%}%>
 </div>
 
-<div>
+<div style="vertical-align: top;">
     <%if (user.books!=0) {%>
-        <h2><u><a href="user/books">Books</a></u></h2>
+        <h2><u><a href="/user/<%=user.id%>/books">Books</a></u></h2>
         
         <h4>Read</h4>
             <%user.books.forEach ( books => { %>
@@ -46,21 +47,20 @@
     <%}%>
 </div>
 
-<div>
+<div style="vertical-align: top;">
     <%if (user.shows!=0) {%>
-        <h2><u><a href="user/shows">Shows</a></u></h2>
+        <h2><u><a href="/user/<%=user.id%>/shows">Shows</a></u></h2>
         
         <h4>Watched</h4>
-        <%console.log(user.shows)%>
             <%user.shows.forEach ( shows => { %>
-                <%if (shows.watchStatus == 'Watched') {%>
+                <%if (shows.watchStatus == 'Read') {%>
                     <div class='media-box-mini'><a href="/shows/<%=shows.show.id%>"><img src="<%= shows.show.coverImagePath || "/images/missing_movie.png"%>"><div class="media-box-mini-title"><div><%=shows.show.name%></div></div></a></div>
                 <%}%>
             <%})%>
 
         <h4>Planned</h4>
             <%user.shows.forEach ( shows => { %>
-                <%if (shows.watchStatus == 'Plan to watch') {%>
+                <%if (shows.watchStatus == 'Plan to read') {%>
                     <div class='media-box-mini'><a href="/show/<%=shows.show.id%>"><img src="<%= shows.show.coverImagePath || "/images/missing_movie.png"%>"><div class="media-box-mini-title"><div><%=shows.show.name%></div></div></a></div>
                 <%}%>
             <%})%>

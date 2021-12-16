@@ -27,6 +27,9 @@ router.get ('/:id/movies', async (req,res) => {
 })
 
 router.get ('/:id/books', async (req,res) => {
+    console.log(req.params)
+    let id = mongoose.Types.ObjectId(req.params.id);
+    console.log(id)
     const user = await User.findById(req.params.id).populate('books.book').exec();
     let passObj = { user:user }
     if (req.user) {passObj.username=req.user.username}
@@ -37,7 +40,7 @@ router.get ('/:id/shows', async (req,res) => {
     const user = await User.findById(req.params.id).populate('shows.show').exec();
     let passObj = { user:user }
     if (req.user) {passObj.username=req.user.username}
-    res.render ('user/showshow', passObj)
+    res.render ('user/showshows', passObj)
 })
 
 module.exports = router;

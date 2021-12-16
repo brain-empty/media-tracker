@@ -7,12 +7,13 @@
     justify-content: space-between;
     align-items: center;
     margin-inline:25%;
+    vertical-align: top;
 ">
-<div>
+<div style="vertical-align: top;">
         
         <h4>Watched</h4>
             <%user.shows.forEach ( shows => { %>
-                <%if (shows.watchStatus == 'Watched') {%>
+                <%if (shows.watchStatus == 'Read') {%>
                     <div class='media-box-mini'><a href="/shows/<%=shows.show.id%>"><img src="<%= shows.show.coverImagePath || "/images/missing_show.png"%>"><div class="media-box-mini-title"><div><%=shows.show.name%></div></div></a></div>
                 <%}%>
             <%})%>
@@ -20,10 +21,10 @@
         
 </div>
 
-<div>
+<div style="vertical-align: top;">
     <h4>Planned</h4>
     <%user.shows.forEach ( shows => { %>
-        <%if (shows.watchStatus == 'Plan to watch') {%>
+        <%if (shows.watchStatus == 'Plan to read') {%>
             <div class='media-box-mini'><a href="/shows/<%=shows.show.id%>"><img src="<%= shows.show.coverImagePath || "/images/missing_show.png"%>"><div class="media-box-mini-title"><div><%=shows.show.name%></div></div></a></div>
         <%}%>
     <%})%>
