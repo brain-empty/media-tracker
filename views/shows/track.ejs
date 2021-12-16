@@ -1,6 +1,7 @@
 <form action='/shows/<%=show.id%>/track/submit'>
     <div style='margin:10px;'>
-    
+        <%console.log('user')%>
+    <%console.log(user)%>
     <div style='margin:10px;'>
         <label>Watch status</label>
         <br>
@@ -17,7 +18,7 @@
     <div style='margin:10px;'>
         <label>Episodes watched</label>
             <br>
-                <input type="number" name="userRating" min="0">
+                <input type="number" name="userCount" min="0">
     </div>
     
     <div style='margin:10px;'>
@@ -33,13 +34,13 @@
     <div style='margin:10px;'>
         <label>Rating</label>
             <br>
-                <input type="number" name="userRating" min="1" max="100">
+                <input type="number" value="<%=show.ratings.rating%>" name="userRating" min="1" max="100">
             <br>
         <div style='margin-top:10px;'>
         <label>Leave a review (optional)</label>
         
         <br>
-            <textarea name="userReview" class='input-summary'></textarea>
+            <textarea name="userReview" class='input-summary'><%=show.ratings.review%></textarea>
         </div>
     </div>
     <button type="submit" style='margin-left:25px;margin-top:0px' class="btn btn-primary">Submit</button>

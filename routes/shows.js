@@ -270,7 +270,6 @@ router.get ('/:id/addstaff/submit', checkAuthenticated, async (req,res) => {
     }
 })
 
-
 router.get ('/:id/track', checkAuthenticated, async (req,res) => {
     try{
         console.log(req.user)
@@ -315,7 +314,8 @@ router.get('/:id/track/submit',checkAuthenticated, async (req, res) => {
                 show : req.params.id,
                 watchStatus : req.query.watchStatus,
                 date : req.query.watchDate,
-                rewatches: req.query.rewatches
+                rewatches: req.query.rewatches,
+                count:req.query.userCount
             }
     
             await User.findByIdAndUpdate(req.user.id,

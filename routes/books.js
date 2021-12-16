@@ -317,7 +317,8 @@ router.get('/:id/track/submit',checkAuthenticated, async (req, res) => {
                 book : req.params.id,
                 watchStatus : req.query.watchStatus,
                 date : req.query.watchDate,
-                rewatches: req.query.rewatches
+                rewatches: req.query.rewatches,
+                count:req.query.userCount
             }
     
             await User.findByIdAndUpdate(req.user.id,
@@ -352,8 +353,6 @@ router.get('/:id/track/submit',checkAuthenticated, async (req, res) => {
         }
         const newBookTemp = Book.findById(req.params.id)
         res.redirect (`/books/${req.params.id}`)
-        console.log(err)
-        res.redirect('/:id/track/submit')
 })
 
 router.delete ('/:id',checkAuthenticated,async (req,res) => {

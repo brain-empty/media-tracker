@@ -339,8 +339,6 @@ router.get('/:id/track/submit',checkAuthenticated, async (req, res) => {
             )
         }
         
-        console.log("this"+req.query.userRating)
-        
         const ratingFound = await Movie.find({"ratings.user": req.user.id}) //checking if rating already exists
 
         if (ratingFound.length!=0) {       //if rating array doesn't have an element then just add a new one w
