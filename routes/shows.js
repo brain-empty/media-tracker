@@ -271,12 +271,9 @@ router.get ('/:id/addstaff/submit', checkAuthenticated, async (req,res) => {
 })
 
 router.get ('/:id/track', checkAuthenticated, async (req,res) => {
-    try{
-        console.log(req.user)
-        const showId = mongoose.Types.ObjectId(req.params.id);
+    const showId = mongoose.Types.ObjectId(req.params.id);
         const userId = mongoose.Types.ObjectId(req.user.id);
-        const show = await Show.findById (req.params.id)
-
+        
         let user = await User.findById (req.user.id)
         if (user.shows.length!=0) {
             const userArr = await User.aggregate([
@@ -284,17 +281,31 @@ router.get ('/:id/track', checkAuthenticated, async (req,res) => {
                 { $unwind : '$shows'},
                 {$match:{'shows.show':showId}}
             ]);
-            user = userArr[0]
+            if (userArr.length!=0) {
+                user=userArr[0]
+            }
+        }
+
+        let show = await Show.findById (req.params.id)
+        if (show.ratings.length!=0) {
+            const showArr = await Show.aggregate([
+                { $match:{'_id':showId}},
+                { $unwind : '$ratings'},
+                { $match: 
+                    {'ratings.user':userId}
+                }
+            ]);
+            if (showArr.length!=0) {
+                console.log('ran')
+                show = showArr[0]
+                show.id = mongoose.Types.ObjectId(show._id);
+            }
         }
 
         res.render('shows/track', {
             show : show,
             user : user
         })
-    } catch (err) {
-        res.redirect ('/shows')
-        console.log("ERROR: shows router get /track request is broken. err : " + err)
-    }  
 })
 
 router.get('/:id/track/submit',checkAuthenticated, async (req, res) => {
@@ -305,12 +316,14 @@ router.get('/:id/track/submit',checkAuthenticated, async (req, res) => {
                 { $set: {
                             'shows.$.watchStatus' : req.query.watchStatus,
                             'shows.$.date' : req.query.watchDate,
-                            'shows.$.rewatches' : req.query.rewatches
+                            'shows.$.rewatches' : req.query.rewatches,
+                            'shows.$.count':req.query.userCount
                         }
                 }
             )
         } else {
             const showEntry = {
+                count:req.query.userCount,
                 show : req.params.id,
                 watchStatus : req.query.watchStatus,
                 date : req.query.watchDate,
@@ -324,7 +337,7 @@ router.get('/:id/track/submit',checkAuthenticated, async (req, res) => {
             )
         }
         
-        console.log()
+        console.log(req.query.userRating)
         const ratingFound = await Show.find({"ratings.user": req.user.id}) //checking if rating already exists
 
         if (ratingFound.length!=0) {       //if rating array doesn't have an element then just add a new one w
@@ -348,9 +361,9 @@ router.get('/:id/track/submit',checkAuthenticated, async (req, res) => {
                 {safe: true, upsert: true}
             )
         }
-        const newShowTemp = Show.findById(req.params.id)
+        const newshowTemp = await Show.findById(req.params.id)
         res.redirect (`/shows/${req.params.id}`)
-})
+        })
 
 router.delete ('/:id',checkAuthenticated,async (req,res) => {
     let show

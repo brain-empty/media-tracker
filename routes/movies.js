@@ -362,7 +362,7 @@ router.get('/:id/track/submit',checkAuthenticated, async (req, res) => {
                 {safe: true, upsert: true}
             )
         }
-        const newMovieTemp = Movie.findById(req.params.id)
+        const newMovieTemp = await Movie.findById(req.params.id)
         res.redirect (`/movies/${req.params.id}`)
     } catch (err) { 
         console.log(err)
