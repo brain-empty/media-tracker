@@ -3,12 +3,12 @@
     <div style='margin:10px;'>
         <label>Watch status</label>
         <br>
-        
+<%console.log(user.books)%>
         <select class="js-example-basic-single" style="width:300px" name="watchStatus">
                 <%if ( user.books.watchStatus == 'Read') {%><option selected value="Read">Read</option>
                 <%} else {%><option value="Read">read</option> <%}%>
 
-    
+
                 <%if ( user.books.watchStatus == 'Plan to read') {%><option selected value="Plan to read">Plan To Read</option><%%>
                 <%} else {%><option value="Plan to read">Plan to read</option> <%}%>
         </select>
@@ -17,33 +17,32 @@
     <div style='margin:10px;'>
         <label>Chapters read</label>
             <br>
-                <input type="number" name="userRating" min="0">
+                <input type="number" value="<%=user.books.count%>" name="userCount" min="0">
     </div>
-    
+
     <div style='margin:10px;'>
         <label>Watch Date</label><br>
         <input type="date" name="watchDate" value ="<%= user.books.date == null ? '' : user.books.date.toISOString().split('T')[0]%>">
     </div>
-    
+
     <div style='margin:10px;'>
         <label>Number of rewatches</label><br>
-        <input type="number" name="rewatches" value='<%user.books.rewatches%>' min="0">
+        <input type="number" name="rewatches" value='<%=user.books.rewatches%>' min="0">
     </div>
-    
+
     <div style='margin:10px;'>
         <label>Rating</label>
             <br>
-                <input type="number" name="userRating" min="1" max="100">
+                <input type="number" value="<%=book.ratings.rating%>" name="userRating" min="1" max="100">
             <br>
         <div style='margin-top:10px;'><label>Leave a review (optional)</label>
         <br>
-            <textarea name="userReview" class='input-summary'></textarea>
+       
+            <textarea name="userReview" class='input-summary'><%=book.ratings.review%></textarea>
             </div>
     </div>
     <button type="submit" style='margin-left:25px;margin-top:0px' class="btn btn-primary">Submit</button>
 </div>
-    </form>
-    
+</form>
+
     <br><br>
-    
-    

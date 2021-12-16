@@ -23,7 +23,7 @@ const userSchema = new mongoose.Schema  ({
         count: {type:Number}
     }],
     shows : [{
-        shows : {type:mongoose.Schema.Types.ObjectId, ref : "Show"},
+        show : {type:mongoose.Schema.Types.ObjectId, ref : "Show"},
         watchStatus : {type:String},
         date : {type:Date},
         rewatches: {type:Number},

@@ -274,11 +274,9 @@ router.get ('/:id/addstaff/submit', checkAuthenticated, async (req,res) => {
 
 
 router.get ('/:id/track', checkAuthenticated, async (req,res) => {
-    try{
-        console.log(req.user)
-        const bookId = mongoose.Types.ObjectId(req.params.id);
+    const bookId = mongoose.Types.ObjectId(req.params.id);
         const userId = mongoose.Types.ObjectId(req.user.id);
-        const book = await Book.findById (req.params.id)
+        
 
         let user = await User.findById (req.user.id)
         if (user.books.length!=0) {
@@ -287,17 +285,32 @@ router.get ('/:id/track', checkAuthenticated, async (req,res) => {
                 { $unwind : '$books'},
                 {$match:{'books.book':bookId}}
             ]);
-            user = userArr[0]
+            if (userArr.length!=0) {
+                user=userArr[0]
+            }
+        }
+
+        let book = await Book.findById (req.params.id)
+        if (book.ratings.length!=0) {
+            const bookArr = await Book.aggregate([
+                { $match:{'_id':bookId}},
+                { $unwind : '$ratings'},
+                { $match: 
+                    {'ratings.user':userId}
+                }
+            ]);
+            if (bookArr.length!=0) {
+                console.log('ran')
+                book = bookArr[0]
+                book.id = mongoose.Types.ObjectId(book._id);
+            }
         }
 
         res.render('books/track', {
             book : book,
             user : user
         })
-    } catch (err) {
-        res.redirect ('/books')
-        console.log("ERROR: books router get /track request is broken. err : " + err)
-    }  
+   
 })
 
 router.get('/:id/track/submit',checkAuthenticated, async (req, res) => {
@@ -308,12 +321,14 @@ router.get('/:id/track/submit',checkAuthenticated, async (req, res) => {
                 { $set: {
                             'books.$.watchStatus' : req.query.watchStatus,
                             'books.$.date' : req.query.watchDate,
-                            'books.$.rewatches' : req.query.rewatches
+                            'books.$.rewatches' : req.query.rewatches,
+                            'books.$.count':req.query.userCount
                         }
                 }
             )
         } else {
             const bookEntry = {
+                count:req.query.userCount,
                 book : req.params.id,
                 watchStatus : req.query.watchStatus,
                 date : req.query.watchDate,
@@ -350,11 +365,9 @@ router.get('/:id/track/submit',checkAuthenticated, async (req, res) => {
                 {safe: true, upsert: true}
             )
         }
-        const newBookTemp = Book.findById(req.params.id)
+        const newBookTemp = await Book.findById(req.params.id)
         res.redirect (`/books/${req.params.id}`)
-        console.log(err)
-        res.redirect('/:id/track/submit')
-})
+        })
 
 router.delete ('/:id',checkAuthenticated,async (req,res) => {
     let book
