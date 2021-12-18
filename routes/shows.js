@@ -309,61 +309,70 @@ router.get ('/:id/track', checkAuthenticated, async (req,res) => {
 })
 
 router.get('/:id/track/submit',checkAuthenticated, async (req, res) => {
-        const entryUserFound = await User.find({"shows.show": req.params.id})
-        if (entryUserFound.length!=0) {
-            await User.updateOne(
-                { _id: req.user.id, "shows.show": req.params.id },
-                { $set: {
-                            'shows.$.watchStatus' : req.query.watchStatus,
-                            'shows.$.date' : req.query.watchDate,
-                            'shows.$.rewatches' : req.query.rewatches,
-                            'shows.$.count':req.query.userCount
-                        }
+    let userId = mongoose.Types.ObjectId(req.user.id);
+    let showId = mongoose.Types.ObjectId(req.params.id);
+    const entryUserFound = await User.aggregate([
+        { $match:  {id:userId}},
+        { $unwind: '$shows' },
+        { $match: {"shows.show": showId}}
+    ])
+
+    if (entryUserFound.length!=0) {
+        await User.updateOne(
+            { _id: req.user.id, "shows.show": req.params.id },
+            { $set: 
+                {
+                    'shows.$.watchStatus' : req.query.watchStatus,
+                    'shows.$.date' : req.query.watchDate,
+                    'shows.$.rewatches' : req.query.rewatches,
+                    'shows.$.count':req.query.usercount
                 }
-            )
-        } else {
-            const showEntry = {
-                count:req.query.userCount,
-                show : req.params.id,
-                watchStatus : req.query.watchStatus,
-                date : req.query.watchDate,
-                rewatches: req.query.rewatches,
-                count:req.query.userCount
-            }
+            })
+    } else {
+        const showEntry = {
+            show : req.params.id,
+            watchStatus : req.query.watchStatus,
+            date : req.query.watchDate,
+            rewatches: req.query.rewatches
+        }
+
+        await User.findByIdAndUpdate(req.user.id,
+            {$push: {shows: showEntry}},
+            {safe: true, upsert: true}
+        )
+    }
+
     
-            await User.findByIdAndUpdate(req.user.id,
-                {$push: {shows: showEntry}},
-                {safe: true, upsert: true}
-            )
-        }
-        
-        console.log(req.query.userRating)
-        const ratingFound = await Show.find({"ratings.user": req.user.id}) //checking if rating already exists
+    const ratingFound = await Show.aggregate([
+        { $match:{_id:showId}},
+        { $unwind : '$ratings'},
+        { $match:{'ratings.user':userId}}
+    ]); //checking if rating already exists
 
-        if (ratingFound.length!=0) {       //if rating array doesn't have an element then just add a new one w
-            await Show.updateOne(
-                { _id: req.params.id, "ratings.user": req.user.id },
-                { $set: {
-                            "ratings.$.rating" : req.query.userRating, 
-                            'ratings.$.review':req.query.userReview
-                        }
-                }
-            )
-        } else {                            //else modify old one
-            const rating = {
-                rating:req.query.userRating, 
-                review:req.query.userReview, 
-                user:req.user.id
+    if (ratingFound.length!=0) {       //if rating array doesn't have an element then just add a new one w
+        await Show.updateOne(
+            { _id: req.params.id, "ratings.user": req.user.id },
+            { $set: {
+                        "ratings.$.rating" : req.query.userRating, 
+                        'ratings.$.review':req.query.userReview
+                    }
             }
-
-            await Show.findByIdAndUpdate(req.params.id,
-                {$push: {ratings: rating}},
-                {safe: true, upsert: true}
-            )
+        )
+    } else {                            //else modify old one
+        const rating = {
+            rating:req.query.userRating, 
+            review:req.query.userReview, 
+            user:req.user.id
         }
-        const newshowTemp = await Show.findById(req.params.id)
-        res.redirect (`/shows/${req.params.id}`)
-        })
+
+        await Show.findByIdAndUpdate(req.params.id,
+            {$push: {ratings: rating}},
+            {safe: true, upsert: true}
+        )
+    }
+    const newShowTemp = await Show.findById(req.params.id)
+    res.redirect (`/shows/${req.params.id}`)
+})
 
 router.delete ('/:id',checkAuthenticated,async (req,res) => {
     let show

@@ -314,58 +314,69 @@ router.get ('/:id/track', checkAuthenticated, async (req,res) => {
 })
 
 router.get('/:id/track/submit',checkAuthenticated, async (req, res) => {
-        const entryUserFound = await User.find({"books.book": req.params.id})
-        if (entryUserFound.length!=0) {
-            await User.updateOne(
-                { _id: req.user.id, "books.book": req.params.id },
-                { $set: {
-                            'books.$.watchStatus' : req.query.watchStatus,
-                            'books.$.date' : req.query.watchDate,
-                            'books.$.rewatches' : req.query.rewatches,
-                            'books.$.count':req.query.userCount
-                        }
+    let userId = mongoose.Types.ObjectId(req.user.id);
+    let bookId = mongoose.Types.ObjectId(req.params.id);
+    const entryUserFound = await User.aggregate([
+        { $match:  {id:userId}},
+        { $unwind: '$books' },
+        { $match: {"books.book": bookId}}
+    ])
+
+    if (entryUserFound.length!=0) {
+        await User.updateOne(
+            { _id: req.user.id, "books.book": req.params.id },
+            { $set: 
+                {
+                    'books.$.watchStatus' : req.query.watchStatus,
+                    'books.$.date' : req.query.watchDate,
+                    'books.$.rewatches' : req.query.rewatches,
+                    'books.$.count':req.query.usercount
                 }
-            )
-        } else {
-            const bookEntry = {
-                count:req.query.userCount,
-                book : req.params.id,
-                watchStatus : req.query.watchStatus,
-                date : req.query.watchDate,
-                rewatches: req.query.rewatches,
-                count:req.query.userCount
-            }
+            })
+    } else {
+        const bookEntry = {
+            book : req.params.id,
+            watchStatus : req.query.watchStatus,
+            date : req.query.watchDate,
+            rewatches: req.query.rewatches
+        }
+
+        await User.findByIdAndUpdate(req.user.id,
+            {$push: {books: bookEntry}},
+            {safe: true, upsert: true}
+        )
+    }
+
     
-            await User.findByIdAndUpdate(req.user.id,
-                {$push: {books: bookEntry}},
-                {safe: true, upsert: true}
-            )
-        }
-        const ratingFound = await Book.find({"ratings.user": req.user.id}) //checking if rating already exists
+    const ratingFound = await Book.aggregate([
+        { $match:{_id:bookId}},
+        { $unwind : '$ratings'},
+        { $match:{'ratings.user':userId}}
+    ]); //checking if rating already exists
 
-        if (ratingFound.length!=0) {       //if rating array doesn't have an element then just add a new one w
-            await Book.updateOne(
-                { _id: req.params.id, "ratings.user": req.user.id },
-                { $set: {
-                            "ratings.$.rating" : req.query.userRating, 
-                            'ratings.$.review':req.query.userReview
-                        }
-                }
-            )
-        } else {                            //else modify old one
-            const rating = {
-                rating:req.query.userRating, 
-                review:req.query.userReview, 
-                user:req.user.id
+    if (ratingFound.length!=0) {       //if rating array doesn't have an element then just add a new one w
+        await Book.updateOne(
+            { _id: req.params.id, "ratings.user": req.user.id },
+            { $set: {
+                        "ratings.$.rating" : req.query.userRating, 
+                        'ratings.$.review':req.query.userReview
+                    }
             }
-
-            await Book.findByIdAndUpdate(req.params.id,
-                {$push: {ratings: rating}},
-                {safe: true, upsert: true}
-            )
+        )
+    } else {                            //else modify old one
+        const rating = {
+            rating:req.query.userRating, 
+            review:req.query.userReview, 
+            user:req.user.id
         }
-        const newBookTemp = await Book.findById(req.params.id)
-        res.redirect (`/books/${req.params.id}`)
+
+        await Book.findByIdAndUpdate(req.params.id,
+            {$push: {ratings: rating}},
+            {safe: true, upsert: true}
+        )
+    }
+    const newBookTemp = await Book.findById(req.params.id)
+    res.redirect (`/books/${req.params.id}`)
 })
 
 router.delete ('/:id',checkAuthenticated,async (req,res) => {

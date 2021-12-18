@@ -270,7 +270,6 @@ router.get ('/:id/addstaff/submit', checkAuthenticated, async (req,res) => {
     }
 })
 
-
 router.get ('/:id/track', checkAuthenticated, async (req,res) => {
         const movieId = mongoose.Types.ObjectId(req.params.id);
         const userId = mongoose.Types.ObjectId(req.user.id);
@@ -310,11 +309,14 @@ router.get ('/:id/track', checkAuthenticated, async (req,res) => {
 })
 
 router.get('/:id/track/submit',checkAuthenticated, async (req, res) => {
-    try {
-        const entryUserFound = await User.find({
-            id:req.user.id,
-            "movies.movie": req.params.id
-        })
+        let userId = mongoose.Types.ObjectId(req.user.id);
+        let movieId = mongoose.Types.ObjectId(req.params.id);
+        const entryUserFound = await User.aggregate([
+            { $match:  {id:userId}},
+            { $unwind: '$movies' },
+            { $match: {"movies.movie": movieId}}
+        ])
+
         if (entryUserFound.length!=0) {
             await User.updateOne(
                 { _id: req.user.id, "movies.movie": req.params.id },
@@ -338,8 +340,13 @@ router.get('/:id/track/submit',checkAuthenticated, async (req, res) => {
                 {safe: true, upsert: true}
             )
         }
+
         
-        const ratingFound = await Movie.find({"ratings.user": req.user.id}) //checking if rating already exists
+        const ratingFound = await Movie.aggregate([
+            { $match:{_id:movieId}},
+            { $unwind : '$ratings'},
+            { $match:{'ratings.user':userId}}
+        ]); //checking if rating already exists
 
         if (ratingFound.length!=0) {       //if rating array doesn't have an element then just add a new one w
             await Movie.updateOne(
@@ -364,10 +371,6 @@ router.get('/:id/track/submit',checkAuthenticated, async (req, res) => {
         }
         const newMovieTemp = await Movie.findById(req.params.id)
         res.redirect (`/movies/${req.params.id}`)
-    } catch (err) { 
-        console.log(err)
-        res.redirect('/:id/track/submit')
-    }
 })
 
 router.delete ('/:id',checkAuthenticated,async (req,res) => {
