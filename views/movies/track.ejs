@@ -10,6 +10,9 @@
 
             <%if ( user.movies.watchStatus == 'Plan to watch') {%><option selected value="Plan to watch">Plan To Watch</option><%%>
             <%} else {%><option value="Plan to watch">Plan to watch</option> <%}%>
+
+            <%if ( user.movies.watchStatus == 'Dropped') {%><option selected value="Dropped">Dropped</option>
+            <%} else {%><option value="Dropped">Dropped</option> <%}%>
         </select>
     </div>
 
