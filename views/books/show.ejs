@@ -24,6 +24,11 @@
         <h3>Rating</h3>
         <%=book.avgRating%>
     <%}%>
+
+    <%if (book.length!=null) {%>
+        <h3>Length</h3>
+        <%=book.length%>
+    <%}%>
     
     <% if(book.tags.length!=0){%>
     <div>

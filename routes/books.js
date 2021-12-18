@@ -57,7 +57,8 @@ router.post ('/', checkAuthenticated, async ( req, res ) => {
         name : req.body.name,
         summary : req.body.summary,
         tags: req.body.tags,
-        releaseDate: setDate       
+        releaseDate: setDate,
+        length: req.body.length       
     })
 
     let bookStaff = {
@@ -178,6 +179,8 @@ router.put('/:id',checkAuthenticated, async (req, res) => {
 
         book.summary = req.body.summary
         book.releaseDate = setDate
+        book.length = req.body.length
+
         await book.save()
         res.redirect (`/books/${book.id}`)
     } catch (err) {
@@ -271,7 +274,6 @@ router.get ('/:id/addstaff/submit', checkAuthenticated, async (req,res) => {
         console.log("broke" + e)
     }
 })
-
 
 router.get ('/:id/track', checkAuthenticated, async (req,res) => {
     const bookId = mongoose.Types.ObjectId(req.params.id);

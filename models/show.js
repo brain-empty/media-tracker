@@ -35,7 +35,10 @@ const showSchema = new mongoose.Schema({
         rating: { type:Number },
         review: {type:String},
         user: {type:mongoose.Schema.Types.ObjectId, ref : "User"}
-    }]
+    }],
+    length: {
+        type:Number
+    }
 });
 
 showSchema.virtual('coverImagePath').get(function() {

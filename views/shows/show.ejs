@@ -6,7 +6,7 @@
 
 <div class='media-header'>
     <div id="header-left">
-        <img src="<%= show.coverImagePath || "/images/missing_show.png"%>">
+        <img src="<%= show.coverImagePath || "/images/missing_movie.png" %>">
     </div>
     <div id="header-right">
         <h2><%=show.name%></h2>
@@ -23,6 +23,11 @@
     <%if (show.avgRating!=null) {%>
         <h3>Rating</h3>
         <%=show.avgRating%>
+    <%}%>
+
+    <%if (show.length!=null) {%>
+        <h3>Length</h3>
+        <%=show.length%>
     <%}%>
     
     <% if(show.tags.length!=0){%>

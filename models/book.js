@@ -35,7 +35,10 @@ const bookSchema = new mongoose.Schema({
         rating: { type:Number },
         review: {type:String},
         user: {type:mongoose.Schema.Types.ObjectId, ref : "User"}
-    }]
+    }],
+    length: {
+        type:Number
+    }
 });
 
 bookSchema.virtual('coverImagePath').get(function() {

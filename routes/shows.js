@@ -57,7 +57,8 @@ router.post ('/', checkAuthenticated, async ( req, res ) => {
         name : req.body.name,
         summary : req.body.summary,
         tags: req.body.tags,
-        releaseDate: setDate       
+        releaseDate: setDate,
+        length: req.body.length     
     })
 
     let showStaff = {
@@ -176,6 +177,8 @@ router.put('/:id',checkAuthenticated, async (req, res) => {
         }
         show.summary = req.body.summary
         show.releaseDate = setDate
+        show.length = req.body.length
+
         await show.save()
         res.redirect (`/shows/${show.id}`)
     } catch (err) {
