@@ -47,6 +47,26 @@
 </div>
 
 <div class=" media-body-children media-body-right">
+    <%if(typeof user != 'undefined'){%>
+    <%if ( user.books.watchStatus) {%>
+        <h3>Your stats</h3>
+        <div>
+            <%if (user.books.watchStatus) {%>
+            <p>Status: <%=user.books.watchStatus%></p>
+            <%}%>
+            <%if (user.books.count) {%>
+                <p>Status: <%=user.books.count%><%if(book.length){%>/<%=book.length%></p><%}%>
+                <%}%>
+            <%if (user.books.date) {%>
+            <p>Watch date: <%=user.books.date%></p>
+            <%}%>
+            <%if (user.books.rewatches) {%>
+            <p>Number of rereads: <%=user.books.rewatches%></p>
+            <%}%>
+        </div>
+    <%}%>
+    <%}%>
+
     <h3>Staff</h3>
         <%if ( staff!="" || staff!= null ) {%>
         <div> <!--list staff-->

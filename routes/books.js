@@ -118,7 +118,10 @@ router.get ('/:id', async (req,res) => {
     try {
         const bookTemp = await Book.findById(req.params.id).populate('tags').exec()
         let id = mongoose.Types.ObjectId(bookTemp.id);
-
+        let userId
+        if(req.user){
+            userId = mongoose.Types.ObjectId(req.user.id)
+        }
         const staff = await Staff.aggregate([
             { $match:{}},
             { $unwind : '$works'},
@@ -129,6 +132,17 @@ router.get ('/:id', async (req,res) => {
                     foreignField: "_id",
                     as: "works.role"}}
         ]);
+
+        //finding tracked book details
+        const trackFound = await User.aggregate ([
+            {$match : {_id:userId}},
+            {$unwind : '$books'},
+            {$match : {'books.book':id}}
+        ]) 
+
+        if (trackFound.length!=0) {
+            req.user = trackFound[0]
+        }
 
         let passObj = { staff : staff, book : bookTemp}
         if (req.user) {passObj.user=req.user}
@@ -319,7 +333,7 @@ router.get('/:id/track/submit',checkAuthenticated, async (req, res) => {
     let userId = mongoose.Types.ObjectId(req.user.id);
     let bookId = mongoose.Types.ObjectId(req.params.id);
     const entryUserFound = await User.aggregate([
-        { $match:  {id:userId}},
+        { $match:  {_id:userId}},
         { $unwind: '$books' },
         { $match: {"books.book": bookId}}
     ])

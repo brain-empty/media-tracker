@@ -47,8 +47,29 @@
 </div>
 
 <div class=" media-body-children media-body-right">
+    <%if(typeof user != 'undefined'){%>
+        <%console.log(user)%>
+    <%if ( user.shows.watchStatus) {%>
+        <h3>Your stats</h3>
+        <div>
+            <%if (user.shows.watchStatus) {%>
+            <p>Status: <%=user.shows.watchStatus%></p>
+            <%}%>
+            <%if (user.shows.count) {%>
+                <p>Status: <%=user.shows.count%><%if(show.length){%>/<%=show.length%></p><%}%>
+                <%}%>
+            <%if (user.shows.date) {%>
+            <p>Watch date: <%=user.shows.date%></p>
+            <%}%>
+            <%if (user.shows.rewatches) {%>
+            <p>Number of rewatches: <%=user.shows.rewatches%></p>
+            <%}%>
+        </div>
+    <%}%>
+    <%}%>
+
+    <%if ( staff!="" || staff!= null ) {%>
     <h3>Staff</h3>
-        <%if ( staff!="" || staff!= null ) {%>
         <div> <!--list staff-->
             <ul>
             <% for (let i = 0; i < staff.length; i++){ %>

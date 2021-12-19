@@ -117,6 +117,10 @@ router.get ('/:id', async (req,res) => {
     try {
         const movieTemp = await Movie.findById(req.params.id).populate('tags').exec()
         let id = mongoose.Types.ObjectId(movieTemp.id);
+        let userId
+        if(req.user){
+            userId = mongoose.Types.ObjectId(req.user.id)
+        }
 
         const staff = await Staff.aggregate([
             { $match:{}},
@@ -128,6 +132,17 @@ router.get ('/:id', async (req,res) => {
                     foreignField: "_id",
                     as: "works.role"}}
         ]);
+
+        //finding tracked movie details
+        const trackFound = await User.aggregate ([
+            {$match : {_id:userId}},
+            {$unwind : '$movies'},
+            {$match : {'movies.movie':id}}
+        ]) 
+
+        if (trackFound.length!=0) {
+            req.user = trackFound[0]
+        }
 
         let passObj = { staff : staff, movie : movieTemp}
         if (req.user) {passObj.user=req.user}
@@ -312,7 +327,7 @@ router.get('/:id/track/submit',checkAuthenticated, async (req, res) => {
         let userId = mongoose.Types.ObjectId(req.user.id);
         let movieId = mongoose.Types.ObjectId(req.params.id);
         const entryUserFound = await User.aggregate([
-            { $match:  {id:userId}},
+            { $match:  {_id:userId}},
             { $unwind: '$movies' },
             { $match: {"movies.movie": movieId}}
         ])

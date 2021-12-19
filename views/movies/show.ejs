@@ -40,15 +40,23 @@
             <% if(movie.releaseDate!=null){%><h3>Release Date</h3><%=movie.releaseDate.toDateString()%><%}%>
         </div>
     </div>
-
-    <div class=" media-body-children media-body-right">'
-        <!-- code for showing user stats goes here, make next line into ejs -->
-        <!-- if ( staff!="" || staff!= null ) {
+    <div class=" media-body-children media-body-right">
+        <%if(typeof user != 'undefined'){%>
+        <%if ( user.movies.watchStatus ) {%>
         <h3>Your stats</h3>
         <div>
-
+            <%if (user.movies.watchStatus) {%>
+            <p>Status: <%=user.movies.watchStatus%></p>
+            <%}%>
+            <%if (user.movies.date) {%>
+            <p>Watch date: <%=user.movies.date%></p>
+            <%}%>
+            <%if (user.movies.rewatches) {%>
+            <p>Number of rewatches: <%=user.movies.rewatches%></p>
+            <%}%>
         </div>
-        <}> -->
+        <%}%>
+        <%}%>
 
         <%if ( staff!="" || staff!= null ) {%>
             <h3>Staff</h3>
