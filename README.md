@@ -1,3 +1,5 @@
-app that has a community managed database for books, movies and tv series with personal account based media consumption log functionality
+The app is availaible on Heroku: http://backtothelog.herokuapp.com/
 
-as of 19 december 2021, we've submitted this project and we're supposedely done with it. however, i may or may not be personally working on this. needless to say, i'm overjoyed to have finally finished this project. it holds a lot of fond memories as my first project and i don't think i'll ever forget what a hectic ride it was to make this in a month and a half. i'm sure i'll cringe at how bad this site is in a few years (and i already do) but i am also so proud of this, looking at the commits makes me realise how quickly i and danny improved in this project. truly, it was a ride, and one i'm bittersweet-ly glad i was on.
+A website that has a community managed database for books, movies and tv series with personal account based media consumption log functionality
+
+It isn't maintained anymore, I sometimes decide to work on it but it was for a school project and I did not proceed much further from that.
